@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -L \"https://buy-yam-98356338.figma.site\" -A \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\")",
+      "Bash(npm install)",
+      "Bash(npm run dev)",
+      "Bash(npx vite)",
+      "Bash(timeout 3)",
+      "Bash(node_modules.binvite)",
+      "Bash(.node_modules.binvite.cmd)",
+      "Bash(cd /c/Users/USER/Desktop/\"Baby Cuisine Website\")",
+      "Bash(npm install vite)",
+      "Bash(node node_modules/vite/bin/vite.js)",
+      "Bash(cd /c/Users/USER/Desktop/\"Baby Cuisine Website\"/src/assets)",
+      "Bash(npm install --force)",
+      "Bash(npx vite@latest)",
+      "Bash(curl http://localhost:5173)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
