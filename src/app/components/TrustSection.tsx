@@ -31,7 +31,7 @@ export function TrustSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-24 px-6 bg-white overflow-hidden">
+    <section ref={ref} id="why-us" className="py-24 px-6 bg-white overflow-hidden">
       <div className="container mx-auto max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

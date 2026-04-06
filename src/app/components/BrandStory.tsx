@@ -40,7 +40,7 @@ export function BrandStory() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-24 px-6 bg-white overflow-hidden">
+    <section ref={ref} id="our-story" className="py-24 px-6 bg-white overflow-hidden">
       <div className="container mx-auto max-w-7xl">
         {/* Story Section */}
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
@@ -99,8 +99,12 @@ export function BrandStory() {
             >
               <img
                 src={brandStoryImage}
-                alt="Handmade with love in our kitchen"
+                alt="Handmade with love in our kitchen — Baby Cuisine founder preparing fresh baby food"
                 className="w-full rounded-[2rem] shadow-2xl"
+                loading="lazy"
+                decoding="async"
+                width={600}
+                height={600}
               />
             </motion.div>
             {/* Decorative circles */}

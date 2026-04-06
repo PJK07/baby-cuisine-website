@@ -29,6 +29,7 @@ export function Navigation() {
     <motion.nav
       style={{ backgroundColor, backdropFilter: backdropBlur }}
       className="fixed top-0 left-0 right-0 z-50 px-6 py-4 transition-shadow"
+      aria-label="Main navigation"
     >
       <div className="container mx-auto max-w-7xl">
         <div className="flex items-center justify-between">
@@ -68,9 +69,10 @@ export function Navigation() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsCartOpen(true)}
+              aria-label={`Open shopping cart${getTotalItems() > 0 ? `, ${getTotalItems()} item${getTotalItems() === 1 ? "" : "s"}` : ""}`}
               className="relative bg-[#3E2723] text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-[#3E2723]/90 transition-colors shadow-lg"
             >
-              <ShoppingCart className="w-5 h-5" />
+              <ShoppingCart className="w-5 h-5" aria-hidden="true" />
               {getTotalItems() > 0 && (
                 <motion.span
                   initial={{ scale: 0 }}
@@ -87,12 +89,15 @@ export function Navigation() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsOpen(!isOpen)}
+              aria-label={isOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isOpen}
+              aria-controls="mobile-menu"
               className="lg:hidden bg-[#3E2723] text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-[#3E2723]/90 transition-colors shadow-lg"
             >
               {isOpen ? (
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5" aria-hidden="true" />
               ) : (
-                <Menu className="w-5 h-5" />
+                <Menu className="w-5 h-5" aria-hidden="true" />
               )}
             </motion.button>
           </div>
@@ -100,6 +105,7 @@ export function Navigation() {
 
         {/* Mobile Menu */}
         <motion.div
+          id="mobile-menu"
           initial={false}
           animate={{
             height: isOpen ? "auto" : 0,

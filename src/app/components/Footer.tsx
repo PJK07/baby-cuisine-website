@@ -4,7 +4,7 @@ import logoImage from "../../assets/Baby John.png";
 
 export function Footer() {
   return (
-    <footer className="bg-[#3E2723] text-white py-16 px-6">
+    <footer id="contact" className="bg-[#3E2723] text-white py-16 px-6">
       <div className="container mx-auto max-w-7xl">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
@@ -12,8 +12,12 @@ export function Footer() {
             <motion.img
               whileHover={{ scale: 1.05 }}
               src={logoImage}
-              alt="Baby John"
+              alt="Baby John — Baby Cuisine brand mascot"
               className="w-48 mb-6 rounded-2xl"
+              loading="lazy"
+              decoding="async"
+              width={192}
+              height={192}
             />
             <p className="text-white/70 leading-relaxed mb-6">
               Nourishing little ones with love, care, and the finest organic
@@ -23,25 +27,28 @@ export function Footer() {
               <motion.a
                 whileHover={{ scale: 1.1, y: -2 }}
                 href="#"
+                aria-label="Baby Cuisine on Facebook"
                 className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#F5C542] transition-colors"
               >
-                <Facebook className="w-5 h-5" />
+                <Facebook className="w-5 h-5" aria-hidden="true" />
               </motion.a>
               <motion.a
                 whileHover={{ scale: 1.1, y: -2 }}
                 href="https://www.instagram.com/thebabycuisine.1/"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Baby Cuisine on Instagram (opens in new tab)"
                 className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#F5C542] transition-colors"
               >
-                <Instagram className="w-5 h-5" />
+                <Instagram className="w-5 h-5" aria-hidden="true" />
               </motion.a>
               <motion.a
                 whileHover={{ scale: 1.1, y: -2 }}
                 href="#"
+                aria-label="Baby Cuisine on Twitter"
                 className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#F5C542] transition-colors"
               >
-                <Twitter className="w-5 h-5" />
+                <Twitter className="w-5 h-5" aria-hidden="true" />
               </motion.a>
             </div>
           </div>

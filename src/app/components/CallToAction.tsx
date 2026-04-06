@@ -66,7 +66,6 @@ export function CallToAction() {
 
           <motion.h2
             className="text-5xl lg:text-7xl font-bold text-white mb-6"
-            style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}
           >
             Give Your Baby
             <br />
@@ -92,10 +91,13 @@ export function CallToAction() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                document.getElementById("shop")?.scrollIntoView({ behavior: "smooth" });
+              }}
               className="bg-white text-[#7CB342] px-10 py-5 rounded-full text-lg font-bold shadow-2xl hover:shadow-3xl transition-all flex items-center gap-2 group"
             >
               Shop Now
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
             </motion.button>
 
             <motion.button

@@ -4,7 +4,61 @@
     <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Baby Cuisine Website Design (Copy)</title>
+      <title>Baby Cuisine — Fresh Handmade Baby Food in Lebanon</title>
+      <meta
+        name="description"
+        content="Baby Cuisine crafts fresh, handmade baby food with 100% natural ingredients — no sugar, no preservatives, no artificial colors. Delivered daily in Lebanon."
+      />
+      <meta name="theme-color" content="#C4915F" />
+
+      <!-- Preconnect for Google Fonts (eliminates render-blocking font fetch) -->
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+      <!-- Open Graph -->
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content="Baby Cuisine — Fresh Handmade Baby Food" />
+      <meta
+        property="og:description"
+        content="Pure, soft, and made for tiny tummies. Handmade daily with 100% natural ingredients — no sugar, no preservatives."
+      />
+      <meta property="og:locale" content="en_US" />
+
+      <!-- Twitter Card -->
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content="Baby Cuisine — Fresh Handmade Baby Food" />
+      <meta
+        name="twitter:description"
+        content="Pure, soft, and made for tiny tummies. Handmade daily with 100% natural ingredients."
+      />
+
+      <!-- Structured Data: LocalBusiness + FoodEstablishment -->
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": ["LocalBusiness", "FoodEstablishment"],
+          "name": "Baby Cuisine",
+          "description": "Fresh handmade baby food crafted with 100% natural ingredients — no sugar, no preservatives, no artificial colors.",
+          "url": "https://thebabycuisine.com",
+          "telephone": "+96170465465",
+          "email": "thebabycuisine.1@gmail.com",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "St. Maroun Street",
+            "addressLocality": "Horch Tabet",
+            "addressCountry": "LB"
+          },
+          "sameAs": ["https://www.instagram.com/thebabycuisine.1/"],
+          "servesCuisine": "Baby Food",
+          "priceRange": "$$",
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "bestRating": "5",
+            "ratingCount": "100"
+          }
+        }
+      </script>
     </head>
 
     <body>
@@ -12,4 +66,3 @@
       <script type="module" src="/src/main.tsx"></script>
     </body>
   </html>
-  

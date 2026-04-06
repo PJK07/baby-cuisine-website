@@ -65,9 +65,10 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={onClose}
+                aria-label="Close cart"
                 className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
               >
-                <X className="w-5 h-5 text-[#3E2723]" />
+                <X className="w-5 h-5 text-[#3E2723]" aria-hidden="true" />
               </motion.button>
             </div>
 
@@ -106,9 +107,10 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                           onClick={() =>
                             removeItem(item.itemCode, item.size, item.texture)
                           }
+                          aria-label={`Remove ${item.item} from cart`}
                           className="text-red-500 hover:text-red-700 transition-colors"
                         >
-                          <Trash2 className="w-5 h-5" />
+                          <Trash2 className="w-5 h-5" aria-hidden="true" />
                         </motion.button>
                       </div>
                       <div className="flex justify-between items-center text-sm">

@@ -39,7 +39,6 @@ export function Testimonials() {
         >
           <motion.h2
             className="text-5xl lg:text-6xl font-bold text-[#3E2723] mb-6"
-            style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}
           >
             Loved by Parents
           </motion.h2>
@@ -77,7 +76,11 @@ export function Testimonials() {
                 <Quote className="w-6 h-6 text-[#3E2723]" />
               </motion.div>
 
-              <div className="flex gap-1 mb-4">
+              <div
+                className="flex gap-1 mb-4"
+                role="img"
+                aria-label={`${testimonial.rating} out of 5 stars`}
+              >
                 {[...Array(testimonial.rating)].map((_, i) => (
                   <motion.span
                     key={i}
@@ -87,6 +90,7 @@ export function Testimonials() {
                     }
                     transition={{ delay: 0.4 + index * 0.1 + i * 0.1 }}
                     className="text-[#F5C542] text-2xl"
+                    aria-hidden="true"
                   >
                     ★
                   </motion.span>

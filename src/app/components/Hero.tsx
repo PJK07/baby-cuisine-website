@@ -2,7 +2,6 @@ import heroImage from '../../assets/1190b4e7cdfa9a4c1a292a01cff92e07a48e8ab9_opt
 import { motion } from "motion/react";
 import { Heart, Leaf, Sparkles } from "lucide-react";
 import logoImage from "../../assets/56793963f4406674327e30a2587aa6beac1f4afa.png";
-import productGrid from "../../assets/c570371a6af688349f61018713c87c45ef0657eb.png";
 
 export function Hero() {
   return (
@@ -52,8 +51,9 @@ export function Hero() {
             >
               <img
                 src={logoImage}
-                alt="The Baby Cuisine"
+                alt="The Baby Cuisine logo"
                 className="w-56 h-auto mx-auto lg:mx-0 drop-shadow-sm"
+                decoding="async"
               />
             </motion.div>
 
@@ -162,8 +162,12 @@ export function Hero() {
             >
               <img
                 src={heroImage}
-                alt="Baby Cuisine fresh products"
+                alt="Assortment of Baby Cuisine fresh handmade baby food products"
                 className="rounded-[2rem] shadow-2xl w-full max-w-lg mx-auto"
+                fetchPriority="high"
+                decoding="async"
+                width={512}
+                height={512}
               />
             </motion.div>
 
