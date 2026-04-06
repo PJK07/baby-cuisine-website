@@ -117,14 +117,6 @@ export function CallToAction() {
           >
             <div className="flex items-center gap-2">
               <span className="text-2xl">✓</span>
-              <span>Free Shipping Over $50</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">✓</span>
-              <span>30-Day Money Back</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">✓</span>
               <span>Subscribe & Save 15%</span>
             </div>
           </motion.div>

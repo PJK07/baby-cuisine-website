@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { Facebook, Instagram, Twitter, Mail, MapPin, Phone } from "lucide-react";
-import logoImage from "../../assets/56793963f4406674327e30a2587aa6beac1f4afa.png";
+import logoImage from "../../assets/Baby John.png";
 
 export function Footer() {
   return (
@@ -12,8 +12,8 @@ export function Footer() {
             <motion.img
               whileHover={{ scale: 1.05 }}
               src={logoImage}
-              alt="The Baby Cuisine"
-              className="w-48 mb-6 brightness-0 invert"
+              alt="Baby John"
+              className="w-48 mb-6 rounded-2xl"
             />
             <p className="text-white/70 leading-relaxed mb-6">
               Nourishing little ones with love, care, and the finest organic

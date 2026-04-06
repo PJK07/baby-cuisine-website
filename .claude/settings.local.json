@@ -14,7 +14,8 @@
       "Bash(cd /c/Users/USER/Desktop/\"Baby Cuisine Website\"/src/assets)",
       "Bash(npm install --force)",
       "Bash(npx vite@latest)",
-      "Bash(curl http://localhost:5173)"
+      "Bash(curl http://localhost:5173)",
+      "Bash(npm run:*)"
     ],
     "deny": [],
     "ask": []

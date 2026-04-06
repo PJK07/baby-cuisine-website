@@ -1,4 +1,4 @@
-import image_2a0c3c2dac21df3f12348fcc90ecf3fe5fd9e8d8 from '../../assets/2a0c3c2dac21df3f12348fcc90ecf3fe5fd9e8d8.png'
+import brandStoryImage from '../../assets/2a0c3c2dac21df3f12348fcc90ecf3fe5fd9e8d8_3_optimized_1000.png'
 import { motion } from "motion/react";
 import { useInView } from "motion/react";
 import { useRef } from "react";
@@ -16,7 +16,7 @@ const values = [
     icon: Leaf,
     title: "Pure & Natural",
     description:
-      "We use only certified organic ingredients, free from pesticides and chemicals.",
+      "Our ingredients are natural and fresh. Some of them are certified organic",
     color: "#7CB342",
   },
   {
@@ -40,7 +40,7 @@ export function BrandStory() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-24 px-6 bg-[#F5E6D3] overflow-hidden">
+    <section ref={ref} className="py-24 px-6 bg-white overflow-hidden">
       <div className="container mx-auto max-w-7xl">
         {/* Story Section */}
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
@@ -98,7 +98,7 @@ export function BrandStory() {
               }}
             >
               <img
-                src={image_2a0c3c2dac21df3f12348fcc90ecf3fe5fd9e8d8}
+                src={brandStoryImage}
                 alt="Handmade with love in our kitchen"
                 className="w-full rounded-[2rem] shadow-2xl"
               />

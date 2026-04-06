@@ -1,4 +1,4 @@
-import image_39978aad433211ec57a74d02e383401571a5113e from '../../assets/39978aad433211ec57a74d02e383401571a5113e.png'
+import image_39978aad433211ec57a74d02e383401571a5113e from '../../assets/39978aad433211ec57a74d02e383401571a5113e_optimized_1000.png'
 import { motion } from "motion/react";
 import { useInView } from "motion/react";
 import { useRef } from "react";
@@ -116,7 +116,7 @@ export function Ingredients() {
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
                 whileHover={{ y: -10, transition: { duration: 0.3 } }}
-                className="bg-[#FFF8E7] rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all"
+                className="bg-white border border-[#3E2723]/5 rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all"
               >
                 <motion.div
                   whileHover={{ scale: 1.1, rotate: 10 }}

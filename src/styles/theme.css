@@ -2,7 +2,7 @@
 
 :root {
   --font-size: 16px;
-  --background: #FFF8E7;
+  --background: #ffffff;
   --foreground: #3E2723;
   --card: #ffffff;
   --card-foreground: #3E2723;
@@ -12,7 +12,7 @@
   --primary-foreground: #ffffff;
   --secondary: #A8D5BA;
   --secondary-foreground: #3E2723;
-  --muted: #F5E6D3;
+  --muted: #ffffff;
   --muted-foreground: #8D6E63;
   --accent: #FFE5D9;
   --accent-foreground: #3E2723;
@@ -31,11 +31,11 @@
   --chart-4: #E8D5E8;
   --chart-5: #C4915F;
   --radius: 2rem;
-  --sidebar: #FFF8E7;
+  --sidebar: #ffffff;
   --sidebar-foreground: #3E2723;
   --sidebar-primary: #C4915F;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #F5E6D3;
+  --sidebar-accent: #ffffff;
   --sidebar-accent-foreground: #3E2723;
   --sidebar-border: rgba(62, 39, 35, 0.08);
   --sidebar-ring: #C4915F;
@@ -43,8 +43,8 @@
   /* Baby Cuisine Brand Colors - Warm & Soft */
   --color-golden: #F5C542;
   --color-golden-bright: #FBBF24;
-  --color-cream: #FFF8E7;
-  --color-cream-dark: #F5E6D3;
+  --color-cream: #ffffff;
+  --color-cream-dark: #ffffff;
   --color-kraft: #C4915F;
   --color-kraft-dark: #A67C52;
   --color-peach: #FFE5D9;

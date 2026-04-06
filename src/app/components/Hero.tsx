@@ -1,4 +1,4 @@
-import image_1190b4e7cdfa9a4c1a292a01cff92e07a48e8ab9 from '../../assets/1190b4e7cdfa9a4c1a292a01cff92e07a48e8ab9.png'
+import heroImage from '../../assets/1190b4e7cdfa9a4c1a292a01cff92e07a48e8ab9_optimized_1000.png'
 import { motion } from "motion/react";
 import { Heart, Leaf, Sparkles } from "lucide-react";
 import logoImage from "../../assets/56793963f4406674327e30a2587aa6beac1f4afa.png";
@@ -6,7 +6,7 @@ import productGrid from "../../assets/c570371a6af688349f61018713c87c45ef0657eb.p
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#FFF8E7] via-[#F5E6D3] to-[#FFEFD5] px-6 py-20 pt-32">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white px-6 py-20 pt-32">
       {/* Animated background shapes - softer and warmer */}
       <motion.div
         className="absolute top-20 left-10 w-40 h-40 bg-[#FFB88C] rounded-full opacity-15 blur-3xl"
@@ -126,8 +126,8 @@ export function Hero() {
                   <Leaf className="w-6 h-6 text-[#7CB342]" />
                 </div>
                 <div className="text-left">
-                  <div className="font-semibold text-[#3E2723]">100% Organic</div>
-                  <div className="text-sm text-[#8D6E63]">certified</div>
+                  <div className="font-semibold text-[#3E2723]">Natural Ingredients</div>
+                  <div className="text-sm text-[#8D6E63]">very high quality</div>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -161,7 +161,7 @@ export function Hero() {
               className="relative z-10"
             >
               <img
-                src={image_1190b4e7cdfa9a4c1a292a01cff92e07a48e8ab9}
+                src={heroImage}
                 alt="Baby Cuisine fresh products"
                 className="rounded-[2rem] shadow-2xl w-full max-w-lg mx-auto"
               />
@@ -190,7 +190,7 @@ export function Hero() {
             >
               <div className="text-center">
                 <div className="text-3xl font-bold text-[#FF9800]">0</div>
-                <div className="text-sm font-medium">Preservatives</div>
+                <div className="text-sm font-medium">Salt and Sugar</div>
               </div>
             </motion.div>
 

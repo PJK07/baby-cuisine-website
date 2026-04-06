@@ -29,7 +29,7 @@ export function Testimonials() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-24 px-6 bg-[#F3E5F5] overflow-hidden">
+    <section ref={ref} className="py-24 px-6 bg-white overflow-hidden">
       <div className="container mx-auto max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -110,32 +110,11 @@ export function Testimonials() {
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="grid md:grid-cols-3 gap-8 text-center"
+          className="grid md:grid-cols-2 gap-8 text-center max-w-4xl mx-auto"
         >
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="bg-white rounded-3xl p-8 shadow-lg"
-          >
-            <motion.div
-              animate={{
-                scale: [1, 1.1, 1],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="text-6xl font-bold text-[#F5C542] mb-2"
-            >
-              50K+
-            </motion.div>
-            <p className="text-xl text-[#3E2723] font-medium">Happy Babies</p>
-            <p className="text-[#8D6E63]">Fed with love</p>
-          </motion.div>
-
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="bg-white rounded-3xl p-8 shadow-lg"
+            className="bg-white rounded-3xl p-8 shadow-lg border border-[#3E2723]/5"
           >
             <motion.div
               animate={{
@@ -152,12 +131,11 @@ export function Testimonials() {
               4.9
             </motion.div>
             <p className="text-xl text-[#3E2723] font-medium">Average Rating</p>
-            <p className="text-[#8D6E63]">From 2,000+ reviews</p>
           </motion.div>
 
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="bg-white rounded-3xl p-8 shadow-lg"
+            className="bg-white rounded-3xl p-8 shadow-lg border border-[#3E2723]/5"
           >
             <motion.div
               animate={{
@@ -173,8 +151,8 @@ export function Testimonials() {
             >
               100%
             </motion.div>
-            <p className="text-xl text-[#3E2723] font-medium">Organic</p>
-            <p className="text-[#8D6E63]">Certified ingredients</p>
+            <p className="text-xl text-[#3E2723] font-medium">Healthy</p>
+            <p className="text-[#8D6E63]">100%</p>
           </motion.div>
         </motion.div>
       </div>

@@ -11,13 +11,13 @@ const trustPoints = [
   },
   {
     icon: Shield,
-    title: "No Added Sugar",
-    description: "Naturally sweet, nothing added. Pure and simple.",
+    title: "No sugar",
+    description: "Sweetened with Fruit. Naturally sweet, nothing added.",
   },
   {
     icon: HeartPulse,
-    title: "Freshly Made",
-    description: "Prepared in small batches daily. Never mass-produced.",
+    title: "Cooked with AMC pots",
+    description: "Cooked at very low temperature to preserve vitamins and nutrients.",
   },
   {
     icon: Baby,
@@ -31,7 +31,7 @@ export function TrustSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-24 px-6 bg-gradient-to-br from-[#FFF8E7] to-[#F5E6D3] overflow-hidden">
+    <section ref={ref} className="py-24 px-6 bg-white overflow-hidden">
       <div className="container mx-auto max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -103,8 +103,7 @@ export function TrustSection() {
               <span className="text-[#C4915F]">We've got you covered.</span>
             </h3>
             <p className="text-xl text-[#5D4037] leading-relaxed mb-8">
-              Every ingredient is chosen for safety. Every recipe is tested for
-              taste. Every jar is made with the care you'd give yourself.
+              Every spoon is nutrient dense and well-balanced for your baby's development
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <div className="bg-[#E8F5E9] text-[#7CB342] px-6 py-3 rounded-full font-semibold">

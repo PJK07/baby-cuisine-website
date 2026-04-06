@@ -3,7 +3,6 @@ import { Hero } from "./components/Hero";
 import { Shop } from "./components/Shop";
 import { TrustSection } from "./components/TrustSection";
 import { BrandStory } from "./components/BrandStory";
-import { Ingredients } from "./components/Ingredients";
 import { Testimonials } from "./components/Testimonials";
 import { CallToAction } from "./components/CallToAction";
 import { Footer } from "./components/Footer";
@@ -21,7 +20,6 @@ export default function App() {
           <Shop />
           <TrustSection />
           <BrandStory />
-          <Ingredients />
           <Testimonials />
           <CallToAction />
           <Footer />

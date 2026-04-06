@@ -212,7 +212,7 @@ export function Shop() {
                 transition={{ duration: 0.6, delay: 0.1 * index }}
                 whileHover={{ y: -10, transition: { duration: 0.3 } }}
                 onClick={() => handleCategoryClick(category)}
-                className="bg-gradient-to-br from-[#FFF8E7] to-[#F5E6D3] rounded-[2rem] p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer"
+                className="bg-white border border-[#3E2723]/5 rounded-[2rem] p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer"
               >
                 <div
                   className="w-24 h-24 rounded-[1.5rem] mb-6 flex items-center justify-center shadow-inner mx-auto"
@@ -266,7 +266,7 @@ export function Shop() {
                   transition={{ duration: 0.6, delay: 0.1 * index }}
                   whileHover={{ y: -10, transition: { duration: 0.3 } }}
                   onClick={() => handleItemClick(item)}
-                  className="bg-gradient-to-br from-[#FFF8E7] to-[#F5E6D3] rounded-[2rem] p-6 shadow-lg hover:shadow-2xl transition-all cursor-pointer"
+                  className="bg-white border border-[#3E2723]/5 rounded-[2rem] p-6 shadow-lg hover:shadow-2xl transition-all cursor-pointer"
                 >
                   <div
                     className="w-full h-32 rounded-[1.5rem] mb-4 flex items-center justify-center shadow-inner"
@@ -318,7 +318,7 @@ export function Shop() {
               animate={{ opacity: 1, y: 0 }}
               className="max-w-2xl mx-auto"
             >
-              <div className="bg-gradient-to-br from-[#FFE5D9] to-[#FFEFD5] rounded-[2rem] p-8 lg:p-12 shadow-xl">
+              <div className="bg-white border border-[#3E2723]/5 rounded-[2rem] p-8 lg:p-12 shadow-xl">
                 <h3 className="text-4xl lg:text-5xl font-bold text-[#3E2723] mb-8 text-center">
                   {selectedItem}
                 </h3>
