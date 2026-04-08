@@ -1,16 +1,7 @@
 import { useRef, useState, useEffect, useMemo } from "react";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useCart } from "../context/CartContext";
-
-interface ProductData {
-  Item_code: string;
-  Category: string;
-  Item: string;
-  Size: string;
-  Texture: string;
-  Unit_Price: string;
-  Ingredients?: string;
-}
+import { PRODUCTS, type ProductData } from "../data/products";
 
 type ViewMode = "categories" | "items" | "detail";
 
@@ -43,88 +34,27 @@ export function Shop() {
   const ref = useRef(null);
   const { addItem } = useCart();
 
-  const [products, setProducts] = useState<ProductData[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Start with bundled static data so the menu renders instantly (no spinner).
+  // The useEffect below silently refreshes from /api/products after mount so
+  // any Google Sheet changes are reflected without a redeploy.
+  const [products, setProducts] = useState<ProductData[]>(PRODUCTS);
+
+  useEffect(() => {
+    fetch('/api/products')
+      .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+      .then((data: ProductData[]) => { if (Array.isArray(data) && data.length > 0) setProducts(data); })
+      .catch(() => { /* keep static fallback */ });
+  }, []);
+
   const [viewMode, setViewMode] = useState<ViewMode>("categories");
   const [selectedCategory, setSelectedCategory] = useState<string>();
   const [selectedItem, setSelectedItem] = useState<string>();
   const [selectedSize, setSelectedSize] = useState<string>();
   const [selectedTexture, setSelectedTexture] = useState<string>();
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000);
-      try {
-        setLoading(true);
-        const response = await fetch(
-          "https://docs.google.com/spreadsheets/d/e/2PACX-1vT0af4UMyibekonQs4sQkwhQbposBdAR3C91xsIIvW1BB9HSyhv4qM1gC6qxKa3XiO4UeFe2eMYz6rc/pub?output=csv",
-          { signal: controller.signal }
-        );
-        clearTimeout(timeoutId);
-        const text = await response.text();
-        console.log("✅ Raw CSV fetched. First 500 chars:", text.substring(0, 500));
-
-        const parseCSVRow = (str: string) => {
-          const result = [];
-          let cell = '';
-          let inQuotes = false;
-          for (let i = 0; i < str.length; i++) {
-            const char = str[i];
-            if (char === '"' && str[i+1] === '"') {
-              cell += '"';
-              i++;
-            } else if (char === '"') {
-              inQuotes = !inQuotes;
-            } else if (char === ',' && !inQuotes) {
-              result.push(cell);
-              cell = '';
-            } else {
-              cell += char;
-            }
-          }
-          result.push(cell);
-          return result.map(c => c.trim().replace(/^"|"$/g, ''));
-        };
-
-        const rows = text.split("\n").filter(r => r.trim()).map(parseCSVRow);
-        const headers = rows[0];
-        console.log("✅ Headers found:", headers);
-        console.log("✅ First 3 raw data rows:", rows.slice(1, 4));
-
-        const data: ProductData[] = rows.slice(1).map((row) => {
-          const obj: any = {};
-          headers.forEach((header, index) => {
-            let key = header;
-            if (header === "Menu Item") key = "Item";
-            if (header === "Item") key = "Item_code";
-            obj[key] = row[index]?.trim() || "";
-          });
-          return obj as ProductData;
-        }).filter((item) => item.Item && item.Category);
-
-        console.log("✅ Parsed products (first 3):", data.slice(0, 3));
-        console.log("✅ Total products after filtering:", data.length);
-        console.log("✅ Unique categories:", Array.from(new Set(data.map(p => p.Category))));
-
-        setProducts(data);
-      } catch (error) {
-        console.error("❌ Error fetching products:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
   const categories = useMemo(() => Array.from(
     new Set(products.map((p) => p.Category))
   ).filter(Boolean), [products]);
-
-  console.log("🔍 Rendering - viewMode:", viewMode);
-  console.log("🔍 Rendering - categories array:", categories);
-  console.log("🔍 Rendering - categories length:", categories.length);
 
   const itemsInCategory = useMemo(() => Array.from(
     new Set(
@@ -190,22 +120,6 @@ export function Shop() {
     setSelectedTexture(undefined);
     handleBackToItems();
   };
-
-  if (loading) {
-    return (
-      <section
-        id="shop"
-        ref={ref}
-        className="py-24 px-6 bg-white overflow-hidden"
-      >
-        <div className="container mx-auto max-w-7xl">
-          <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-12 h-12 text-brand-primary animate-spin" />
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section
