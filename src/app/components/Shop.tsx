@@ -53,11 +53,15 @@ export function Shop() {
 
   useEffect(() => {
     const fetchProducts = async () => {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
       try {
         setLoading(true);
         const response = await fetch(
-          "https://docs.google.com/spreadsheets/d/e/2PACX-1vT0af4UMyibekonQs4sQkwhQbposBdAR3C91xsIIvW1BB9HSyhv4qM1gC6qxKa3XiO4UeFe2eMYz6rc/pub?output=csv"
+          "https://docs.google.com/spreadsheets/d/e/2PACX-1vT0af4UMyibekonQs4sQkwhQbposBdAR3C91xsIIvW1BB9HSyhv4qM1gC6qxKa3XiO4UeFe2eMYz6rc/pub?output=csv",
+          { signal: controller.signal }
         );
+        clearTimeout(timeoutId);
         const text = await response.text();
         console.log("✅ Raw CSV fetched. First 500 chars:", text.substring(0, 500));
 

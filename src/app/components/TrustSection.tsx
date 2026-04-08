@@ -28,7 +28,7 @@ export function TrustSection() {
     <section id="why-us" className="py-24 px-6 bg-white overflow-hidden">
       <div className="container mx-auto max-w-7xl">
         <div className="text-center mb-16">
-          <h2 className="text-5xl lg:text-6xl font-bold text-brand-dark mb-6">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-brand-dark mb-6 text-balance">
             Why <span className="text-brand-primary">Baby Cuisine</span>?
           </h2>
 
