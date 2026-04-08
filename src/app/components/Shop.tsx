@@ -1,5 +1,3 @@
-import { motion } from "motion/react";
-import { useInView } from "motion/react";
 import { useRef, useState, useEffect, useMemo } from "react";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { useCart } from "../context/CartContext";
@@ -11,61 +9,92 @@ interface ProductData {
   Size: string;
   Texture: string;
   Unit_Price: string;
+  Ingredients?: string;
 }
 
 type ViewMode = "categories" | "items" | "detail";
 
+import platterImg from "../../assets/platter.png";
+import puddingImg from "../../assets/pudding.png";
+import fingerFoodImg from "../../assets/finger_food.png";
+import nutButterImg from "../../assets/nut_butter.png";
+import biscuitImg from "../../assets/biscuit.png";
+import bitterImg from "../../assets/bitter.png";
+
 const categoryIcons: Record<string, string> = {
-  Platter: "🍽️",
-  Pudding: "🍮",
-  "Finger Food": "🥕",
-  "Nut Butter": "🥜",
-  Biscuit: "🍪",
-  Bitter: "🥬",
+  Platter: platterImg,
+  Pudding: puddingImg,
+  "Finger Food": fingerFoodImg,
+  "Nut Butter": nutButterImg,
+  Biscuit: biscuitImg,
+  Bitter: bitterImg,
 };
 
 const categoryColors: Record<string, string> = {
-  Platter: "#FFB88C",
-  Pudding: "#E8D5E8",
-  "Finger Food": "#F5E6C8",
-  "Nut Butter": "#C4915F",
-  Biscuit: "#F5C542",
-  Bitter: "#A8D5BA",
+  Platter: "var(--color-brand-primary)",
+  Pudding: "var(--color-brand-bg)",
+  "Finger Food": "var(--color-brand-primary-hover)",
+  "Nut Butter": "var(--color-brand-accent)",
+  Biscuit: "var(--color-brand-primary)",
+  Bitter: "var(--color-brand-dark)",
 };
 
 export function Shop() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
   const { addItem } = useCart();
 
   const [products, setProducts] = useState<ProductData[]>([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState<ViewMode>("categories");
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [selectedItem, setSelectedItem] = useState<string>("");
-  const [selectedSize, setSelectedSize] = useState<string>("");
-  const [selectedTexture, setSelectedTexture] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>();
+  const [selectedItem, setSelectedItem] = useState<string>();
+  const [selectedSize, setSelectedSize] = useState<string>();
+  const [selectedTexture, setSelectedTexture] = useState<string>();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
         const response = await fetch(
-          "https://docs.google.com/spreadsheets/d/e/2PACX-1vSb_LY48gkyu2Kt8qR64frTRFwSfyy--ih2cjsr4ZmoiPC2ekHJx-jMNyGCzVhZRBuA5pFocaat0h_9/pub?output=csv"
+          "https://docs.google.com/spreadsheets/d/e/2PACX-1vT0af4UMyibekonQs4sQkwhQbposBdAR3C91xsIIvW1BB9HSyhv4qM1gC6qxKa3XiO4UeFe2eMYz6rc/pub?output=csv"
         );
         const text = await response.text();
         console.log("✅ Raw CSV fetched. First 500 chars:", text.substring(0, 500));
 
-        // Parse CSV (comma-separated)
-        const rows = text.split("\n").map((row) => row.split(",").map(cell => cell.trim()));
-        const headers = rows[0].map(h => h.trim());
+        const parseCSVRow = (str: string) => {
+          const result = [];
+          let cell = '';
+          let inQuotes = false;
+          for (let i = 0; i < str.length; i++) {
+            const char = str[i];
+            if (char === '"' && str[i+1] === '"') {
+              cell += '"';
+              i++;
+            } else if (char === '"') {
+              inQuotes = !inQuotes;
+            } else if (char === ',' && !inQuotes) {
+              result.push(cell);
+              cell = '';
+            } else {
+              cell += char;
+            }
+          }
+          result.push(cell);
+          return result.map(c => c.trim().replace(/^"|"$/g, ''));
+        };
+
+        const rows = text.split("\n").filter(r => r.trim()).map(parseCSVRow);
+        const headers = rows[0];
         console.log("✅ Headers found:", headers);
         console.log("✅ First 3 raw data rows:", rows.slice(1, 4));
 
         const data: ProductData[] = rows.slice(1).map((row) => {
           const obj: any = {};
           headers.forEach((header, index) => {
-            obj[header] = row[index]?.trim() || "";
+            let key = header;
+            if (header === "Menu Item") key = "Item";
+            if (header === "Item") key = "Item_code";
+            obj[key] = row[index]?.trim() || "";
           });
           return obj as ProductData;
         }).filter((item) => item.Item && item.Category);
@@ -113,7 +142,6 @@ export function Shop() {
     new Set(itemVariants.map((v) => v.Texture))
   ).filter(Boolean), [itemVariants]);
 
-  // Price only depends on Size, not Texture
   const selectedVariant = useMemo(() => itemVariants.find(
     (v) => v.Size === selectedSize
   ), [itemVariants, selectedSize]);
@@ -125,21 +153,21 @@ export function Shop() {
 
   const handleItemClick = (item: string) => {
     setSelectedItem(item);
-    setSelectedSize("");
-    setSelectedTexture("");
+    setSelectedSize(undefined);
+    setSelectedTexture(undefined);
     setViewMode("detail");
   };
 
   const handleBackToCategories = () => {
     setViewMode("categories");
-    setSelectedCategory("");
+    setSelectedCategory(undefined);
   };
 
   const handleBackToItems = () => {
     setViewMode("items");
-    setSelectedItem("");
-    setSelectedSize("");
-    setSelectedTexture("");
+    setSelectedItem(undefined);
+    setSelectedSize(undefined);
+    setSelectedTexture(undefined);
   };
 
   const handleAddToCart = () => {
@@ -154,9 +182,8 @@ export function Shop() {
       price: parseFloat(selectedVariant.Unit_Price.replace(/[^0-9.]/g, '')),
     });
 
-    // Reset and go back to items
-    setSelectedSize("");
-    setSelectedTexture("");
+    setSelectedSize(undefined);
+    setSelectedTexture(undefined);
     handleBackToItems();
   };
 
@@ -169,7 +196,7 @@ export function Shop() {
       >
         <div className="container mx-auto max-w-7xl">
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-12 h-12 text-[#C4915F] animate-spin" />
+            <Loader2 className="w-12 h-12 text-brand-primary animate-spin" />
           </div>
         </div>
       </section>
@@ -183,118 +210,81 @@ export function Shop() {
       className="py-24 px-6 bg-white overflow-hidden"
     >
       <div className="container mx-auto max-w-7xl">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <motion.h2 className="text-5xl lg:text-6xl font-bold text-[#3E2723] mb-6">
-            Handmade for <span className="text-[#C4915F]">Your Baby</span>
-          </motion.h2>
-          <p className="text-xl text-[#5D4037] max-w-2xl mx-auto leading-relaxed">
+        <div className="text-center mb-16">
+          <h2 className="text-5xl lg:text-6xl font-bold text-brand-dark mb-6">
+            Handmade for <span className="text-brand-primary">Your Baby</span>
+          </h2>
+          <p className="text-xl text-brand-dark/80 max-w-2xl mx-auto leading-relaxed">
             Each jar is a promise—soft, fresh, and made with the same care you'd
             give at home.
           </p>
-        </motion.div>
+        </div>
 
         {/* Categories View */}
         {viewMode === "categories" && (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {console.log("🎨 Rendering categories grid. Count:", categories.length)}
-            {categories.map((category, index) => {
-              console.log("🎨 Rendering category card:", category);
-              return (
-              <motion.div
+            {categories.map((category) => (
+              <div
                 key={category}
-                initial={{ opacity: 0, y: 40 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.1 * index }}
-                whileHover={{ y: -10, transition: { duration: 0.3 } }}
                 onClick={() => handleCategoryClick(category)}
-                className="bg-white border border-[#3E2723]/5 rounded-[2rem] p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer"
+                className="bg-white border border-brand-dark/5 rounded-[2rem] p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer"
               >
                 <div
-                  className="w-24 h-24 rounded-[1.5rem] mb-6 flex items-center justify-center shadow-inner mx-auto"
+                  className="w-24 h-24 rounded-[1.5rem] mb-6 flex items-center justify-center shadow-inner mx-auto overflow-hidden"
                   style={{
                     backgroundColor:
-                      categoryColors[category] || "#FFB88C",
+                      categoryColors[category] || "var(--color-brand-primary)",
                   }}
                 >
-                  <motion.div
-                    animate={{
-                      scale: [1, 1.1, 1],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                    className="text-6xl"
-                  >
-                    {categoryIcons[category] || "🍽️"}
-                  </motion.div>
+                  <img src={categoryIcons[category] || platterImg} alt={category} className="w-full h-full object-cover" />
                 </div>
-                <h3 className="text-2xl font-bold text-[#3E2723] text-center">
+                <h3 className="text-2xl font-bold text-brand-dark text-center">
                   {category}
                 </h3>
-              </motion.div>
-            )})}
+              </div>
+            ))}
           </div>
         )}
 
         {/* Items View */}
         {viewMode === "items" && (
           <div>
-            <motion.button
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              whileHover={{ x: -5 }}
+            <button
               onClick={handleBackToCategories}
-              className="flex items-center gap-2 text-[#C4915F] font-semibold mb-8 hover:text-[#A67C52] transition-colors"
+              className="flex items-center gap-2 text-brand-primary font-semibold mb-8 hover:text-brand-primary-hover transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
               Back to Categories
-            </motion.button>
+            </button>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {itemsInCategory.map((item, index) => (
-                <motion.div
+              {itemsInCategory.map((item) => {
+                const productVariant = products.find(p => p.Item === item && p.Category === selectedCategory);
+                return (
+                <div
                   key={item}
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.1 * index }}
-                  whileHover={{ y: -10, transition: { duration: 0.3 } }}
                   onClick={() => handleItemClick(item)}
-                  className="bg-white border border-[#3E2723]/5 rounded-[2rem] p-6 shadow-lg hover:shadow-2xl transition-all cursor-pointer"
+                  className="bg-white border border-brand-dark/5 rounded-[2rem] p-6 shadow-lg hover:shadow-2xl transition-all cursor-pointer flex flex-col"
                 >
                   <div
-                    className="w-full h-32 rounded-[1.5rem] mb-4 flex items-center justify-center shadow-inner"
+                    className="w-full h-32 rounded-[1.5rem] mb-4 flex items-center justify-center shadow-inner overflow-hidden flex-shrink-0"
                     style={{
                       backgroundColor:
-                        categoryColors[selectedCategory] || "#FFB88C",
+                        categoryColors[selectedCategory!] || "var(--color-brand-primary)",
                     }}
                   >
-                    <motion.div
-                      animate={{
-                        scale: [1, 1.1, 1],
-                      }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                      className="text-6xl"
-                    >
-                      {categoryIcons[selectedCategory] || "🍽️"}
-                    </motion.div>
+                    <img src={categoryIcons[selectedCategory!] || platterImg} alt={selectedCategory!} className="w-full h-full object-cover" />
                   </div>
-                  <h3 className="text-2xl font-bold text-[#3E2723] mb-2">
+                  <h3 className="text-2xl font-bold text-brand-dark mb-2">
                     {item}
                   </h3>
-                  <p className="text-[#5D4037]">{selectedCategory}</p>
-                </motion.div>
-              ))}
+                  {productVariant?.Ingredients && (
+                    <p className="text-xs text-brand-dark/60 mt-1 uppercase tracking-widest leading-relaxed">
+                      {productVariant.Ingredients}
+                    </p>
+                  )}
+                </div>
+              )})}
             </div>
           </div>
         )}
@@ -302,47 +292,43 @@ export function Shop() {
         {/* Detail View */}
         {viewMode === "detail" && (
           <div>
-            <motion.button
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              whileHover={{ x: -5 }}
+            <button
               onClick={handleBackToItems}
-              className="flex items-center gap-2 text-[#C4915F] font-semibold mb-8 hover:text-[#A67C52] transition-colors"
+              className="flex items-center gap-2 text-brand-primary font-semibold mb-8 hover:text-brand-primary-hover transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
               Back to {selectedCategory}
-            </motion.button>
+            </button>
 
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="max-w-2xl mx-auto"
-            >
-              <div className="bg-white border border-[#3E2723]/5 rounded-[2rem] p-8 lg:p-12 shadow-xl">
-                <h3 className="text-4xl lg:text-5xl font-bold text-[#3E2723] mb-8 text-center">
+            <div className="max-w-2xl mx-auto">
+              <div className="bg-white border border-brand-dark/5 rounded-[2rem] p-8 lg:p-12 shadow-xl">
+                <h3 className="text-4xl lg:text-5xl font-bold text-brand-dark mb-4 text-center">
                   {selectedItem}
                 </h3>
+                {selectedVariant?.Ingredients && (
+                  <p className="text-sm font-medium text-brand-dark/60 uppercase tracking-widest text-center mb-8 flex items-center justify-center gap-2">
+                    {selectedVariant.Ingredients}
+                  </p>
+                )}
 
                 {/* Size Selector */}
                 <div className="mb-8">
-                  <label className="block text-lg font-semibold text-[#3E2723] mb-4">
+                  <label className="block text-lg font-semibold text-brand-dark mb-4">
                     Select Size:
                   </label>
                   <div className="flex gap-4">
                     {availableSizes.map((size) => (
-                      <motion.button
+                      <button
                         key={size}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
                         onClick={() => setSelectedSize(size)}
                         className={`flex-1 py-4 rounded-full font-bold text-lg transition-all ${
                           selectedSize === size
-                            ? "bg-[#C4915F] text-white shadow-lg"
-                            : "bg-white text-[#3E2723] hover:bg-gray-50 shadow"
+                            ? "bg-brand-primary text-white shadow-lg"
+                            : "bg-white text-brand-dark hover:bg-gray-50 shadow"
                         }`}
                       >
                         {size}
-                      </motion.button>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -350,24 +336,22 @@ export function Shop() {
                 {/* Texture Selector */}
                 {availableTextures.length > 0 && selectedSize && (
                   <div className="mb-8">
-                    <label className="block text-lg font-semibold text-[#3E2723] mb-4">
+                    <label className="block text-lg font-semibold text-brand-dark mb-4">
                       Select Texture:
                     </label>
                     <div className="flex flex-col gap-3">
                       {availableTextures.map((texture) => (
-                        <motion.button
+                        <button
                           key={texture}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
                           onClick={() => setSelectedTexture(texture)}
                           className={`py-3 rounded-full font-semibold transition-all ${
                             selectedTexture === texture
-                              ? "bg-[#C4915F] text-white shadow-lg"
-                              : "bg-white text-[#3E2723] hover:bg-gray-50 shadow"
+                              ? "bg-brand-primary text-white shadow-lg"
+                              : "bg-white text-brand-dark hover:bg-gray-50 shadow"
                           }`}
                         >
                           {texture}
-                        </motion.button>
+                        </button>
                       ))}
                     </div>
                   </div>
@@ -375,33 +359,25 @@ export function Shop() {
 
                 {/* Price Display */}
                 {selectedVariant && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="mb-8 text-center"
-                  >
-                    <p className="text-lg text-[#5D4037] mb-2">Price:</p>
-                    <p className="text-5xl font-bold text-[#C4915F]">
+                  <div className="mb-8 text-center">
+                    <p className="text-lg text-brand-dark/80 mb-2">Price:</p>
+                    <p className="text-5xl font-bold text-brand-primary">
                       ${parseFloat(selectedVariant.Unit_Price.replace(/[^0-9.]/g, '')).toFixed(2)}
                     </p>
-                  </motion.div>
+                  </div>
                 )}
 
                 {/* Add to Cart Button */}
                 {selectedVariant && (availableTextures.length === 0 || selectedTexture) && (
-                  <motion.button
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                  <button
                     onClick={handleAddToCart}
-                    className="w-full bg-[#7CB342] text-white py-4 rounded-full text-lg font-bold shadow-xl hover:bg-[#689F38] transition-colors"
+                    className="w-full bg-brand-primary text-white py-4 rounded-full text-lg font-bold shadow-xl hover:bg-brand-primary-hover transition-colors"
                   >
                     Add to Cart
-                  </motion.button>
+                  </button>
                 )}
               </div>
-            </motion.div>
+            </div>
           </div>
         )}
       </div>

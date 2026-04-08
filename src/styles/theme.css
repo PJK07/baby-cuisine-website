@@ -40,22 +40,21 @@
   --sidebar-border: rgba(62, 39, 35, 0.08);
   --sidebar-ring: #C4915F;
   
-  /* Baby Cuisine Brand Colors - Warm & Soft */
-  --color-golden: #F5C542;
-  --color-golden-bright: #FBBF24;
-  --color-cream: #ffffff;
-  --color-cream-dark: #ffffff;
-  --color-kraft: #C4915F;
-  --color-kraft-dark: #A67C52;
-  --color-peach: #FFE5D9;
-  --color-peach-soft: #FFB88C;
-  --color-green: #A8D5BA;
-  --color-green-fresh: #7CB342;
-  --color-orange: #FF9800;
-  --color-orange-bright: #F97316;
-  --color-brown-dark: #3E2723;
-  --color-brown-medium: #5D4037;
-  --color-brown-light: #8D6E63;
+  /* Baby Cuisine Brand Colors - Adjusted for WCAG Contrast */
+  --color-brand-primary: #a85c0a;
+  --color-brand-primary-hover: #85470a;
+  --color-brand-primary-dark: #7a4105;
+  --color-brand-dark: #293313;
+  --color-brand-accent: #71654b;
+  --color-brand-accent-dark: #4d4431;
+  --color-brand-bg: #fbebba;
+  
+  --primary: var(--color-brand-primary);
+  --primary-foreground: #ffffff;
+  --secondary: var(--color-brand-accent);
+  --secondary-foreground: #ffffff;
+  --muted: var(--color-brand-bg);
+  --muted-foreground: var(--color-brand-dark);
 }
 
 .dark {
@@ -96,6 +95,15 @@
 }
 
 @theme inline {
+  /* Special Brand Tokens */
+  --color-brand-primary: var(--color-brand-primary);
+  --color-brand-primary-hover: var(--color-brand-primary-hover);
+  --color-brand-primary-dark: var(--color-brand-primary-dark);
+  --color-brand-dark: var(--color-brand-dark);
+  --color-brand-accent: var(--color-brand-accent);
+  --color-brand-accent-dark: var(--color-brand-accent-dark);
+  --color-brand-bg: var(--color-brand-bg);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

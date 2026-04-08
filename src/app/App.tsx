@@ -3,7 +3,6 @@ import { Hero } from "./components/Hero";
 import { Shop } from "./components/Shop";
 import { TrustSection } from "./components/TrustSection";
 import { BrandStory } from "./components/BrandStory";
-import { Testimonials } from "./components/Testimonials";
 import { CallToAction } from "./components/CallToAction";
 import { Footer } from "./components/Footer";
 import { FloatingIngredients } from "./components/FloatingIngredients";
@@ -29,7 +28,6 @@ export default function App() {
             <Shop />
             <TrustSection />
             <BrandStory />
-            <Testimonials />
             <CallToAction />
           </main>
           <Footer />
