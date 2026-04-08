@@ -58,11 +58,7 @@ export function BrandStory() {
                 Because your baby deserves food that's made with love, not a production line.
               </p>
             </div>
-            <button
-              className="mt-8 bg-brand-primary text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:bg-brand-primary-hover transition-colors"
-            >
-              Meet Our Team
-            </button>
+
           </div>
 
           <div className="relative">
