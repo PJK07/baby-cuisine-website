@@ -1,5 +1,4 @@
-import image_166f648d12d055725e5c6999d5a071742d2a9a91 from '../../assets/166f648d12d055725e5c6999d5a071742d2a9a91.png';
-import image_7e1acf7a3074b9e2b1a7bd1051d62ca99be00918 from '../../assets/7e1acf7a3074b9e2b1a7bd1051d62ca99be00918.png';
+import bakingProcess from '../../assets/baking-process.webp';
 
 const products = [
   {
@@ -19,7 +18,7 @@ const products = [
   {
     name: "Berry Bliss",
     description: "Sweet berries packed with natural goodness",
-    details: "Handmade daily with love and care.",
+    details: "Handmade by a hospital-graded chef daily with love and care.",
     age: "10+ months",
     color: "var(--color-brand-bg)",
   },
@@ -37,19 +36,16 @@ export function ProductShowcase() {
     <section className="py-24 px-6 bg-white overflow-hidden">
       <div className="container mx-auto max-w-7xl">
         <div className="text-center mb-16">
-          <h2 className="text-5xl lg:text-6xl font-bold text-brand-dark mb-6">
-            Handmade for <span className="text-brand-primary">Your Baby</span>
+          <h2 className="text-4xl lg:text-5xl font-bold text-brand-dark mb-6 leading-tight max-w-4xl mx-auto">
+            Every jar is a promise: soft texture, rich in nutrients, and immunity-boosting
           </h2>
-          <p className="text-xl text-brand-dark/80 max-w-2xl mx-auto leading-relaxed">
-            Each jar is a promise—soft, fresh, and made with the same care you'd give at home.
-          </p>
         </div>
 
         {/* Product Grid Image */}
         <div className="mb-20 relative">
           <div>
             <img
-              src={image_7e1acf7a3074b9e2b1a7bd1051d62ca99be00918}
+              src={bakingProcess}
               alt="Baby Cuisine Product Range"
               className="w-full rounded-[2rem] shadow-2xl"
               width={1000}
@@ -101,7 +97,7 @@ export function ProductShowcase() {
           <div className="grid lg:grid-cols-2 gap-12 items-center bg-gradient-to-br from-brand-bg to-white rounded-[2rem] p-12 lg:p-16 shadow-xl">
             <div>
               <img
-                src={image_166f648d12d055725e5c6999d5a071742d2a9a91}
+                src={bakingProcess}
                 alt="Product detail"
                 className="w-full rounded-[1.5rem] shadow-xl"
                 width={800}
@@ -110,9 +106,9 @@ export function ProductShowcase() {
             </div>
             <div>
               <h3 className="text-4xl lg:text-5xl font-bold text-brand-dark mb-6 leading-tight">
-                Soft, Fresh, and
+                Soft, Fresh, and nutrient-dense meals,
                 <br />
-                <span className="text-brand-primary">Made for Tiny Tummies</span>
+                <span className="text-brand-primary">specially made to their little tummies</span>
               </h3>
               <p className="text-xl text-brand-dark/80 mb-8 leading-relaxed">
                 Every product is carefully prepared using simple, recognizable

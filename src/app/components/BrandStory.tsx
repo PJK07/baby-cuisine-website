@@ -1,4 +1,4 @@
-import brandStoryImage from '../../assets/2a0c3c2dac21df3f12348fcc90ecf3fe5fd9e8d8_3_optimized_1000.webp';
+import brandStoryImage from '../../assets/baking-process.webp';
 import { Heart, Users, Leaf, Award } from "lucide-react";
 
 const values = [
@@ -6,7 +6,7 @@ const values = [
     icon: Heart,
     title: "Made with Love",
     description:
-      "Every batch is prepared with the same care and attention we'd give our own children.",
+      "Every batch is prepared with the same care and love that we give to our own children.",
     color: "var(--color-brand-primary)",
   },
   {
@@ -20,14 +20,14 @@ const values = [
     icon: Users,
     title: "Parent Trusted",
     description:
-      "Thousands of parents trust us to nourish their little ones every single day.",
+      "Hundreds of parents trust Baby Cuisine to nourish their little ones.",
     color: "var(--color-brand-primary-hover)",
   },
   {
     icon: Award,
     title: "Expert Approved",
     description:
-      "Developed with pediatric nutritionists to ensure optimal growth and development.",
+      "Developed with a pediatric nutritionist and a pediatrician to ensure optimal growth and development.",
     color: "var(--color-brand-dark)",
   },
 ];
@@ -40,22 +40,14 @@ export function BrandStory() {
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
           <div>
             <h2 className="text-5xl lg:text-6xl font-bold text-brand-dark mb-6">
-              Why We Started
+              Our Story
             </h2>
             <div className="space-y-6 text-lg text-brand-dark/80 leading-relaxed">
               <p>
-                As parents, we couldn't find baby food that felt <em>real</em>.
-                Everything was either mass-produced or too complicated.
-              </p>
-              <p>
-                So we started making our own—simple recipes, fresh ingredients,
-                and the same love we'd put into any meal for our children.
-              </p>
-              <p>
-                Babycuisine was created to provide picky parents with the best baby food, having clean ingredients, toxin free pots, filled in glass jars...
+                Babycuisine was created to provide busy parents with the best baby food, having clean ingredients,made in toxin free pots, filled in glass jars... for their proper development.
               </p>
               <p className="text-xl font-semibold text-brand-primary italic">
-                Because your baby deserves food that's made with love, not a production line.
+                Because your baby deserves the best food.
               </p>
             </div>
 
@@ -80,7 +72,7 @@ export function BrandStory() {
         </div>
 
         {/* Values Grid */}
-        <div className="text-center mb-12">
+        <div id="brand-values" className="text-center mb-12">
           <h3 className="text-4xl lg:text-5xl font-bold text-brand-dark mb-4">
             What We Stand For
           </h3>

@@ -1,4 +1,4 @@
-import image_39978aad433211ec57a74d02e383401571a5113e from '../../assets/39978aad433211ec57a74d02e383401571a5113e_optimized_1000.png';
+import bakingProcess from '../../assets/baking-process.webp';
 import { Carrot, Apple, Salad, Droplets } from "lucide-react";
 
 const ingredientCategories = [
@@ -53,7 +53,7 @@ export function Ingredients() {
         <div className="mb-20 relative">
           <div>
             <img
-              src={image_39978aad433211ec57a74d02e383401571a5113e}
+              src={bakingProcess}
               alt="Fresh organic ingredients"
               className="w-full max-w-4xl mx-auto rounded-3xl shadow-2xl"
               width={1000}

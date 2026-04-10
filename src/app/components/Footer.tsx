@@ -18,8 +18,8 @@ export function Footer() {
               height={192}
             />
             <p className="text-white/70 leading-relaxed mb-6">
-              Nourishing little ones with love, care, and the finest organic
-              ingredients since 2020.
+              Nourishing little ones with love, care, and the finest
+              ingredients since.
             </p>
             <div className="flex gap-4">
               <a
@@ -52,18 +52,14 @@ export function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-6">Shop</h3>
             <ul className="space-y-3">
-              {[
-                "All Products",
-              ].map((item) => (
-                <li key={item}>
-                  <a
-                    href="#"
-                    className="text-white/70 hover:text-brand-primary transition-colors inline-block"
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <a
+                  href="#shop"
+                  className="text-white/70 hover:text-brand-primary transition-colors inline-block"
+                >
+                  All Products
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -71,22 +67,21 @@ export function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-6">About</h3>
             <ul className="space-y-3">
-              {[
-                "Our Story",
-                "Our Values",
-                "Ingredients",
-                "Sustainability",
-                "Contact Us",
-              ].map((item) => (
-                <li key={item}>
-                  <a
-                    href="#"
-                    className="text-white/70 hover:text-brand-primary transition-colors inline-block"
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <a href="#our-story" className="text-white/70 hover:text-brand-primary transition-colors inline-block">Our Story</a>
+              </li>
+              <li>
+                <a href="#brand-values" className="text-white/70 hover:text-brand-primary transition-colors inline-block">Our Values</a>
+              </li>
+              <li>
+                <a href="#shop" className="text-white/70 hover:text-brand-primary transition-colors inline-block">Ingredients</a>
+              </li>
+              <li>
+                <a href="#why-us" className="text-white/70 hover:text-brand-primary transition-colors inline-block">Sustainability</a>
+              </li>
+              <li>
+                <a href="#contact" className="text-white/70 hover:text-brand-primary transition-colors inline-block">Contact Us</a>
+              </li>
             </ul>
           </div>
 
@@ -97,7 +92,7 @@ export function Footer() {
               <li className="flex items-start gap-3 text-white/70">
                 <MapPin className="w-5 h-5 mt-1 flex-shrink-0" />
                 <a
-                  href="https://maps.app.goo.gl/YOUR_LINK"
+                  href="https://google.com/maps/place/The+Baby+Cuisine/data=!4m2!3m1!1s0x0:0x1c082d8fb7eabbf0?sa=X&ved=1t:2428&hl=en&ictx=111"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-brand-primary transition-colors"
@@ -108,7 +103,7 @@ export function Footer() {
               <li className="flex items-center gap-3 text-white/70">
                 <Phone className="w-5 h-5 flex-shrink-0" />
                 <a
-                  href="tel:+96170465465"
+                  href="https://wa.me/96170465465"
                   className="hover:text-brand-primary transition-colors"
                 >
                   +961 70 465 465
@@ -117,7 +112,9 @@ export function Footer() {
               <li className="flex items-center gap-3 text-white/70">
                 <Mail className="w-5 h-5 flex-shrink-0" />
                 <a
-                  href="mailto:thebabycuisine.1@gmail.com"
+                  href="https://mail.google.com/mail/?view=cm&to=thebabycuisine.1@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="hover:text-brand-primary transition-colors"
                 >
                   thebabycuisine.1@gmail.com

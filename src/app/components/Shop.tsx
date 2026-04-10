@@ -129,12 +129,8 @@ export function Shop() {
     >
       <div className="container mx-auto max-w-7xl">
         <div className="text-center mb-16">
-          <h2 className="text-5xl lg:text-6xl font-bold text-brand-dark mb-6">
-            Handmade for <span className="text-brand-primary">Your Baby</span>
-          </h2>
           <p className="text-xl text-brand-dark/80 max-w-2xl mx-auto leading-relaxed">
-            Each jar is a promise—soft, fresh, and made with the same care you'd
-            give at home.
+            Every jar is a promise: soft texture, rich in nutrients, and immunity-boosting
           </p>
         </div>
 

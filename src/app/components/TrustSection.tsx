@@ -9,7 +9,7 @@ const trustPoints = [
   {
     icon: Shield,
     title: "No sugar",
-    description: "Sweetened with Fruit. Naturally sweet, nothing added.",
+    description: "Sweetened with fruits. Naturally sweet, nothing added.",
   },
   {
     icon: HeartPulse,
@@ -73,9 +73,6 @@ export function TrustSection() {
               </div>
               <div className="bg-brand-primary/10 text-brand-primary-dark px-6 py-3 rounded-full font-semibold">
                 ✓ Pediatrician Approved
-              </div>
-              <div className="bg-brand-bg text-brand-primary-hover px-6 py-3 rounded-full font-semibold">
-                ✓ Allergen Tested
               </div>
             </div>
           </div>

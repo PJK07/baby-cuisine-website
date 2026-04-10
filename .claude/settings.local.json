@@ -19,7 +19,9 @@
       "WebFetch(domain:docs.google.com)",
       "WebFetch(domain:doc-10-c4-sheets.googleusercontent.com)",
       "Bash(cat \"c:/Users/USER/Documents/pjk4/Baby Cuisine Website Design \\(1\\)/src/imports/\"*)",
-      "Bash(cat \"c:/Users/USER/Documents/pjk4/Baby Cuisine Website Design \\(1\\)/src/imports/pasted_text/\"*)"
+      "Bash(cat \"c:/Users/USER/Documents/pjk4/Baby Cuisine Website Design \\(1\\)/src/imports/pasted_text/\"*)",
+      "Bash(ls -lt /c/Users/USER/Downloads/*.jpg /c/Users/USER/Downloads/*.jpeg /c/Users/USER/Downloads/*.png)",
+      "Bash(ls /c/Users/USER/Downloads/Untitled*)"
     ],
     "deny": [],
     "ask": []

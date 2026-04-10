@@ -9,12 +9,7 @@ export function CallToAction() {
 
       <div className="container mx-auto max-w-5xl relative z-10">
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 bg-white/20 px-6 py-3 rounded-full mb-6 backdrop-blur-sm">
-            <Sparkles className="w-5 h-5 text-white" />
-            <span className="text-white font-medium">
-              Special Introductory Offer
-            </span>
-          </div>
+
 
           <h2 className="text-5xl lg:text-7xl font-bold text-white mb-6">
             Give Your Baby
@@ -37,20 +32,9 @@ export function CallToAction() {
               Shop Now
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
             </button>
-
-            <button className="bg-white/20 backdrop-blur-sm text-white px-10 py-5 rounded-full text-lg font-bold border-2 border-white hover:bg-white/30 transition-all flex items-center gap-2">
-              <Package className="w-5 h-5" />
-              Build a Bundle
-            </button>
           </div>
 
-          {/* Trust badges */}
-          <div className="flex flex-wrap justify-center gap-8 text-white/80 text-sm">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">✓</span>
-              <span>Subscribe & Save 15%</span>
-            </div>
-          </div>
+
         </div>
       </div>
     </section>

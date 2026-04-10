@@ -1,6 +1,5 @@
-import heroImage1280 from '../../assets/hero-1280w.webp';
-import heroImage640 from '../../assets/hero-640w.webp';
-import { Heart, Leaf, Sparkles } from "lucide-react";
+import heroBanner from '../../assets/hero-banner.jpg';
+import { Heart, Leaf } from "lucide-react";
 import logoImage560 from "../../assets/logo-560w.webp";
 import logoImage280 from "../../assets/logo-280w.webp";
 
@@ -37,8 +36,8 @@ export function Hero() {
             </h1>
 
             <p className="text-xl lg:text-2xl text-brand-dark/80 mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-              Pure, soft, and made for tiny tummies. Because your baby deserves
-              better than processed food.
+              Pure, soft, and nutrient-dense meals, to your little ones.
+              because your baby deserves the best!
             </p>
 
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start mb-10">
@@ -47,14 +46,6 @@ export function Hero() {
                   document.getElementById("shop")?.scrollIntoView({ behavior: "smooth" });
                 }}
                 className="bg-brand-primary text-white px-10 py-5 rounded-full text-lg font-semibold hover:bg-brand-primary-hover transition-all shadow-xl hover:shadow-2xl"
-              >
-                Order Fresh Today
-              </button>
-              <button
-                onClick={() => {
-                  document.getElementById("shop")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="bg-white text-brand-dark px-10 py-5 rounded-full text-lg font-semibold hover:bg-brand-bg transition-all shadow-lg border border-brand-primary/20"
               >
                 Explore Menu
               </button>
@@ -66,8 +57,8 @@ export function Hero() {
                   <Heart className="w-6 h-6 fill-brand-primary-dark text-brand-primary-dark" />
                 </div>
                 <div className="text-left">
-                  <div className="font-semibold text-brand-dark">Handmade</div>
-                  <div className="text-sm text-brand-dark/70">with care</div>
+                  <div className="font-bold text-brand-dark">Handmade</div>
+                  <div className="text-sm text-brand-dark/70">by a hospital-graded chef</div>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -75,19 +66,11 @@ export function Hero() {
                   <Leaf className="w-6 h-6 text-brand-accent-dark" />
                 </div>
                 <div className="text-left">
-                  <div className="font-semibold text-brand-dark">Natural Ingredients</div>
-                  <div className="text-sm text-brand-dark/70">very high quality</div>
+                  <div className="font-semibold text-brand-dark">Premium Ingredients</div>
+                  <div className="text-sm text-brand-dark/70">Baby-friendly</div>
                 </div>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-brand-bg rounded-full flex items-center justify-center">
-                  <Sparkles className="w-6 h-6 text-brand-primary" />
-                </div>
-                <div className="text-left">
-                  <div className="font-semibold text-brand-dark">Freshly Made</div>
-                  <div className="text-sm text-brand-dark/70">daily</div>
-                </div>
-              </div>
+
             </div>
           </div>
 
@@ -95,16 +78,14 @@ export function Hero() {
           <div className="relative">
             <div className="relative z-10">
               <img
-                src={heroImage640}
-                srcSet={`${heroImage640} 640w, ${heroImage1280} 1280w`}
-                sizes="(max-width: 768px) 100vw, 640px"
+                src={heroBanner}
                 alt="Assortment of Baby Cuisine fresh handmade baby food products"
                 className="rounded-[2rem] shadow-2xl w-full max-w-lg mx-auto"
                 // @ts-expect-error lowercase fetchpriority is needed for Lighthouse, not supported in React 18 types
                 fetchpriority="high"
                 decoding="async"
-                width={512}
-                height={512}
+                width={800}
+                height={1000}
               />
             </div>
 
