@@ -1,4 +1,5 @@
-import heroBanner from '../../assets/hero-banner.jpg';
+import heroBanner from '../../assets/hero-banner.webp';
+const FALLBACK_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjwvc3ZnPg==';
 import { Heart, Leaf } from "lucide-react";
 import logoImage560 from "../../assets/logo-560w.webp";
 import logoImage280 from "../../assets/logo-280w.webp";
@@ -21,6 +22,10 @@ export function Hero() {
                 sizes="(max-width: 768px) 280px, 560px"
                 alt="The Baby Cuisine logo"
                 className="w-56 h-auto mx-auto lg:mx-0 drop-shadow-sm"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = FALLBACK_IMAGE;
+                }}
                 decoding="async"
                 width={560}
                 height={560}
@@ -81,6 +86,10 @@ export function Hero() {
                 src={heroBanner}
                 alt="Assortment of Baby Cuisine fresh handmade baby food products"
                 className="rounded-[2rem] shadow-2xl w-full max-w-lg mx-auto"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = FALLBACK_IMAGE;
+                }}
                 // @ts-expect-error lowercase fetchpriority is needed for Lighthouse, not supported in React 18 types
                 fetchpriority="high"
                 decoding="async"
@@ -92,8 +101,7 @@ export function Hero() {
             {/* Trust badges */}
             <div className="absolute -top-6 -right-6 bg-white text-brand-dark px-6 py-4 rounded-3xl shadow-2xl z-20">
               <div className="text-center">
-                <div className="text-3xl font-bold text-brand-accent">100%</div>
-                <div className="text-sm font-medium">Natural</div>
+                <div className="text-xl font-bold text-brand-accent leading-tight">100% Natural</div>
               </div>
             </div>
 

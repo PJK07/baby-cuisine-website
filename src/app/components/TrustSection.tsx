@@ -1,10 +1,10 @@
-import { Shield, HeartPulse, Sprout, Baby } from "lucide-react";
+import { Shield, HeartPulse, Sprout, Baby, Fish } from "lucide-react";
 
 const trustPoints = [
   {
-    icon: Sprout,
-    title: "100% Natural",
-    description: "No preservatives, no artificial ingredients. Just real food.",
+    icon: Fish,
+    title: "Our Meat and Fish",
+    description: "Wild Pollock fish, organic chicken, and fresh meat",
   },
   {
     icon: Shield,

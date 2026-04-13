@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ShoppingCart, Menu, X } from "lucide-react";
+const FALLBACK_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjwvc3ZnPg==';
 import logoImage560 from "../../assets/logo-560w.webp";
 import logoImage280 from "../../assets/logo-280w.webp";
 import { useCart } from "../context/CartContext";
@@ -27,6 +28,10 @@ export function Navigation() {
               sizes="(max-width: 768px) 280px, 560px"
               alt="The Baby Cuisine"
               className="h-12 w-auto"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = FALLBACK_IMAGE;
+              }}
               width={560}
               height={560}
               // @ts-expect-error lowercase fetchpriority is needed for Lighthouse, not supported in React 18 types

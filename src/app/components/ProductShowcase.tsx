@@ -1,5 +1,7 @@
 import bakingProcess from '../../assets/baking-process.webp';
 
+const FALLBACK_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjwvc3ZnPg==';
+
 const products = [
   {
     name: "Carrot Delight",
@@ -48,6 +50,10 @@ export function ProductShowcase() {
               src={bakingProcess}
               alt="Baby Cuisine Product Range"
               className="w-full rounded-[2rem] shadow-2xl"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = FALLBACK_IMAGE;
+              }}
               width={1000}
               height={600}
             />
@@ -100,6 +106,10 @@ export function ProductShowcase() {
                 src={bakingProcess}
                 alt="Product detail"
                 className="w-full rounded-[1.5rem] shadow-xl"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = FALLBACK_IMAGE;
+                }}
                 width={800}
                 height={800}
               />

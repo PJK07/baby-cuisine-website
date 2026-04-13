@@ -1,4 +1,5 @@
 import brandStoryImage from '../../assets/baking-process.webp';
+const FALLBACK_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjwvc3ZnPg==';
 import { Heart, Users, Leaf, Award } from "lucide-react";
 
 const values = [
@@ -59,6 +60,10 @@ export function BrandStory() {
                 src={brandStoryImage}
                 alt="Handmade with love in our kitchen — Baby Cuisine founder preparing fresh baby food"
                 className="w-full rounded-[2rem] shadow-2xl"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = FALLBACK_IMAGE;
+                }}
                 loading="lazy"
                 decoding="async"
                 width={600}

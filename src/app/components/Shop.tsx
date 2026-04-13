@@ -1,25 +1,15 @@
 import { useRef, useState, useEffect, useMemo } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, X } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { PRODUCTS, type ProductData } from "../data/products";
 
 type ViewMode = "categories" | "items" | "detail";
 
-import platterImg from "../../assets/platter.png";
-import puddingImg from "../../assets/pudding.png";
-import fingerFoodImg from "../../assets/finger_food.png";
-import nutButterImg from "../../assets/nut_butter.png";
-import biscuitImg from "../../assets/biscuit.png";
-import bitterImg from "../../assets/bitter.png";
+const FALLBACK_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjwvc3ZnPg==';
 
-const categoryIcons: Record<string, string> = {
-  Platter: platterImg,
-  Pudding: puddingImg,
-  "Finger Food": fingerFoodImg,
-  "Nut Butter": nutButterImg,
-  Biscuit: biscuitImg,
-  Bitter: bitterImg,
-};
+const assetImages = import.meta.glob<{ default: string }>('../../assets/*.{webp,png,jpg}', { eager: true });
+
+const categoryIcons: Record<string, string> = {};
 
 const categoryColors: Record<string, string> = {
   Platter: "var(--color-brand-primary)",
@@ -51,6 +41,15 @@ export function Shop() {
   const [selectedItem, setSelectedItem] = useState<string>();
   const [selectedSize, setSelectedSize] = useState<string>();
   const [selectedTexture, setSelectedTexture] = useState<string>();
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setLightboxImage(null);
+    };
+    if (lightboxImage) window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxImage]);
 
   const categories = useMemo(() => Array.from(
     new Set(products.map((p) => p.Category))
@@ -150,7 +149,15 @@ export function Shop() {
                       categoryColors[category] || "var(--color-brand-primary)",
                   }}
                 >
-                  <img src={categoryIcons[category] || platterImg} alt={category} className="w-full h-full object-cover" />
+                  <img 
+                    src={categoryIcons[category] || FALLBACK_IMAGE} 
+                    alt={category} 
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = FALLBACK_IMAGE;
+                    }}
+                    className="w-full h-full object-cover" 
+                  />
                 </div>
                 <h3 className="text-2xl font-bold text-brand-dark text-center">
                   {category}
@@ -174,6 +181,17 @@ export function Shop() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {itemsInCategory.map((item) => {
                 const productVariant = products.find(p => p.Item === item && p.Category === selectedCategory);
+                const itemVariants = products.filter(p => p.Item === item && p.Category === selectedCategory);
+                const startingPrice = itemVariants.length > 0 
+                  ? Math.min(...itemVariants.map(v => {
+                      const priceMatches = v.Unit_Price.match(/[0-9.]+/);
+                      return priceMatches ? parseFloat(priceMatches[0]) : 0;
+                    }))
+                  : null;
+                const formattedName = item.toLowerCase().replace(/ /g, '-');
+                const matchedKey = Object.keys(assetImages).find(key => key.endsWith(`/${formattedName}.webp`));
+                const itemImageUrl = matchedKey ? assetImages[matchedKey].default : null;
+
                 return (
                 <div
                   key={item}
@@ -181,14 +199,34 @@ export function Shop() {
                   className="bg-white border border-brand-dark/5 rounded-[2rem] p-6 shadow-lg hover:shadow-2xl transition-all cursor-pointer flex flex-col"
                 >
                   <div
-                    className="w-full h-32 rounded-[1.5rem] mb-4 flex items-center justify-center shadow-inner overflow-hidden flex-shrink-0"
+                    className="w-full h-40 rounded-[1.5rem] mb-3 flex items-center justify-center shadow-inner overflow-hidden flex-shrink-0 cursor-zoom-in relative group"
                     style={{
                       backgroundColor:
                         categoryColors[selectedCategory!] || "var(--color-brand-primary)",
                     }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setLightboxImage(itemImageUrl);
+                    }}
                   >
-                    <img src={categoryIcons[selectedCategory!] || platterImg} alt={selectedCategory!} className="w-full h-full object-cover" />
+                    <img 
+                      src={itemImageUrl || FALLBACK_IMAGE} 
+                      alt={item} 
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = categoryIcons[selectedCategory!] || FALLBACK_IMAGE;
+                      }}
+                      className="w-full h-full object-cover transition-transform group-hover:scale-105" 
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
                   </div>
+                  
+                  {startingPrice !== null && startingPrice > 0 && (
+                    <p className="text-sm font-semibold text-brand-accent mb-1">
+                      Starting from ${startingPrice.toFixed(2)} USD
+                    </p>
+                  )}
+                  
                   <h3 className="text-2xl font-bold text-brand-dark mb-2">
                     {item}
                   </h3>
@@ -216,6 +254,30 @@ export function Shop() {
 
             <div className="max-w-2xl mx-auto">
               <div className="bg-white border border-brand-dark/5 rounded-[2rem] p-8 lg:p-12 shadow-xl">
+                <div
+                  className="w-full h-64 rounded-[1.5rem] mb-8 flex items-center justify-center shadow-inner overflow-hidden cursor-zoom-in relative group"
+                  style={{ backgroundColor: categoryColors[selectedCategory!] || "var(--color-brand-primary)" }}
+                  onClick={() => {
+                    const imgUrl = new URL(`../../assets/${selectedItem!.toLowerCase().replace(/ /g, '-')}.webp`, import.meta.url).href;
+                    setLightboxImage(imgUrl);
+                  }}
+                >
+                  <img
+                    src={(() => {
+                      const formatted = selectedItem!.toLowerCase().replace(/ /g, '-');
+                      const key = Object.keys(assetImages).find(k => k.endsWith(`/${formatted}.webp`));
+                      return key ? assetImages[key].default : FALLBACK_IMAGE;
+                    })()}
+                    alt={selectedItem!}
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = categoryIcons[selectedCategory!] || FALLBACK_IMAGE;
+                    }}
+                    className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                </div>
+
                 <h3 className="text-4xl lg:text-5xl font-bold text-brand-dark mb-4 text-center">
                   {selectedItem}
                 </h3>
@@ -295,6 +357,31 @@ export function Shop() {
           </div>
         )}
       </div>
+
+      {/* Lightbox */}
+      {lightboxImage && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+          onClick={() => setLightboxImage(null)}
+        >
+          <button 
+            className="absolute top-6 right-6 text-white hover:text-gray-300 transition-colors bg-black/50 rounded-full p-2"
+            onClick={() => setLightboxImage(null)}
+          >
+            <X className="w-8 h-8" />
+          </button>
+          <img 
+            src={lightboxImage} 
+            alt="Fullscreen view" 
+            className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = categoryIcons[selectedCategory || ""] || FALLBACK_IMAGE;
+            }}
+          />
+        </div>
+      )}
     </section>
   );
 }

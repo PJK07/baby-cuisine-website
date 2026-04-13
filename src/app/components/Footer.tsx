@@ -1,5 +1,6 @@
 import { Facebook, Instagram, Twitter, Mail, MapPin, Phone } from "lucide-react";
 import logoImage from "../../assets/Baby John.webp";
+const FALLBACK_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjwvc3ZnPg==';
 
 export function Footer() {
   return (
@@ -12,6 +13,10 @@ export function Footer() {
               src={logoImage}
               alt="Baby John — Baby Cuisine brand mascot"
               className="w-48 mb-6 rounded-2xl"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = FALLBACK_IMAGE;
+              }}
               loading="lazy"
               decoding="async"
               width={192}

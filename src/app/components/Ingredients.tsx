@@ -1,4 +1,5 @@
 import bakingProcess from '../../assets/baking-process.webp';
+const FALLBACK_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjwvc3ZnPg==';
 import { Carrot, Apple, Salad, Droplets } from "lucide-react";
 
 const ingredientCategories = [
@@ -56,6 +57,10 @@ export function Ingredients() {
               src={bakingProcess}
               alt="Fresh organic ingredients"
               className="w-full max-w-4xl mx-auto rounded-3xl shadow-2xl"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = FALLBACK_IMAGE;
+              }}
               width={1000}
               height={1000}
             />
