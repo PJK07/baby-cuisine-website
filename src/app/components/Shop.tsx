@@ -153,6 +153,7 @@ export function Shop() {
     >
       <div className="container mx-auto max-w-7xl">
         <div className="text-center mb-16">
+          <h2 className="text-4xl lg:text-5xl font-bold text-brand-dark mb-4">Our Menu</h2>
           <p className="text-xl text-brand-dark/80 max-w-2xl mx-auto leading-relaxed">
             Every jar is a promise: soft texture, rich in nutrients, and immunity-boosting
           </p>

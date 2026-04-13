@@ -55,7 +55,7 @@ export function Footer() {
 
           {/* Shop */}
           <div>
-            <h3 className="text-xl font-bold mb-6">Shop</h3>
+            <h2 className="text-xl font-bold mb-6">Shop</h2>
             <ul className="space-y-3">
               <li>
                 <a
@@ -70,7 +70,7 @@ export function Footer() {
 
           {/* About */}
           <div>
-            <h3 className="text-xl font-bold mb-6">About</h3>
+            <h2 className="text-xl font-bold mb-6">About</h2>
             <ul className="space-y-3">
               <li>
                 <a href="#our-story" className="text-white/70 hover:text-brand-primary transition-colors inline-block">Our Story</a>
@@ -92,7 +92,7 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="text-xl font-bold mb-6">Contact</h3>
+            <h2 className="text-xl font-bold mb-6">Contact</h2>
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-white/70">
                 <MapPin className="w-5 h-5 mt-1 flex-shrink-0" />
