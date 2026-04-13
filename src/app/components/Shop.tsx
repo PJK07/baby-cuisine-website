@@ -20,6 +20,31 @@ const categoryColors: Record<string, string> = {
   Bitter: "var(--color-brand-dark)",
 };
 
+const BabyFoodPlaceholder = ({ className = "w-full h-full", iconSize = "w-16 h-16" }) => (
+  <div className={`flex flex-col items-center justify-center bg-[#FDFBF7] ${className}`}>
+    <svg 
+      viewBox="0 0 100 100" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="4" 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      className={`text-brand-accent transition-transform group-hover:scale-105 ${iconSize}`}
+    >
+      <line x1="75" y1="20" x2="60" y2="40" />
+      <ellipse cx="56" cy="45" rx="10" ry="6" transform="rotate(-50 56 45)" fill="currentColor" fillOpacity="0.15" />
+      <path d="M15 50h70c0 19.33-15.67 35-35 35S15 69.33 15 50z" fill="#FFFFFF" />
+      <path d="M40 30 Q35 20 40 10" strokeDasharray="6 6" opacity="0.4" />
+      <path d="M60 30 Q65 20 60 10" strokeDasharray="6 6" opacity="0.4" />
+      <path d="M15 50h70c0 19.33-15.67 35-35 35S15 69.33 15 50z" />
+      <line x1="35" y1="85" x2="65" y2="85" />
+      <circle cx="38" cy="65" r="3" fill="currentColor" stroke="none" />
+      <circle cx="62" cy="65" r="3" fill="currentColor" stroke="none" />
+      <path d="M46 72 Q50 76 54 72" fill="none" strokeWidth="4" />
+    </svg>
+  </div>
+);
+
 export function Shop() {
   const ref = useRef(null);
   const { addItem } = useCart();
@@ -149,15 +174,19 @@ export function Shop() {
                       categoryColors[category] || "var(--color-brand-primary)",
                   }}
                 >
-                  <img 
-                    src={categoryIcons[category] || FALLBACK_IMAGE} 
-                    alt={category} 
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = FALLBACK_IMAGE;
-                    }}
-                    className="w-full h-full object-cover" 
-                  />
+                  {categoryIcons[category] ? (
+                    <img 
+                      src={categoryIcons[category]} 
+                      alt={category} 
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = FALLBACK_IMAGE;
+                      }}
+                      className="w-full h-full object-cover" 
+                    />
+                  ) : (
+                    <BabyFoodPlaceholder iconSize="w-12 h-12" className="w-full h-full" />
+                  )}
                 </div>
                 <h3 className="text-2xl font-bold text-brand-dark text-center">
                   {category}
@@ -206,18 +235,22 @@ export function Shop() {
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
-                      setLightboxImage(itemImageUrl);
+                      if (itemImageUrl) setLightboxImage(itemImageUrl);
                     }}
                   >
-                    <img 
-                      src={itemImageUrl || FALLBACK_IMAGE} 
-                      alt={item} 
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = categoryIcons[selectedCategory!] || FALLBACK_IMAGE;
-                      }}
-                      className="w-full h-full object-cover transition-transform group-hover:scale-105" 
-                    />
+                    {itemImageUrl ? (
+                      <img 
+                        src={itemImageUrl} 
+                        alt={item} 
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = FALLBACK_IMAGE;
+                        }}
+                        className="w-full h-full object-cover transition-transform group-hover:scale-105" 
+                      />
+                    ) : (
+                      <BabyFoodPlaceholder iconSize="w-20 h-20" className="w-full h-full opacity-90" />
+                    )}
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
                   </div>
                   
@@ -258,23 +291,28 @@ export function Shop() {
                   className="w-full h-64 rounded-[1.5rem] mb-8 flex items-center justify-center shadow-inner overflow-hidden cursor-zoom-in relative group"
                   style={{ backgroundColor: categoryColors[selectedCategory!] || "var(--color-brand-primary)" }}
                   onClick={() => {
-                    const imgUrl = new URL(`../../assets/${selectedItem!.toLowerCase().replace(/ /g, '-')}.webp`, import.meta.url).href;
-                    setLightboxImage(imgUrl);
+                    const formatted = selectedItem!.toLowerCase().replace(/ /g, '-');
+                    const key = Object.keys(assetImages).find(k => k.endsWith(`/${formatted}.webp`));
+                    if (key) setLightboxImage(assetImages[key].default);
                   }}
                 >
-                  <img
-                    src={(() => {
-                      const formatted = selectedItem!.toLowerCase().replace(/ /g, '-');
-                      const key = Object.keys(assetImages).find(k => k.endsWith(`/${formatted}.webp`));
-                      return key ? assetImages[key].default : FALLBACK_IMAGE;
-                    })()}
-                    alt={selectedItem!}
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = categoryIcons[selectedCategory!] || FALLBACK_IMAGE;
-                    }}
-                    className="w-full h-full object-cover transition-transform group-hover:scale-105"
-                  />
+                  {(() => {
+                    const formatted = selectedItem!.toLowerCase().replace(/ /g, '-');
+                    const key = Object.keys(assetImages).find(k => k.endsWith(`/${formatted}.webp`));
+                    return key ? (
+                      <img
+                        src={assetImages[key].default}
+                        alt={selectedItem!}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = FALLBACK_IMAGE;
+                        }}
+                        className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                      />
+                    ) : (
+                      <BabyFoodPlaceholder iconSize="w-32 h-32" className="w-full h-full opacity-90" />
+                    );
+                  })()}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
                 </div>
 
