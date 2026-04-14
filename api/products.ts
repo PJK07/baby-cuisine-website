@@ -42,6 +42,8 @@ export default async function handler(): Promise<Response> {
         headers.forEach((h, i) => {
           const key = h === 'Menu Item' ? 'Item'
                     : h === 'Item'      ? 'Item_code'
+                    : h === 'Delivery Day' ? 'Delivery_Day'
+                    : h === 'Size_ml'      ? 'Size_ml'
                     : h;
           obj[key] = row[i]?.trim() ?? '';
         });

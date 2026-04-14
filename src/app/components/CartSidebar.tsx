@@ -1,5 +1,6 @@
 import { X, ShoppingCart, Trash2 } from "lucide-react";
 import { createPortal } from "react-dom";
+import { useState } from "react";
 import { useCart } from "../context/CartContext";
 
 interface CartSidebarProps {
@@ -9,6 +10,7 @@ interface CartSidebarProps {
 
 export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
   const { items, removeItem, getTotalPrice, clearCart } = useCart();
+  const [deliveryDay, setDeliveryDay] = useState<"Tuesday" | "Friday" | null>(null);
 
   const handleWhatsAppOrder = () => {
     if (items.length === 0) return;
@@ -23,7 +25,8 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
       .join("\n");
 
     const total = getTotalPrice().toFixed(2);
-    const message = `Hi! I'd like to order:\n\n${orderText}\n\nTotal: $${total}`;
+    const deliveryLine = deliveryDay ? `\nDelivery: ${deliveryDay}` : "";
+    const message = `Hi! I'd like to order:\n\n${orderText}\n\nTotal: $${total}${deliveryLine}`;
     const whatsappUrl = `https://wa.me/96170465465?text=${encodeURIComponent(message)}`;
 
     window.open(whatsappUrl, "_blank");
@@ -132,6 +135,27 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                     ${getTotalPrice().toFixed(2)}
                   </span>
                 </div>
+
+                {/* Delivery Day Selector */}
+                <div>
+                  <p className="text-sm font-semibold text-brand-dark mb-2">Delivery Day:</p>
+                  <div className="flex gap-3">
+                    {(["Tuesday", "Friday"] as const).map((day) => (
+                      <button
+                        key={day}
+                        onClick={() => setDeliveryDay(day)}
+                        className={`flex-1 py-2 rounded-full font-semibold text-sm transition-all ${
+                          deliveryDay === day
+                            ? "bg-brand-primary text-white shadow"
+                            : "bg-gray-100 text-brand-dark hover:bg-gray-200"
+                        }`}
+                      >
+                        {day}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 <button
                   onClick={handleWhatsAppOrder}
                   className="w-full bg-[#25D366] text-white py-4 rounded-full font-bold text-lg shadow-lg hover:bg-[#20BA5A] transition-colors flex items-center justify-center gap-2"

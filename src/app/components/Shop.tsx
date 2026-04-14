@@ -257,13 +257,22 @@ export function Shop() {
                   
                   {startingPrice !== null && startingPrice > 0 && (
                     <p className="text-sm font-semibold text-brand-accent mb-1">
-                      Starting from ${startingPrice.toFixed(2)} USD
+                      {selectedCategory?.toLowerCase().includes('finger food') 
+                        ? `$${startingPrice.toFixed(2)} USD`
+                        : `Starting from $${startingPrice.toFixed(2)} USD`
+                      }
                     </p>
                   )}
                   
                   <h3 className="text-2xl font-bold text-brand-dark mb-2">
                     {item}
                   </h3>
+
+                  {selectedCategory === "Platter" && productVariant?.Delivery_Day && (
+                    <div className="inline-flex items-center px-3 py-1 rounded-full bg-brand-primary/10 text-brand-primary text-[10px] font-black mb-3 self-start uppercase tracking-widest border border-brand-primary/20 shadow-sm">
+                      Delivery: {productVariant.Delivery_Day}
+                    </div>
+                  )}
                   {productVariant?.Ingredients && (
                     <p className="text-xs text-brand-dark/60 mt-1 uppercase tracking-widest leading-relaxed">
                       {productVariant.Ingredients}
@@ -320,6 +329,14 @@ export function Shop() {
                 <h3 className="text-4xl lg:text-5xl font-bold text-brand-dark mb-4 text-center">
                   {selectedItem}
                 </h3>
+
+                {selectedCategory === "Platter" && itemVariants[0]?.Delivery_Day && (
+                  <div className="flex justify-center mb-8">
+                    <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-black uppercase tracking-widest border border-brand-primary/20 shadow-sm">
+                      Delivery: {itemVariants[0].Delivery_Day}
+                    </div>
+                  </div>
+                )}
                 {selectedVariant?.Ingredients && (
                   <p className="text-sm font-medium text-brand-dark/60 uppercase tracking-widest text-center mb-8 flex items-center justify-center gap-2">
                     {selectedVariant.Ingredients}
@@ -332,19 +349,26 @@ export function Shop() {
                     Select Size:
                   </label>
                   <div className="flex gap-4">
-                    {availableSizes.map((size) => (
-                      <button
-                        key={size}
-                        onClick={() => setSelectedSize(size)}
-                        className={`flex-1 py-4 rounded-full font-bold text-lg transition-all ${
-                          selectedSize === size
-                            ? "bg-brand-primary text-white shadow-lg"
-                            : "bg-white text-brand-dark hover:bg-gray-50 shadow"
-                        }`}
-                      >
-                        {size}
-                      </button>
-                    ))}
+                    {availableSizes.map((size) => {
+                      const variant = itemVariants.find(v => v.Size === size);
+                      const mlValue = variant?.Size_ml || 
+                                      variant?.["Size (ml)"] || 
+                                      variant?.["size_ml"] || 
+                                      variant?.["Size ml"];
+                      return (
+                        <button
+                          key={size}
+                          onClick={() => setSelectedSize(size)}
+                          className={`flex-1 py-4 rounded-full font-bold text-lg transition-all ${
+                            selectedSize === size
+                              ? "bg-brand-primary text-white shadow-lg"
+                              : "bg-white text-brand-dark hover:bg-gray-50 shadow"
+                          }`}
+                        >
+                          {size}{mlValue ? ` ${mlValue}${mlValue.toString().toLowerCase().trim().endsWith('ml') ? '' : 'ml'}` : ''}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
