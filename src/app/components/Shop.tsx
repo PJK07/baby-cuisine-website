@@ -20,6 +20,8 @@ const categoryColors: Record<string, string> = {
   Bitter: "var(--color-brand-dark)",
 };
 
+const fmtPrice = (p: number) => p % 1 === 0 ? `$${p}` : `$${p.toFixed(2)}`;
+
 const BabyFoodPlaceholder = ({ className = "w-full h-full", iconSize = "w-16 h-16" }) => (
   <div className={`flex flex-col items-center justify-center bg-[#FDFBF7] ${className}`}>
     <svg 
@@ -103,6 +105,21 @@ export function Shop() {
   const selectedVariant = useMemo(() => itemVariants.find(
     (v) => v.Size === selectedSize
   ), [itemVariants, selectedSize]);
+
+  const { detailMinPrice, detailHasMultiplePrices } = useMemo(() => {
+    const prices = Array.from(new Set(
+      itemVariants
+        .map(v => {
+          const m = v.Unit_Price ? v.Unit_Price.toString().match(/[0-9.]+/) : null;
+          return m ? parseFloat(m[0]) : 0;
+        })
+        .filter(p => p > 0)
+    ));
+    return {
+      detailMinPrice: prices.length > 0 ? Math.min(...prices) : null,
+      detailHasMultiplePrices: prices.length > 1,
+    };
+  }, [itemVariants]);
 
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
@@ -212,12 +229,13 @@ export function Shop() {
               {itemsInCategory.map((item) => {
                 const productVariant = products.find(p => p.Item === item && p.Category === selectedCategory);
                 const itemVariants = products.filter(p => p.Item === item && p.Category === selectedCategory);
-                const startingPrice = itemVariants.length > 0 
-                  ? Math.min(...itemVariants.map(v => {
-                      const priceMatches = v.Unit_Price.match(/[0-9.]+/);
-                      return priceMatches ? parseFloat(priceMatches[0]) : 0;
-                    }))
-                  : null;
+                const uniquePrices = Array.from(new Set(
+                  itemVariants
+                    .map(v => { const m = v.Unit_Price ? v.Unit_Price.toString().match(/[0-9.]+/) : null; return m ? parseFloat(m[0]) : 0; })
+                    .filter(p => p > 0)
+                ));
+                const startingPrice = uniquePrices.length > 0 ? Math.min(...uniquePrices) : null;
+                const hasMultiplePrices = uniquePrices.length > 1;
                 const formattedName = item.toLowerCase().replace(/ /g, '-');
                 const matchedKey = Object.keys(assetImages).find(key => key.endsWith(`/${formattedName}.webp`));
                 const itemImageUrl = matchedKey ? assetImages[matchedKey].default : null;
@@ -255,12 +273,9 @@ export function Shop() {
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
                   </div>
                   
-                  {startingPrice !== null && startingPrice > 0 && (
+                  {startingPrice !== null && (
                     <p className="text-sm font-semibold text-brand-accent mb-1">
-                      {selectedCategory?.toLowerCase().includes('finger food') 
-                        ? `$${startingPrice.toFixed(2)} USD`
-                        : `Starting from $${startingPrice.toFixed(2)} USD`
-                      }
+                      {hasMultiplePrices ? `Starting from ${fmtPrice(startingPrice)}` : fmtPrice(startingPrice)}
                     </p>
                   )}
                   
@@ -343,6 +358,27 @@ export function Shop() {
                   </p>
                 )}
 
+                {/* Price Display */}
+                <div className="mb-8 text-center">
+                  {selectedVariant ? (
+                    <>
+                      <p className="text-sm font-semibold text-brand-dark/60 uppercase tracking-widest mb-1">Price</p>
+                      <p className="text-5xl font-bold text-brand-primary">
+                        {fmtPrice(parseFloat(selectedVariant.Unit_Price.replace(/[^0-9.]/g, '')))}
+                      </p>
+                    </>
+                  ) : detailMinPrice !== null ? (
+                    <>
+                      {detailHasMultiplePrices && (
+                        <p className="text-sm font-semibold text-brand-dark/60 uppercase tracking-widest mb-1">Starting from</p>
+                      )}
+                      <p className="text-5xl font-bold text-brand-primary">
+                        {fmtPrice(detailMinPrice)}
+                      </p>
+                    </>
+                  ) : null}
+                </div>
+
                 {/* Size Selector */}
                 <div className="mb-8">
                   <label className="block text-lg font-semibold text-brand-dark mb-4">
@@ -350,11 +386,17 @@ export function Shop() {
                   </label>
                   <div className="flex gap-4">
                     {availableSizes.map((size) => {
+                      // Size field now contains the ml label directly ("120 ml" / "200 ml" / "250 ml").
+                      // Fall back to Size_ml / "Size (ml)" for any legacy API rows still using Big/Small/Medium.
                       const variant = itemVariants.find(v => v.Size === size);
-                      const mlValue = variant?.Size_ml || 
-                                      variant?.["Size (ml)"] || 
-                                      variant?.["size_ml"] || 
-                                      variant?.["Size ml"];
+                      const mlRaw = variant?.Size_ml || variant?.["Size (ml)"];
+                      const sizeLabel = size.toLowerCase().includes('ml')
+                        ? size
+                        : mlRaw
+                          ? mlRaw.toString().trim().toLowerCase().endsWith('ml')
+                            ? mlRaw.toString().trim()
+                            : `${mlRaw} ml`
+                          : size;
                       return (
                         <button
                           key={size}
@@ -365,7 +407,7 @@ export function Shop() {
                               : "bg-white text-brand-dark hover:bg-gray-50 shadow"
                           }`}
                         >
-                          {size}{mlValue ? ` ${mlValue}${mlValue.toString().toLowerCase().trim().endsWith('ml') ? '' : 'ml'}` : ''}
+                          {sizeLabel}
                         </button>
                       );
                     })}
@@ -393,16 +435,6 @@ export function Shop() {
                         </button>
                       ))}
                     </div>
-                  </div>
-                )}
-
-                {/* Price Display */}
-                {selectedVariant && (
-                  <div className="mb-8 text-center">
-                    <p className="text-lg text-brand-dark/80 mb-2">Price:</p>
-                    <p className="text-5xl font-bold text-brand-primary">
-                      ${parseFloat(selectedVariant.Unit_Price.replace(/[^0-9.]/g, '')).toFixed(2)}
-                    </p>
                   </div>
                 )}
 

@@ -40,10 +40,14 @@ export default async function handler(): Promise<Response> {
         const row = parseCSVRow(line);
         const obj: Record<string, string> = {};
         headers.forEach((h, i) => {
-          const key = h === 'Menu Item' ? 'Item'
-                    : h === 'Item'      ? 'Item_code'
+          const key = h === 'Menu Item'   ? 'Item'
+                    : h === 'Item'       ? 'Item_code'
                     : h === 'Delivery Day' ? 'Delivery_Day'
-                    : h === 'Size_ml'      ? 'Size_ml'
+                    // Column E (Big/Small/Medium) — kept as Size_name, not used for display
+                    : h === 'Size'       ? 'Size_name'
+                    // Column F (120 ml / 200 ml / 250 ml) — becomes the primary Size key
+                    : h === 'Size (ml)'  ? 'Size'
+                    : h === 'Size_ml'    ? 'Size'
                     : h;
           obj[key] = row[i]?.trim() ?? '';
         });
