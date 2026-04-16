@@ -1,6 +1,6 @@
 import { Facebook, Instagram, Twitter, Mail, MapPin, Phone } from "lucide-react";
-import logoImage from "../../assets/Baby John.webp";
-const FALLBACK_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjwvc3ZnPg==';
+const logoImage = "/images/baby-john.webp";
+const FALLBACK_IMAGE = "/images/placeholder.webp";
 
 export function Footer() {
   return (

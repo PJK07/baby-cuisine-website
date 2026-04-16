@@ -1,5 +1,5 @@
-import bakingProcess from '../../assets/baking-process.webp';
-const FALLBACK_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjwvc3ZnPg==';
+const bakingProcess = '/images/baking-process.webp';
+const FALLBACK_IMAGE = "/images/placeholder.webp";
 import { Carrot, Apple, Salad, Droplets } from "lucide-react";
 
 const ingredientCategories = [

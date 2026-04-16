@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { ShoppingCart, Menu, X } from "lucide-react";
-const FALLBACK_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjwvc3ZnPg==';
-import logoImage560 from "../../assets/logo-560w.webp";
-import logoImage280 from "../../assets/logo-280w.webp";
+const FALLBACK_IMAGE = "/images/placeholder.webp";
+const logoImage560 = "/images/logo-560w.webp";
+const logoImage280 = "/images/logo-280w.webp";
 import { useCart } from "../context/CartContext";
 import { CartSidebar } from "./CartSidebar";
 

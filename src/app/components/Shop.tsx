@@ -2,12 +2,11 @@ import { useRef, useState, useEffect, useMemo } from "react";
 import { ArrowLeft, X } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { PRODUCTS, type ProductData } from "../data/products";
+import { getProductImage } from "../utils/imageLoader";
 
 type ViewMode = "categories" | "items" | "detail";
 
-const FALLBACK_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjwvc3ZnPg==';
-
-const assetImages = import.meta.glob<{ default: string }>('../../assets/*.{webp,png,jpg}', { eager: true });
+const FALLBACK_IMAGE = '/images/placeholder.webp';
 
 const categoryIcons: Record<string, string> = {};
 
@@ -236,9 +235,7 @@ export function Shop() {
                 ));
                 const startingPrice = uniquePrices.length > 0 ? Math.min(...uniquePrices) : null;
                 const hasMultiplePrices = uniquePrices.length > 1;
-                const formattedName = item.toLowerCase().replace(/ /g, '-');
-                const matchedKey = Object.keys(assetImages).find(key => key.endsWith(`/${formattedName}.webp`));
-                const itemImageUrl = matchedKey ? assetImages[matchedKey].default : null;
+                const itemImageUrl = getProductImage(item);
 
                 return (
                 <div
@@ -262,8 +259,12 @@ export function Shop() {
                         src={itemImageUrl} 
                         alt={item} 
                         onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.src = FALLBACK_IMAGE;
+                          const t = e.currentTarget;
+                          if (!t.dataset.fallback) {
+                            console.warn("Missing image:", item);
+                            t.src = FALLBACK_IMAGE;
+                            t.dataset.fallback = "true";
+                          }
                         }}
                         className="w-full h-full object-cover transition-transform group-hover:scale-105" 
                       />
@@ -316,26 +317,26 @@ export function Shop() {
                   className="w-full h-64 rounded-[1.5rem] mb-8 flex items-center justify-center shadow-inner overflow-hidden cursor-zoom-in relative group"
                   style={{ backgroundColor: categoryColors[selectedCategory!] || "var(--color-brand-primary)" }}
                   onClick={() => {
-                    const formatted = selectedItem!.toLowerCase().replace(/ /g, '-');
-                    const key = Object.keys(assetImages).find(k => k.endsWith(`/${formatted}.webp`));
-                    if (key) setLightboxImage(assetImages[key].default);
+                    const url = getProductImage(selectedItem!);
+                    setLightboxImage(url);
                   }}
                 >
                   {(() => {
-                    const formatted = selectedItem!.toLowerCase().replace(/ /g, '-');
-                    const key = Object.keys(assetImages).find(k => k.endsWith(`/${formatted}.webp`));
-                    return key ? (
+                    const url = getProductImage(selectedItem!);
+                    return (
                       <img
-                        src={assetImages[key].default}
+                        src={url}
                         alt={selectedItem!}
                         onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.src = FALLBACK_IMAGE;
+                          const t = e.currentTarget;
+                          if (!t.dataset.fallback) {
+                            console.warn("Missing image:", selectedItem);
+                            t.src = FALLBACK_IMAGE;
+                            t.dataset.fallback = "true";
+                          }
                         }}
                         className="w-full h-full object-cover transition-transform group-hover:scale-105"
                       />
-                    ) : (
-                      <BabyFoodPlaceholder iconSize="w-32 h-32" className="w-full h-full opacity-90" />
                     );
                   })()}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
@@ -471,8 +472,11 @@ export function Shop() {
             className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
             onClick={(e) => e.stopPropagation()}
             onError={(e) => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = categoryIcons[selectedCategory || ""] || FALLBACK_IMAGE;
+              const t = e.currentTarget;
+              if (!t.dataset.fallback) {
+                t.src = FALLBACK_IMAGE;
+                t.dataset.fallback = "true";
+              }
             }}
           />
         </div>

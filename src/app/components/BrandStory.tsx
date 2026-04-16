@@ -1,5 +1,5 @@
-import brandStoryImage from '../../assets/baking-process.webp';
-const FALLBACK_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjwvc3ZnPg==';
+const brandStoryImage = "/images/baking-process.webp";
+const FALLBACK_IMAGE = "/images/placeholder.webp";
 import { Heart, Users, Leaf, Award } from "lucide-react";
 
 const values = [

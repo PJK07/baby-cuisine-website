@@ -43,14 +43,19 @@ export default async function handler(): Promise<Response> {
           const key = h === 'Menu Item'   ? 'Item'
                     : h === 'Item'       ? 'Item_code'
                     : h === 'Delivery Day' ? 'Delivery_Day'
-                    // Column E (Big/Small/Medium) — kept as Size_name, not used for display
                     : h === 'Size'       ? 'Size_name'
-                    // Column F (120 ml / 200 ml / 250 ml) — becomes the primary Size key
-                    : h === 'Size (ml)'  ? 'Size'
-                    : h === 'Size_ml'    ? 'Size'
+                    : h === 'Size (ml)'  ? 'Size_ml'
+                    : h === 'Size_ml'    ? 'Size_ml'
+                    : h === 'Size (ML)'  ? 'Size_ml'
                     : h;
           obj[key] = row[i]?.trim() ?? '';
         });
+
+        // SIZE FALLBACK LOGIC
+        // Priority: Size_ml -> Size_name -> "Box"
+        const finalSize = obj['Size_ml'] || obj['Size_name'] || "Box";
+        obj['Size'] = finalSize;
+
         return obj;
       })
       .filter(p => p['Item'] && p['Category']);
