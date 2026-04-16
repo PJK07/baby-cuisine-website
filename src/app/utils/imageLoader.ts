@@ -3,6 +3,9 @@ const normalizeName = (name: string) =>
 
 const IMAGE_MAP: Record<string, string> = {
   [normalizeName("riz bhalib")]: "riz-b-halib.webp",
+  [normalizeName("quinoa banana blueberry")]: "quinoa-berries.webp",
+  [normalizeName("mhalabiye")]: "mhalabiye.webp",
+  [normalizeName("salmon fingers")]: "salmon-fingers.webp",
 };
 
 export const getProductImage = (name: string): string => {
