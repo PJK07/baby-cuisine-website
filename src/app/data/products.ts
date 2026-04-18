@@ -13,8 +13,8 @@ export interface ProductData {
 
 export const PRODUCTS: ProductData[] = [
   // ── PUDDING ──────────────────────────────────────────────────────────────
-  { Item_code: "apple quinoa",       Category: "Pudding",     Item: "Apple Quinoa",              Size: "250 ml",   Texture: "",            Unit_Price: "5",   Ingredients: "quinoa, orange water, qapples", Size_ml: "250 ml" },
-  { Item_code: "apple quinoa",       Category: "Pudding",     Item: "Apple Quinoa",              Size: "120 ml", Texture: "",            Unit_Price: "3.5", Ingredients: "quinoa, orange water, qapples", Size_ml: "120 ml" },
+  { Item_code: "apple quinoa",       Category: "Pudding",     Item: "Apple Quinoa",              Size: "250 ml",   Texture: "",            Unit_Price: "5",   Ingredients: "quinoa, orange water, apples", Size_ml: "250 ml" },
+  { Item_code: "apple quinoa",       Category: "Pudding",     Item: "Apple Quinoa",              Size: "120 ml", Texture: "",            Unit_Price: "3.5", Ingredients: "quinoa, orange water, apples", Size_ml: "120 ml" },
   { Item_code: "chia berries",       Category: "Pudding",     Item: "Chia Berries",              Size: "250 ml",   Texture: "",            Unit_Price: "5",   Ingredients: "milk, chia seeds, banana, berries, oats" },
   { Item_code: "chia berries",       Category: "Pudding",     Item: "Chia Berries",              Size: "120 ml", Texture: "",            Unit_Price: "3.5", Ingredients: "milk, chia seeds, banana, berries, oats" },
   { Item_code: "coconut custard",    Category: "Pudding",     Item: "Coconut Custard",           Size: "250 ml",   Texture: "",            Unit_Price: "6",   Ingredients: "semolina, coconut oil, banana, coconut milk" },

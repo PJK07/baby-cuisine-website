@@ -246,8 +246,9 @@ export function Shop() {
                   <div
                     className="w-full h-40 rounded-[1.5rem] mb-3 flex items-center justify-center shadow-inner overflow-hidden flex-shrink-0 cursor-zoom-in relative group"
                     style={{
-                      backgroundColor:
-                        categoryColors[selectedCategory!] || "var(--color-brand-primary)",
+                      backgroundColor: (selectedCategory === "Biscuit" || selectedCategory === "Finger Food")
+                        ? "white"
+                        : (categoryColors[selectedCategory!] || "var(--color-brand-primary)"),
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -266,7 +267,11 @@ export function Shop() {
                             t.dataset.fallback = "true";
                           }
                         }}
-                        className="w-full h-full object-cover transition-transform group-hover:scale-105" 
+                        className={`w-full h-full transition-transform group-hover:scale-105 ${
+                          selectedCategory === "Biscuit" || selectedCategory === "Finger Food"
+                            ? "object-contain p-4"
+                            : "object-cover"
+                        }`} 
                       />
                     ) : (
                       <BabyFoodPlaceholder iconSize="w-20 h-20" className="w-full h-full opacity-90" />
@@ -315,7 +320,11 @@ export function Shop() {
               <div className="bg-white border border-brand-dark/5 rounded-[2rem] p-8 lg:p-12 shadow-xl">
                 <div
                   className="w-full h-64 rounded-[1.5rem] mb-8 flex items-center justify-center shadow-inner overflow-hidden cursor-zoom-in relative group"
-                  style={{ backgroundColor: categoryColors[selectedCategory!] || "var(--color-brand-primary)" }}
+                  style={{
+                    backgroundColor: (selectedCategory === "Biscuit" || selectedCategory === "Finger Food")
+                      ? "white"
+                      : (categoryColors[selectedCategory!] || "var(--color-brand-primary)")
+                  }}
                   onClick={() => {
                     const url = getProductImage(selectedItem!);
                     setLightboxImage(url);
@@ -335,7 +344,11 @@ export function Shop() {
                             t.dataset.fallback = "true";
                           }
                         }}
-                        className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                        className={`w-full h-full transition-transform group-hover:scale-105 ${
+                          selectedCategory === "Biscuit" || selectedCategory === "Finger Food"
+                            ? "object-contain p-6"
+                            : "object-cover"
+                        }`}
                       />
                     );
                   })()}
