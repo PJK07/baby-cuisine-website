@@ -187,8 +187,9 @@ export function Shop() {
                 <div
                   className="w-24 h-24 rounded-[1.5rem] mb-6 flex items-center justify-center shadow-inner mx-auto overflow-hidden"
                   style={{
-                    backgroundColor:
-                      categoryColors[category] || "var(--color-brand-primary)",
+                    backgroundColor: (category.toLowerCase().includes("biscuit") || category.toLowerCase().includes("finger food"))
+                      ? "white"
+                      : (categoryColors[category] || "var(--color-brand-primary)"),
                   }}
                 >
                   {categoryIcons[category] ? (
@@ -246,7 +247,7 @@ export function Shop() {
                   <div
                     className="w-full h-40 rounded-[1.5rem] mb-3 flex items-center justify-center shadow-inner overflow-hidden flex-shrink-0 cursor-zoom-in relative group"
                     style={{
-                      backgroundColor: (selectedCategory === "Biscuit" || selectedCategory === "Finger Food")
+                      backgroundColor: (selectedCategory?.toLowerCase().includes("biscuit") || selectedCategory?.toLowerCase().includes("finger food"))
                         ? "white"
                         : (categoryColors[selectedCategory!] || "var(--color-brand-primary)"),
                     }}
@@ -268,7 +269,7 @@ export function Shop() {
                           }
                         }}
                         className={`w-full h-full transition-transform group-hover:scale-105 ${
-                          selectedCategory === "Biscuit" || selectedCategory === "Finger Food"
+                          (selectedCategory?.toLowerCase().includes("biscuit") || selectedCategory?.toLowerCase().includes("finger food"))
                             ? "object-contain p-4"
                             : "object-cover"
                         }`} 
@@ -321,7 +322,7 @@ export function Shop() {
                 <div
                   className="w-full h-64 rounded-[1.5rem] mb-8 flex items-center justify-center shadow-inner overflow-hidden cursor-zoom-in relative group"
                   style={{
-                    backgroundColor: (selectedCategory === "Biscuit" || selectedCategory === "Finger Food")
+                    backgroundColor: (selectedCategory?.toLowerCase().includes("biscuit") || selectedCategory?.toLowerCase().includes("finger food"))
                       ? "white"
                       : (categoryColors[selectedCategory!] || "var(--color-brand-primary)")
                   }}
@@ -345,7 +346,7 @@ export function Shop() {
                           }
                         }}
                         className={`w-full h-full transition-transform group-hover:scale-105 ${
-                          selectedCategory === "Biscuit" || selectedCategory === "Finger Food"
+                          (selectedCategory?.toLowerCase().includes("biscuit") || selectedCategory?.toLowerCase().includes("finger food"))
                             ? "object-contain p-6"
                             : "object-cover"
                         }`}
