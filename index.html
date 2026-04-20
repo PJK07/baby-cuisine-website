@@ -72,7 +72,16 @@
     </head>
 
     <body>
-      <div id="root"></div>
+      <div id="root">
+        <!-- Shown while JS bundle downloads; React replaces this on mount -->
+        <div id="app-loader" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fbebba;gap:1.5rem;font-family:system-ui,sans-serif;">
+          <img src="/images/logo-560w.webp" alt="Baby Cuisine" style="width:140px;height:auto;" onerror="this.style.display='none'" />
+          <div style="width:48px;height:48px;border:5px solid #f3d9a0;border-top-color:#a85c0a;border-radius:50%;animation:spin 0.9s linear infinite;"></div>
+          <p style="color:#293313;font-weight:600;font-size:1.1rem;margin:0;">Loading…</p>
+          <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+        </div>
+      </div>
+      <noscript><p style="text-align:center;padding:2rem;font-family:system-ui,sans-serif;">Please enable JavaScript to use Baby Cuisine.</p></noscript>
       <script type="module" src="/src/main.tsx"></script>
     </body>
   </html>

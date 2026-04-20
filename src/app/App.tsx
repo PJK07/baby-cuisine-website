@@ -1,18 +1,25 @@
-import { lazy, Suspense } from "react";
+import { Component, ReactNode } from "react";
 import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
 import { Shop } from "./components/Shop";
+import { TrustSection } from "./components/TrustSection";
+import { Testimonials } from "./components/Testimonials";
+import { BrandStory } from "./components/BrandStory";
+import { CallToAction } from "./components/CallToAction";
+import { Footer } from "./components/Footer";
+import { FloatingIngredients } from "./components/FloatingIngredients";
 import { WhatsAppFAB } from "./components/WhatsAppFAB";
 import { CartProvider } from "./context/CartContext";
 import { Toaster } from "sonner";
 
-// Lazy-load everything below the fold — splits them out of the initial bundle
-const TrustSection = lazy(() => import("./components/TrustSection").then(m => ({ default: m.TrustSection })));
-const Testimonials = lazy(() => import("./components/Testimonials").then(m => ({ default: m.Testimonials })));
-const BrandStory = lazy(() => import("./components/BrandStory").then(m => ({ default: m.BrandStory })));
-const CallToAction = lazy(() => import("./components/CallToAction").then(m => ({ default: m.CallToAction })));
-const Footer = lazy(() => import("./components/Footer").then(m => ({ default: m.Footer })));
-const FloatingIngredients = lazy(() => import("./components/FloatingIngredients").then(m => ({ default: m.FloatingIngredients })));
+class ErrorBoundary extends Component<{ children: ReactNode }, { crashed: boolean }> {
+  state = { crashed: false };
+  static getDerivedStateFromError() { return { crashed: true }; }
+  render() {
+    if (this.state.crashed) return null;
+    return this.props.children;
+  }
+}
 
 export default function App() {
   return (
@@ -33,24 +40,30 @@ export default function App() {
       </a>
 
       <div className="min-h-screen relative">
-        <Suspense fallback={null}>
+        <ErrorBoundary>
           <FloatingIngredients />
-        </Suspense>
+        </ErrorBoundary>
         <div className="relative z-10">
-          <Navigation />
+          <ErrorBoundary>
+            <Navigation />
+          </ErrorBoundary>
           <main id="main-content">
-            <Hero />
-            <Shop />
-            <Suspense fallback={null}>
+            <ErrorBoundary>
+              <Hero />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <Shop />
+            </ErrorBoundary>
+            <ErrorBoundary>
               <TrustSection />
               <Testimonials />
               <BrandStory />
               <CallToAction />
-            </Suspense>
+            </ErrorBoundary>
           </main>
-          <Suspense fallback={null}>
+          <ErrorBoundary>
             <Footer />
-          </Suspense>
+          </ErrorBoundary>
           <WhatsAppFAB />
         </div>
       </div>
