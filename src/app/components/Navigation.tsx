@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ShoppingCart, Menu, X } from "lucide-react";
 const FALLBACK_IMAGE = "/images/placeholder.webp";
 const logoImage560 = "/images/logo-560w.webp";
@@ -9,19 +9,28 @@ import { CartSidebar } from "./CartSidebar";
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { getTotalItems } = useCart();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const navLinks = ["Shop", "Our Story", "Why Us", "Contact"];
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 px-6 py-4 transition-shadow"
+      className={`fixed top-0 left-0 right-0 z-50 px-6 py-4 transition-all duration-300 ${
+        scrolled ? "bg-white/95 backdrop-blur-md shadow-md" : ""
+      }`}
       aria-label="Main navigation"
     >
       <div className="container mx-auto max-w-7xl">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a href="#" className="flex items-center">
+          <a href="/" className="flex items-center">
             <img
               src={logoImage560}
               srcSet={`${logoImage280} 280w, ${logoImage560} 560w`}
@@ -85,22 +94,25 @@ export function Navigation() {
         </div>
 
         {/* Mobile Menu */}
-        {isOpen && (
-          <div id="mobile-menu" className="lg:hidden overflow-hidden">
-            <div className="pt-6 pb-4 space-y-4">
-              {navLinks.map((link) => (
-                <a
-                  key={link}
-                  href={`#${link.toLowerCase().replace(" ", "-")}`}
-                  className="block text-brand-dark font-medium hover:text-brand-primary transition-colors py-2"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link}
-                </a>
-              ))}
-            </div>
+        <div
+          id="mobile-menu"
+          className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            isOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
+          }`}
+        >
+          <div className="pt-6 pb-4 space-y-4">
+            {navLinks.map((link) => (
+              <a
+                key={link}
+                href={`#${link.toLowerCase().replace(" ", "-")}`}
+                className="block text-brand-dark font-medium hover:text-brand-primary transition-colors py-2"
+                onClick={() => setIsOpen(false)}
+              >
+                {link}
+              </a>
+            ))}
           </div>
-        )}
+        </div>
       </div>
 
       <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />

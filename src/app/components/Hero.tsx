@@ -15,22 +15,20 @@ export function Hero() {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left content */}
           <div className="text-center lg:text-left">
-            <div className="mb-8 inline-block">
+            <div className="mb-8 inline-block lg:hidden">
               <img
                 src={logoImage560}
                 srcSet={`${logoImage280} 280w, ${logoImage560} 560w`}
-                sizes="(max-width: 768px) 280px, 560px"
+                sizes="280px"
                 alt="The Baby Cuisine logo"
-                className="w-56 h-auto mx-auto lg:mx-0 drop-shadow-sm"
+                className="w-44 h-auto mx-auto drop-shadow-sm"
                 onError={(e) => {
                   e.currentTarget.onerror = null;
                   e.currentTarget.src = FALLBACK_IMAGE;
                 }}
                 decoding="async"
-                width={560}
-                height={560}
-                // @ts-expect-error lowercase fetchpriority is needed for Lighthouse, not supported in React 18 types
-                fetchpriority="high"
+                width={280}
+                height={280}
               />
             </div>
 
@@ -41,7 +39,7 @@ export function Hero() {
             </h1>
 
             <p className="text-xl lg:text-2xl text-brand-dark/80 mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-              Pure, soft, and nutrient-dense meals, to your little ones.
+              Pure, soft, and nutrient-dense meals crafted for your little ones —
               because your baby deserves the best!
             </p>
 

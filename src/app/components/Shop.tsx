@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { ArrowLeft, X } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { PRODUCTS, type ProductData } from "../data/products";
@@ -8,7 +8,6 @@ type ViewMode = "categories" | "items" | "detail";
 
 const FALLBACK_IMAGE = '/images/placeholder.webp';
 
-const categoryIcons: Record<string, string> = {};
 
 const categoryColors: Record<string, string> = {
   Platter: "var(--color-brand-primary)",
@@ -47,20 +46,8 @@ const BabyFoodPlaceholder = ({ className = "w-full h-full", iconSize = "w-16 h-1
 );
 
 export function Shop() {
-  const ref = useRef(null);
   const { addItem } = useCart();
-
-  // Start with bundled static data so the menu renders instantly (no spinner).
-  // The useEffect below silently refreshes from /api/products after mount so
-  // any Google Sheet changes are reflected without a redeploy.
-  const [products, setProducts] = useState<ProductData[]>(PRODUCTS);
-
-  useEffect(() => {
-    fetch('/api/products')
-      .then(r => { if (!r.ok) throw new Error(); return r.json(); })
-      .then((data: ProductData[]) => { if (Array.isArray(data) && data.length > 0) setProducts(data); })
-      .catch(() => { /* keep static fallback */ });
-  }, []);
+  const [products] = useState<ProductData[]>(PRODUCTS);
 
   const [viewMode, setViewMode] = useState<ViewMode>("categories");
   const [selectedCategory, setSelectedCategory] = useState<string>();
@@ -192,19 +179,7 @@ export function Shop() {
                       : (categoryColors[category] || "var(--color-brand-primary)"),
                   }}
                 >
-                  {categoryIcons[category] ? (
-                    <img 
-                      src={categoryIcons[category]} 
-                      alt={category} 
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = FALLBACK_IMAGE;
-                      }}
-                      className="w-full h-full object-cover" 
-                    />
-                  ) : (
-                    <BabyFoodPlaceholder iconSize="w-12 h-12" className="w-full h-full" />
-                  )}
+                  <BabyFoodPlaceholder iconSize="w-12 h-12" className="w-full h-full" />
                 </div>
                 <h3 className="text-2xl font-bold text-brand-dark text-center">
                   {category}

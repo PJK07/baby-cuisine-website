@@ -2,6 +2,7 @@ import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
 import { Shop } from "./components/Shop";
 import { TrustSection } from "./components/TrustSection";
+import { Testimonials } from "./components/Testimonials";
 import { BrandStory } from "./components/BrandStory";
 import { CallToAction } from "./components/CallToAction";
 import { Footer } from "./components/Footer";
@@ -27,6 +28,7 @@ export default function App() {
             <Hero />
             <Shop />
             <TrustSection />
+            <Testimonials />
             <BrandStory />
             <CallToAction />
           </main>

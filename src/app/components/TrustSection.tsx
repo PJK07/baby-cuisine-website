@@ -1,4 +1,4 @@
-import { Shield, HeartPulse, Sprout, Baby, Fish } from "lucide-react";
+import { Shield, HeartPulse, Baby, Fish } from "lucide-react";
 
 const trustPoints = [
   {
@@ -69,10 +69,10 @@ export function TrustSection() {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <div className="bg-brand-accent/20 text-brand-accent-dark px-6 py-3 rounded-full font-semibold">
-                ✓ Certified Organic
+                ✓ Natural Ingredients
               </div>
               <div className="bg-brand-primary/10 text-brand-primary-dark px-6 py-3 rounded-full font-semibold">
-                ✓ Pediatrician Approved
+                ✓ Developed with a Pediatric Nutritionist
               </div>
             </div>
           </div>
