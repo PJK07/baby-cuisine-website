@@ -47,7 +47,9 @@ export default function App() {
           <Navigation />
           <main id="main-content">
             <Hero />
-            <Shop />
+            <ErrorBoundary>
+              <Shop />
+            </ErrorBoundary>
             <ErrorBoundary>
               <TrustSection />
               <Testimonials />

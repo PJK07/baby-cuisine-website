@@ -162,7 +162,6 @@ export function Shop() {
   return (
     <section
       id="shop"
-      ref={ref}
       className="py-24 px-6 bg-white overflow-hidden"
     >
       <div className="container mx-auto max-w-7xl">
