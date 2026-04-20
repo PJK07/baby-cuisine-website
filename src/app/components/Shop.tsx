@@ -47,7 +47,17 @@ const BabyFoodPlaceholder = ({ className = "w-full h-full", iconSize = "w-16 h-1
 
 export function Shop() {
   const { addItem } = useCart();
-  const [products] = useState<ProductData[]>(PRODUCTS);
+
+  // Static data renders instantly. The API fetch silently updates from
+  // Google Sheets after mount so any menu changes are live without a redeploy.
+  const [products, setProducts] = useState<ProductData[]>(PRODUCTS);
+
+  useEffect(() => {
+    fetch('/api/products')
+      .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+      .then((data: ProductData[]) => { if (Array.isArray(data) && data.length > 0) setProducts(data); })
+      .catch(() => { /* keep static fallback */ });
+  }, []);
 
   const [viewMode, setViewMode] = useState<ViewMode>("categories");
   const [selectedCategory, setSelectedCategory] = useState<string>();
