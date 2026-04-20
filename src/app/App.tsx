@@ -44,9 +44,13 @@ export default function App() {
           <FloatingIngredients />
         </ErrorBoundary>
         <div className="relative z-10">
-          <Navigation />
+          <ErrorBoundary>
+            <Navigation />
+          </ErrorBoundary>
           <main id="main-content">
-            <Hero />
+            <ErrorBoundary>
+              <Hero />
+            </ErrorBoundary>
             <ErrorBoundary>
               <Shop />
             </ErrorBoundary>
