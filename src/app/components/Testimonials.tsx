@@ -86,8 +86,8 @@ export function Testimonials() {
             <div className="text-6xl font-bold text-brand-primary mb-2">
               100%
             </div>
-            <p className="text-xl text-brand-dark font-medium">Healthy</p>
-            <p className="text-brand-dark/70">100%</p>
+            <p className="text-xl text-brand-dark font-medium">Natural Ingredients</p>
+            <p className="text-brand-dark/70">No additives, ever</p>
           </div>
         </div>
       </div>

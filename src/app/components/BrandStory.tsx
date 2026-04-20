@@ -1,5 +1,5 @@
 const brandStoryImage = "/images/baking-process.webp";
-const FALLBACK_IMAGE = "/images/placeholder.webp";
+import { FALLBACK_IMAGE } from "../constants";
 import { Heart, Users, Leaf, Award } from "lucide-react";
 
 const values = [

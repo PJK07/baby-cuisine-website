@@ -1,6 +1,6 @@
 import { Instagram, Mail, MapPin, Phone } from "lucide-react";
+import { FALLBACK_IMAGE } from "../constants";
 const logoImage = "/images/baby-john.webp";
-const FALLBACK_IMAGE = "/images/placeholder.webp";
 
 export function Footer() {
   return (

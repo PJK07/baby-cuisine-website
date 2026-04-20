@@ -1,7 +1,9 @@
 import { X, ShoppingCart, Trash2, Plus, Minus, AlertCircle } from "lucide-react";
 import { createPortal } from "react-dom";
 import { useState } from "react";
+import { toast } from "sonner";
 import { useCart } from "../context/CartContext";
+import { WHATSAPP_NUMBER } from "../constants";
 
 interface CartSidebarProps {
   isOpen: boolean;
@@ -32,8 +34,12 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
 
     const total = getTotalPrice().toFixed(2);
     const message = `Hi! I'd like to order:\n\n${orderText}\n\nTotal: $${total}\nDelivery: ${deliveryDay}`;
-    const whatsappUrl = `https://wa.me/96170465465?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank");
+    clearCart();
+    setDeliveryDay(null);
+    onClose();
+    toast.success("Order sent! We'll confirm via WhatsApp shortly.");
   };
 
   if (typeof document === "undefined") return null;

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, useMemo, ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useMemo, useEffect, ReactNode } from "react";
 
 export interface CartItem {
   itemCode: string;
@@ -20,10 +20,31 @@ interface CartContextType {
   getTotalPrice: () => number;
 }
 
+const STORAGE_KEY = "baby-cuisine-cart";
+
+function loadFromStorage(): CartItem[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
+  const [items, setItems] = useState<CartItem[]>(loadFromStorage);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    } catch {
+      // storage quota exceeded or private browsing — silently skip
+    }
+  }, [items]);
 
   const addItem = useCallback((newItem: Omit<CartItem, "quantity">) => {
     setItems((prev) => {

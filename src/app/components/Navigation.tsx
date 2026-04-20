@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ShoppingCart, Menu, X } from "lucide-react";
-const FALLBACK_IMAGE = "/images/placeholder.webp";
+import { FALLBACK_IMAGE } from "../constants";
 const logoImage560 = "/images/logo-560w.webp";
 const logoImage280 = "/images/logo-280w.webp";
 import { useCart } from "../context/CartContext";
