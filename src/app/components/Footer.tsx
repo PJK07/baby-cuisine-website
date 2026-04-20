@@ -1,6 +1,6 @@
-import { Facebook, Instagram, Twitter, Mail, MapPin, Phone } from "lucide-react";
+import { Instagram, Mail, MapPin, Phone } from "lucide-react";
+import { FALLBACK_IMAGE } from "../constants";
 const logoImage = "/images/baby-john.webp";
-const FALLBACK_IMAGE = "/images/placeholder.webp";
 
 export function Footer() {
   return (
@@ -24,16 +24,9 @@ export function Footer() {
             />
             <p className="text-white/70 leading-relaxed mb-6">
               Nourishing little ones with love, care, and the finest
-              ingredients since.
+              ingredients since 2023.
             </p>
             <div className="flex gap-4">
-              <a
-                href="#"
-                aria-label="Baby Cuisine on Facebook"
-                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand-primary transition-colors"
-              >
-                <Facebook className="w-5 h-5" aria-hidden="true" />
-              </a>
               <a
                 href="https://www.instagram.com/thebabycuisine.1/"
                 target="_blank"
@@ -43,19 +36,12 @@ export function Footer() {
               >
                 <Instagram className="w-5 h-5" aria-hidden="true" />
               </a>
-              <a
-                href="#"
-                aria-label="Baby Cuisine on Twitter"
-                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand-primary transition-colors"
-              >
-                <Twitter className="w-5 h-5" aria-hidden="true" />
-              </a>
             </div>
           </div>
 
           {/* Shop */}
           <div>
-            <h2 className="text-xl font-bold mb-6">Shop</h2>
+            <h3 className="text-xl font-bold mb-6">Shop</h3>
             <ul className="space-y-3">
               <li>
                 <a
@@ -70,7 +56,7 @@ export function Footer() {
 
           {/* About */}
           <div>
-            <h2 className="text-xl font-bold mb-6">About</h2>
+            <h3 className="text-xl font-bold mb-6">About</h3>
             <ul className="space-y-3">
               <li>
                 <a href="#our-story" className="text-white/70 hover:text-brand-primary transition-colors inline-block">Our Story</a>
@@ -79,23 +65,17 @@ export function Footer() {
                 <a href="#brand-values" className="text-white/70 hover:text-brand-primary transition-colors inline-block">Our Values</a>
               </li>
               <li>
-                <a href="#shop" className="text-white/70 hover:text-brand-primary transition-colors inline-block">Ingredients</a>
-              </li>
-              <li>
-                <a href="#why-us" className="text-white/70 hover:text-brand-primary transition-colors inline-block">Sustainability</a>
-              </li>
-              <li>
-                <a href="#contact" className="text-white/70 hover:text-brand-primary transition-colors inline-block">Contact Us</a>
+                <a href="#why-us" className="text-white/70 hover:text-brand-primary transition-colors inline-block">Why Baby Cuisine</a>
               </li>
             </ul>
           </div>
 
           {/* Contact */}
           <div>
-            <h2 className="text-xl font-bold mb-6">Contact</h2>
+            <h3 className="text-xl font-bold mb-6">Contact</h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-white/70">
-                <MapPin className="w-5 h-5 mt-1 flex-shrink-0" />
+                <MapPin className="w-5 h-5 mt-1 flex-shrink-0" aria-hidden="true" />
                 <a
                   href="https://google.com/maps/place/The+Baby+Cuisine/data=!4m2!3m1!1s0x0:0x1c082d8fb7eabbf0?sa=X&ved=1t:2428&hl=en&ictx=111"
                   target="_blank"
@@ -106,7 +86,7 @@ export function Footer() {
                 </a>
               </li>
               <li className="flex items-center gap-3 text-white/70">
-                <Phone className="w-5 h-5 flex-shrink-0" />
+                <Phone className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
                 <a
                   href="https://wa.me/96170465465"
                   className="hover:text-brand-primary transition-colors"
@@ -115,11 +95,9 @@ export function Footer() {
                 </a>
               </li>
               <li className="flex items-center gap-3 text-white/70">
-                <Mail className="w-5 h-5 flex-shrink-0" />
+                <Mail className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
                 <a
-                  href="https://mail.google.com/mail/?view=cm&to=thebabycuisine.1@gmail.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="mailto:thebabycuisine.1@gmail.com"
                   className="hover:text-brand-primary transition-colors"
                 >
                   thebabycuisine.1@gmail.com

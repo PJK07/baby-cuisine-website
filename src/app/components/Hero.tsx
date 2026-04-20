@@ -1,5 +1,5 @@
 const heroBanner = '/images/hero-banner.webp';
-const FALLBACK_IMAGE = "/images/placeholder.webp";
+import { FALLBACK_IMAGE } from "../constants";
 import { Heart, Leaf } from "lucide-react";
 const logoImage560 = "/images/logo-560w.webp";
 const logoImage280 = "/images/logo-280w.webp";
@@ -15,22 +15,20 @@ export function Hero() {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left content */}
           <div className="text-center lg:text-left">
-            <div className="mb-8 inline-block">
+            <div className="mb-8 inline-block lg:hidden">
               <img
                 src={logoImage560}
                 srcSet={`${logoImage280} 280w, ${logoImage560} 560w`}
-                sizes="(max-width: 768px) 280px, 560px"
+                sizes="280px"
                 alt="The Baby Cuisine logo"
-                className="w-56 h-auto mx-auto lg:mx-0 drop-shadow-sm"
+                className="w-44 h-auto mx-auto drop-shadow-sm"
                 onError={(e) => {
                   e.currentTarget.onerror = null;
                   e.currentTarget.src = FALLBACK_IMAGE;
                 }}
                 decoding="async"
-                width={560}
-                height={560}
-                // @ts-expect-error lowercase fetchpriority is needed for Lighthouse, not supported in React 18 types
-                fetchpriority="high"
+                width={280}
+                height={280}
               />
             </div>
 
@@ -41,7 +39,7 @@ export function Hero() {
             </h1>
 
             <p className="text-xl lg:text-2xl text-brand-dark/80 mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-              Pure, soft, and nutrient-dense meals, to your little ones.
+              Pure, soft, and nutrient-dense meals crafted for your little ones —
               because your baby deserves the best!
             </p>
 
@@ -98,17 +96,17 @@ export function Hero() {
               />
             </div>
 
-            {/* Trust badges */}
-            <div className="absolute -top-6 -right-6 bg-white text-brand-dark px-6 py-4 rounded-3xl shadow-2xl z-20">
+            {/* Trust badges — inset on mobile so they never overflow the container */}
+            <div className="absolute top-3 right-3 sm:-top-6 sm:-right-6 bg-white text-brand-dark px-4 py-3 sm:px-6 sm:py-4 rounded-3xl shadow-2xl z-20">
               <div className="text-center">
-                <div className="text-xl font-bold text-brand-accent leading-tight">100% Natural</div>
+                <div className="text-base sm:text-xl font-bold text-brand-accent leading-tight">100% Natural</div>
               </div>
             </div>
 
-            <div className="absolute -bottom-6 -left-6 bg-white text-brand-dark px-6 py-4 rounded-3xl shadow-2xl z-20">
+            <div className="absolute bottom-3 left-3 sm:-bottom-6 sm:-left-6 bg-white text-brand-dark px-4 py-3 sm:px-6 sm:py-4 rounded-3xl shadow-2xl z-20">
               <div className="text-center">
-                <div className="text-3xl font-bold text-brand-primary">0</div>
-                <div className="text-sm font-medium">Salt and Sugar</div>
+                <div className="text-2xl sm:text-3xl font-bold text-brand-primary">0</div>
+                <div className="text-xs sm:text-sm font-medium">Salt &amp; Sugar</div>
               </div>
             </div>
 

@@ -1,14 +1,13 @@
-import { useRef, useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { toast } from "sonner";
 import { ArrowLeft, X } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { PRODUCTS, type ProductData } from "../data/products";
 import { getProductImage } from "../utils/imageLoader";
+import { FALLBACK_IMAGE } from "../constants";
 
 type ViewMode = "categories" | "items" | "detail";
 
-const FALLBACK_IMAGE = '/images/placeholder.webp';
-
-const categoryIcons: Record<string, string> = {};
 
 const categoryColors: Record<string, string> = {
   Platter: "var(--color-brand-primary)",
@@ -47,20 +46,8 @@ const BabyFoodPlaceholder = ({ className = "w-full h-full", iconSize = "w-16 h-1
 );
 
 export function Shop() {
-  const ref = useRef(null);
   const { addItem } = useCart();
-
-  // Start with bundled static data so the menu renders instantly (no spinner).
-  // The useEffect below silently refreshes from /api/products after mount so
-  // any Google Sheet changes are reflected without a redeploy.
-  const [products, setProducts] = useState<ProductData[]>(PRODUCTS);
-
-  useEffect(() => {
-    fetch('/api/products')
-      .then(r => { if (!r.ok) throw new Error(); return r.json(); })
-      .then((data: ProductData[]) => { if (Array.isArray(data) && data.length > 0) setProducts(data); })
-      .catch(() => { /* keep static fallback */ });
-  }, []);
+  const [products] = useState<ProductData[]>(PRODUCTS);
 
   const [viewMode, setViewMode] = useState<ViewMode>("categories");
   const [selectedCategory, setSelectedCategory] = useState<string>();
@@ -156,6 +143,7 @@ export function Shop() {
       price: parseFloat(selectedVariant.Unit_Price.replace(/[^0-9.]/g, '')),
     });
 
+    toast.success(`${selectedVariant.Item} added to cart`);
     setSelectedSize(undefined);
     setSelectedTexture(undefined);
     handleBackToItems();
@@ -178,39 +166,35 @@ export function Shop() {
         {/* Categories View */}
         {viewMode === "categories" && (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {categories.map((category) => (
-              <div
-                key={category}
-                onClick={() => handleCategoryClick(category)}
-                className="bg-white border border-brand-dark/5 rounded-[2rem] p-8 shadow-lg hover:shadow-2xl transition-all cursor-pointer"
-              >
-                <div
-                  className="w-24 h-24 rounded-[1.5rem] mb-6 flex items-center justify-center shadow-inner mx-auto overflow-hidden"
-                  style={{
-                    backgroundColor: (category.toLowerCase().includes("biscuit") || category.toLowerCase().includes("finger food"))
-                      ? "white"
-                      : (categoryColors[category] || "var(--color-brand-primary)"),
-                  }}
+            {categories.map((category) => {
+              const itemCount = Array.from(
+                new Set(products.filter(p => p.Category === category).map(p => p.Item))
+              ).length;
+              return (
+                <button
+                  key={category}
+                  onClick={() => handleCategoryClick(category)}
+                  className="bg-white border border-brand-dark/5 rounded-[2rem] p-8 shadow-lg hover:shadow-2xl transition-all text-left w-full"
                 >
-                  {categoryIcons[category] ? (
-                    <img 
-                      src={categoryIcons[category]} 
-                      alt={category} 
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = FALLBACK_IMAGE;
-                      }}
-                      className="w-full h-full object-cover" 
-                    />
-                  ) : (
+                  <div
+                    className="w-24 h-24 rounded-[1.5rem] mb-6 flex items-center justify-center shadow-inner mx-auto overflow-hidden"
+                    style={{
+                      backgroundColor: (category.toLowerCase().includes("biscuit") || category.toLowerCase().includes("finger food"))
+                        ? "white"
+                        : (categoryColors[category] || "var(--color-brand-primary)"),
+                    }}
+                  >
                     <BabyFoodPlaceholder iconSize="w-12 h-12" className="w-full h-full" />
-                  )}
-                </div>
-                <h3 className="text-2xl font-bold text-brand-dark text-center">
-                  {category}
-                </h3>
-              </div>
-            ))}
+                  </div>
+                  <h3 className="text-2xl font-bold text-brand-dark text-center mb-2">
+                    {category}
+                  </h3>
+                  <p className="text-sm text-brand-dark/50 text-center">
+                    {itemCount} {itemCount === 1 ? "item" : "items"}
+                  </p>
+                </button>
+              );
+            })}
           </div>
         )}
 
@@ -239,53 +223,58 @@ export function Shop() {
                 const itemImageUrl = getProductImage(item);
 
                 return (
-                <div
+                <button
                   key={item}
                   onClick={() => handleItemClick(item)}
-                  className="bg-white border border-brand-dark/5 rounded-[2rem] p-6 shadow-lg hover:shadow-2xl transition-all cursor-pointer flex flex-col"
+                  className="bg-white border border-brand-dark/5 rounded-[2rem] p-6 shadow-lg hover:shadow-2xl transition-all flex flex-col text-left w-full"
                 >
                   <div
-                    className="w-full h-40 rounded-[1.5rem] mb-3 flex items-center justify-center shadow-inner overflow-hidden flex-shrink-0 cursor-zoom-in relative group"
+                    className="w-full h-40 rounded-[1.5rem] mb-3 flex-shrink-0 overflow-hidden relative group"
                     style={{
                       backgroundColor: (selectedCategory?.toLowerCase().includes("biscuit") || selectedCategory?.toLowerCase().includes("finger food"))
                         ? "white"
                         : (categoryColors[selectedCategory!] || "var(--color-brand-primary)"),
                     }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (itemImageUrl) setLightboxImage(itemImageUrl);
-                    }}
                   >
                     {itemImageUrl ? (
-                      <img 
-                        src={itemImageUrl} 
-                        alt={item} 
-                        onError={(e) => {
-                          const t = e.currentTarget;
-                          if (!t.dataset.fallback) {
-                            console.warn("Missing image:", item);
-                            t.src = FALLBACK_IMAGE;
-                            t.dataset.fallback = "true";
-                          }
-                        }}
-                        className={`w-full h-full transition-transform group-hover:scale-105 ${
-                          (selectedCategory?.toLowerCase().includes("biscuit") || selectedCategory?.toLowerCase().includes("finger food"))
-                            ? "object-contain p-4"
-                            : "object-cover"
-                        }`} 
-                      />
+                      <>
+                        <img
+                          src={itemImageUrl}
+                          alt={item}
+                          onError={(e) => {
+                            const t = e.currentTarget;
+                            if (!t.dataset.fallback) {
+                              t.src = FALLBACK_IMAGE;
+                              t.dataset.fallback = "true";
+                            }
+                          }}
+                          className={`w-full h-full transition-transform group-hover:scale-105 ${
+                            (selectedCategory?.toLowerCase().includes("biscuit") || selectedCategory?.toLowerCase().includes("finger food"))
+                              ? "object-contain p-4"
+                              : "object-cover"
+                          }`}
+                        />
+                        <button
+                          type="button"
+                          aria-label={`View ${item} full size`}
+                          className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setLightboxImage(itemImageUrl);
+                          }}
+                        />
+                      </>
                     ) : (
                       <BabyFoodPlaceholder iconSize="w-20 h-20" className="w-full h-full opacity-90" />
                     )}
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
                   </div>
-                  
+
                   {startingPrice !== null && (
                     <p className="text-sm font-semibold text-brand-accent mb-1">
                       {hasMultiplePrices ? `Starting from ${fmtPrice(startingPrice)}` : fmtPrice(startingPrice)}
                     </p>
                   )}
-                  
+
                   <h3 className="text-2xl font-bold text-brand-dark mb-2">
                     {item}
                   </h3>
@@ -300,7 +289,7 @@ export function Shop() {
                       {productVariant.Ingredients}
                     </p>
                   )}
-                </div>
+                </button>
               )})}
             </div>
           </div>
@@ -340,7 +329,6 @@ export function Shop() {
                         onError={(e) => {
                           const t = e.currentTarget;
                           if (!t.dataset.fallback) {
-                            console.warn("Missing image:", selectedItem);
                             t.src = FALLBACK_IMAGE;
                             t.dataset.fallback = "true";
                           }
@@ -470,19 +458,24 @@ export function Shop() {
 
       {/* Lightbox */}
       {lightboxImage && (
-        <div 
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Full-size image: ${selectedItem || "product"}`}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
           onClick={() => setLightboxImage(null)}
         >
-          <button 
+          <button
+            autoFocus
+            aria-label="Close image"
             className="absolute top-6 right-6 text-white hover:text-gray-300 transition-colors bg-black/50 rounded-full p-2"
             onClick={() => setLightboxImage(null)}
           >
-            <X className="w-8 h-8" />
+            <X className="w-8 h-8" aria-hidden="true" />
           </button>
-          <img 
-            src={lightboxImage} 
-            alt="Fullscreen view" 
+          <img
+            src={lightboxImage}
+            alt={selectedItem ? `${selectedItem} — full view` : "Product full view"}
             className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
             onClick={(e) => e.stopPropagation()}
             onError={(e) => {
