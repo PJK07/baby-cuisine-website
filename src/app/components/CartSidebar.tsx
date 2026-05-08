@@ -33,7 +33,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
       .join("\n");
 
     const total = getTotalPrice().toFixed(2);
-    const message = `Hi! I'd like to order:\n\n${orderText}\n\nTotal: $${total}\nDelivery: ${deliveryDay}`;
+    const message = `Hi! I'd like to order:\n\n${orderText}\n\nTotal: $${total}\n+ Delivery Charge according to the location\nDelivery: ${deliveryDay}`;
     const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank");
     clearCart();
@@ -144,9 +144,14 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
         {/* Footer */}
         {items.length > 0 && (
           <div className="border-t border-gray-200 p-6 space-y-4">
-            <div className="flex justify-between items-center text-xl font-bold">
-              <span className="text-brand-dark">Total:</span>
-              <span className="text-brand-primary">${getTotalPrice().toFixed(2)}</span>
+            <div>
+              <div className="flex justify-between items-center text-xl font-bold">
+                <span className="text-brand-dark">Total:</span>
+                <span className="text-brand-primary">${getTotalPrice().toFixed(2)}</span>
+              </div>
+              <p className="text-xs text-brand-dark/60 mt-1 italic">
+                + Delivery charge according to the location
+              </p>
             </div>
 
             {/* Delivery Day Selector */}
