@@ -451,14 +451,28 @@ export function Shop() {
                 )}
 
                 {/* Add to Cart Button */}
-                {selectedVariant && (availableTextures.length === 0 || selectedTexture) && (
-                  <button
-                    onClick={handleAddToCart}
-                    className="w-full bg-brand-primary text-white py-4 rounded-full text-lg font-bold shadow-xl hover:bg-brand-primary-hover transition-colors"
-                  >
-                    Add to Cart
-                  </button>
-                )}
+                <button
+                  onClick={handleAddToCart}
+                  disabled={!selectedVariant || (availableTextures.length > 0 && !selectedTexture)}
+                  aria-label={
+                    !selectedVariant
+                      ? "Select a Size first"
+                      : (availableTextures.length > 0 && !selectedTexture)
+                      ? "Select a Texture first"
+                      : "Add to Cart"
+                  }
+                  className={`w-full py-4 rounded-full text-lg font-bold shadow-xl transition-all focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 ${
+                    !selectedVariant || (availableTextures.length > 0 && !selectedTexture)
+                      ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                      : "bg-brand-primary text-white hover:bg-brand-primary-hover hover:scale-[1.02]"
+                  }`}
+                >
+                  {!selectedVariant
+                    ? "Select a Size"
+                    : (availableTextures.length > 0 && !selectedTexture)
+                    ? "Select a Texture"
+                    : "Add to Cart"}
+                </button>
               </div>
             </div>
           </div>

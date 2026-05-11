@@ -1,0 +1,3 @@
+## 2024-05-15 - Dynamic Call-to-Action for Required Options
+**Learning:** Hiding the main "Add to Cart" button when users haven't selected required options (like Size or Texture) causes confusion and layout shifts. It's much more accessible and intuitive to keep the button visible but disabled, and dynamically change its text to guide the user on what to do next (e.g., "Select a Size").
+**Action:** When implementing forms or product selection views with required options, always render the primary action button. If requirements aren't met, disable it, style it appropriately (dimmed/cursor-not-allowed), and update the text/aria-label to explicitly state what the user needs to select.
