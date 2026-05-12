@@ -86,6 +86,28 @@ export function Shop() {
     )
   ).filter(Boolean), [products, selectedCategory]);
 
+  // ⚡ Bolt: Memoize O(N) category item counts to prevent recalculation on every render
+  const categoryItemCounts = useMemo(() => {
+    const counts: Record<string, Set<string>> = {};
+    products.forEach(p => {
+      if (p.Category && p.Item) {
+        counts[p.Category] = counts[p.Category] || new Set();
+        counts[p.Category].add(p.Item);
+      }
+    });
+    return Object.fromEntries(Object.entries(counts).map(([k, v]) => [k, v.size]));
+  }, [products]);
+
+  // ⚡ Bolt: Memoize regex price parsing to prevent O(N*M) recalculation on every render
+  const itemSummaries = useMemo(() => {
+    if (!selectedCategory) return {};
+    return Object.fromEntries(itemsInCategory.map(item => {
+      const itemVariants = products.filter(p => p.Item === item && p.Category === selectedCategory);
+      const uniquePrices = Array.from(new Set(itemVariants.map(v => { const m = v.Unit_Price ? v.Unit_Price.toString().match(/[0-9.]+/) : null; return m ? parseFloat(m[0]) : 0; }).filter(p => p > 0)));
+      return [item, { productVariant: itemVariants[0], startingPrice: uniquePrices.length > 0 ? Math.min(...uniquePrices) : null, hasMultiplePrices: uniquePrices.length > 1 }];
+    }));
+  }, [products, selectedCategory, itemsInCategory]);
+
   const itemVariants = useMemo(() => products.filter(
     (p) => p.Category === selectedCategory && p.Item === selectedItem
   ), [products, selectedCategory, selectedItem]);
@@ -176,9 +198,7 @@ export function Shop() {
         {viewMode === "categories" && (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {categories.map((category) => {
-              const itemCount = Array.from(
-                new Set(products.filter(p => p.Category === category).map(p => p.Item))
-              ).length;
+              const itemCount = categoryItemCounts[category] || 0;
               return (
                 <button
                   key={category}
@@ -220,15 +240,9 @@ export function Shop() {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {itemsInCategory.map((item) => {
-                const productVariant = products.find(p => p.Item === item && p.Category === selectedCategory);
-                const itemVariants = products.filter(p => p.Item === item && p.Category === selectedCategory);
-                const uniquePrices = Array.from(new Set(
-                  itemVariants
-                    .map(v => { const m = v.Unit_Price ? v.Unit_Price.toString().match(/[0-9.]+/) : null; return m ? parseFloat(m[0]) : 0; })
-                    .filter(p => p > 0)
-                ));
-                const startingPrice = uniquePrices.length > 0 ? Math.min(...uniquePrices) : null;
-                const hasMultiplePrices = uniquePrices.length > 1;
+                const summary = itemSummaries[item];
+                if (!summary) return null;
+                const { productVariant, startingPrice, hasMultiplePrices } = summary;
                 const itemImageUrl = getProductImage(item);
 
                 return (
