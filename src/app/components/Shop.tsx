@@ -78,13 +78,20 @@ export function Shop() {
     new Set(products.map((p) => p.Category))
   ).filter(Boolean), [products]);
 
-  const itemsInCategory = useMemo(() => Array.from(
-    new Set(
-      products
-        .filter((p) => p.Category === selectedCategory)
-        .map((p) => p.Item)
-    )
-  ).filter(Boolean), [products, selectedCategory]);
+  // Performance optimization: Group items by Category -> Item to avoid O(N*M) nested filtering
+  const categoryProductsByItem = useMemo(() => {
+    if (!selectedCategory) return {};
+    const map: Record<string, ProductData[]> = {};
+    for (const p of products) {
+      if (p.Category === selectedCategory && p.Item) {
+        if (!map[p.Item]) map[p.Item] = [];
+        map[p.Item].push(p);
+      }
+    }
+    return map;
+  }, [products, selectedCategory]);
+
+  const itemsInCategory = useMemo(() => Object.keys(categoryProductsByItem), [categoryProductsByItem]);
 
   const itemVariants = useMemo(() => products.filter(
     (p) => p.Category === selectedCategory && p.Item === selectedItem
@@ -220,8 +227,8 @@ export function Shop() {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {itemsInCategory.map((item) => {
-                const productVariant = products.find(p => p.Item === item && p.Category === selectedCategory);
-                const itemVariants = products.filter(p => p.Item === item && p.Category === selectedCategory);
+                const itemVariants = categoryProductsByItem[item];
+                const productVariant = itemVariants?.[0];
                 const uniquePrices = Array.from(new Set(
                   itemVariants
                     .map(v => { const m = v.Unit_Price ? v.Unit_Price.toString().match(/[0-9.]+/) : null; return m ? parseFloat(m[0]) : 0; })
