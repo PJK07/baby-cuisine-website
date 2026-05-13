@@ -78,13 +78,20 @@ export function Shop() {
     new Set(products.map((p) => p.Category))
   ).filter(Boolean), [products]);
 
-  const itemsInCategory = useMemo(() => Array.from(
-    new Set(
-      products
-        .filter((p) => p.Category === selectedCategory)
-        .map((p) => p.Item)
-    )
-  ).filter(Boolean), [products, selectedCategory]);
+  // Performance optimization: Group items by Category -> Item to avoid O(N*M) nested filtering
+  const categoryProductsByItem = useMemo(() => {
+    if (!selectedCategory) return {};
+    const map: Record<string, ProductData[]> = {};
+    for (const p of products) {
+      if (p.Category === selectedCategory && p.Item) {
+        if (!map[p.Item]) map[p.Item] = [];
+        map[p.Item].push(p);
+      }
+    }
+    return map;
+  }, [products, selectedCategory]);
+
+  const itemsInCategory = useMemo(() => Object.keys(categoryProductsByItem), [categoryProductsByItem]);
 
   // ⚡ Bolt: Memoize O(N) category item counts to prevent recalculation on every render
   const categoryItemCounts = useMemo(() => {
