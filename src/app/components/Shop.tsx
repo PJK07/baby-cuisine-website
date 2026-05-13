@@ -109,15 +109,18 @@ export function Shop() {
   const itemSummaries = useMemo(() => {
     if (!selectedCategory) return {};
     return Object.fromEntries(itemsInCategory.map(item => {
-      const itemVariants = products.filter(p => p.Item === item && p.Category === selectedCategory);
+      // ⚡ Bolt: Use O(1) hash map lookup instead of O(N) array filter
+      const itemVariants = categoryProductsByItem[item] || [];
       const uniquePrices = Array.from(new Set(itemVariants.map(v => { const m = v.Unit_Price ? v.Unit_Price.toString().match(/[0-9.]+/) : null; return m ? parseFloat(m[0]) : 0; }).filter(p => p > 0)));
       return [item, { productVariant: itemVariants[0], startingPrice: uniquePrices.length > 0 ? Math.min(...uniquePrices) : null, hasMultiplePrices: uniquePrices.length > 1 }];
     }));
-  }, [products, selectedCategory, itemsInCategory]);
+  }, [selectedCategory, itemsInCategory, categoryProductsByItem]);
 
-  const itemVariants = useMemo(() => products.filter(
-    (p) => p.Category === selectedCategory && p.Item === selectedItem
-  ), [products, selectedCategory, selectedItem]);
+  const itemVariants = useMemo(() => {
+    // ⚡ Bolt: Use O(1) hash map lookup instead of O(N) array filter
+    if (!selectedItem) return [];
+    return categoryProductsByItem[selectedItem] || [];
+  }, [selectedItem, categoryProductsByItem]);
 
   const availableSizes = useMemo(() => Array.from(
     new Set(itemVariants.map((v) => v.Size))
