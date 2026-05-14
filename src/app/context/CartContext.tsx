@@ -16,8 +16,8 @@ interface CartContextType {
   removeItem: (itemCode: string, size: string, texture?: string) => void;
   updateQuantity: (itemCode: string, size: string, texture: string | undefined, quantity: number) => void;
   clearCart: () => void;
-  getTotalItems: () => number;
-  getTotalPrice: () => number;
+  totalItems: number;
+  totalPrice: number;
 }
 
 const STORAGE_KEY = "baby-cuisine-cart";
@@ -95,10 +95,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = useCallback(() => setItems([]), []);
 
-  const getTotalItems = useCallback(() =>
+  // ⚡ Bolt: Memoize cart totals to prevent O(N) recalculations on every context consumer render
+  const totalItems = useMemo(() =>
     items.reduce((total, item) => total + item.quantity, 0), [items]);
 
-  const getTotalPrice = useCallback(() =>
+  const totalPrice = useMemo(() =>
     items.reduce((total, item) => total + item.price * item.quantity, 0), [items]);
 
   const value = useMemo(() => ({
@@ -107,9 +108,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
     removeItem,
     updateQuantity,
     clearCart,
-    getTotalItems,
-    getTotalPrice,
-  }), [items, addItem, removeItem, updateQuantity, clearCart, getTotalItems, getTotalPrice]);
+    totalItems,
+    totalPrice,
+  }), [items, addItem, removeItem, updateQuantity, clearCart, totalItems, totalPrice]);
 
   return (
     <CartContext.Provider value={value}>
