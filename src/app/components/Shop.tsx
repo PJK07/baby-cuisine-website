@@ -269,7 +269,9 @@ export function Shop() {
                   >
                     {itemImageUrl ? (
                       <>
+                        {/* ⚡ Bolt: Lazy load offscreen images to save bandwidth and improve initial load time */}
                         <img
+                          loading="lazy"
                           src={itemImageUrl}
                           alt={item}
                           onError={(e) => {
@@ -354,10 +356,13 @@ export function Shop() {
                   {(() => {
                     const url = getProductImage(selectedItem!);
                     return (
-                      <img
-                        src={url}
-                        alt={selectedItem!}
-                        onError={(e) => {
+                      <>
+                        {/* ⚡ Bolt: Lazy load offscreen images to save bandwidth and improve initial load time */}
+                        <img
+                          loading="lazy"
+                          src={url}
+                          alt={selectedItem!}
+                          onError={(e) => {
                           const t = e.currentTarget;
                           if (!t.dataset.fallback) {
                             t.src = FALLBACK_IMAGE;
@@ -370,6 +375,7 @@ export function Shop() {
                             : "object-cover"
                         }`}
                       />
+                      </>
                     );
                   })()}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
