@@ -95,11 +95,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = useCallback(() => setItems([]), []);
 
-  const getTotalItems = useCallback(() =>
-    items.reduce((total, item) => total + item.quantity, 0), [items]);
+  // ⚡ Bolt: Memoize cart calculations to prevent O(N) recalculations on every render
+  const memoizedTotalItems = useMemo(() => items.reduce((total, item) => total + item.quantity, 0), [items]);
+  const memoizedTotalPrice = useMemo(() => items.reduce((total, item) => total + item.price * item.quantity, 0), [items]);
 
-  const getTotalPrice = useCallback(() =>
-    items.reduce((total, item) => total + item.price * item.quantity, 0), [items]);
+  const getTotalItems = useCallback(() => memoizedTotalItems, [memoizedTotalItems]);
+  const getTotalPrice = useCallback(() => memoizedTotalPrice, [memoizedTotalPrice]);
 
   const value = useMemo(() => ({
     items,
