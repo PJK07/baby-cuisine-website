@@ -10,6 +10,7 @@ import { Footer } from "./components/Footer";
 import { FloatingIngredients } from "./components/FloatingIngredients";
 import { WhatsAppFAB } from "./components/WhatsAppFAB";
 import { CartProvider } from "./context/CartContext";
+import { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "sonner";
 
 class ErrorBoundary extends Component<{ children: ReactNode }, { crashed: boolean }> {
@@ -23,50 +24,52 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { crashed: boolea
 
 export default function App() {
   return (
-    <CartProvider>
-      <Toaster
-        position="bottom-center"
-        toastOptions={{
-          style: { background: "#293313", color: "#fff", borderRadius: "2rem", fontWeight: 600 },
-          duration: 2500,
-        }}
-      />
-      {/* Skip to main content — screen reader / keyboard shortcut */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:bg-white focus:text-[#3E2723] focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg focus:font-semibold"
-      >
-        Skip to main content
-      </a>
+    <AuthProvider>
+      <CartProvider>
+        <Toaster
+          position="bottom-center"
+          toastOptions={{
+            style: { background: "#293313", color: "#fff", borderRadius: "2rem", fontWeight: 600 },
+            duration: 2500,
+          }}
+        />
+        {/* Skip to main content - screen reader / keyboard shortcut */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:bg-white focus:text-[#3E2723] focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg focus:font-semibold"
+        >
+          Skip to main content
+        </a>
 
-      <div className="min-h-screen relative">
-        <ErrorBoundary>
-          <FloatingIngredients />
-        </ErrorBoundary>
-        <div className="relative z-10">
+        <div className="min-h-screen relative">
           <ErrorBoundary>
-            <Navigation />
+            <FloatingIngredients />
           </ErrorBoundary>
-          <main id="main-content">
+          <div className="relative z-10">
             <ErrorBoundary>
-              <Hero />
+              <Navigation />
             </ErrorBoundary>
+            <main id="main-content">
+              <ErrorBoundary>
+                <Hero />
+              </ErrorBoundary>
+              <ErrorBoundary>
+                <Shop />
+              </ErrorBoundary>
+              <ErrorBoundary>
+                <TrustSection />
+                <Testimonials />
+                <BrandStory />
+                <CallToAction />
+              </ErrorBoundary>
+            </main>
             <ErrorBoundary>
-              <Shop />
+              <Footer />
             </ErrorBoundary>
-            <ErrorBoundary>
-              <TrustSection />
-              <Testimonials />
-              <BrandStory />
-              <CallToAction />
-            </ErrorBoundary>
-          </main>
-          <ErrorBoundary>
-            <Footer />
-          </ErrorBoundary>
-          <WhatsAppFAB />
+            <WhatsAppFAB />
+          </div>
         </div>
-      </div>
-    </CartProvider>
+      </CartProvider>
+    </AuthProvider>
   );
 }

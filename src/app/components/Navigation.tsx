@@ -1,16 +1,20 @@
 import { useState, useEffect } from "react";
-import { ShoppingCart, Menu, X } from "lucide-react";
+import { ShoppingCart, Menu, UserRound, X } from "lucide-react";
 import { FALLBACK_IMAGE } from "../constants";
 const logoImage560 = "/images/logo-560w.webp";
 const logoImage280 = "/images/logo-280w.webp";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 import { CartSidebar } from "./CartSidebar";
+import { SignInDialog } from "./SignInDialog";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { getTotalItems } = useCart();
+  const { user } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -64,6 +68,27 @@ export function Navigation() {
           {/* Cart & Mobile Menu */}
           <div className="flex items-center gap-4">
             <button
+              onClick={() => setIsSignInOpen(true)}
+              aria-label={user ? `Account signed in as ${user.email}` : "Open sign in"}
+              className={`hidden sm:flex h-12 items-center gap-2 rounded-full px-4 font-bold shadow-lg transition-colors ${
+                user
+                  ? "bg-brand-bg text-brand-dark hover:bg-brand-bg/80"
+                  : "bg-white text-brand-dark hover:bg-brand-bg/70"
+              }`}
+            >
+              <UserRound className="h-5 w-5 text-brand-primary" aria-hidden="true" />
+              <span>{user ? "Account" : "Sign in"}</span>
+            </button>
+
+            <button
+              onClick={() => setIsSignInOpen(true)}
+              aria-label={user ? `Account signed in as ${user.email}` : "Open sign in"}
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-brand-dark shadow-lg transition-colors hover:bg-brand-bg/70 sm:hidden"
+            >
+              <UserRound className="h-5 w-5 text-brand-primary" aria-hidden="true" />
+            </button>
+
+            <button
               onClick={() => setIsCartOpen(true)}
               aria-label={`Open shopping cart${getTotalItems() > 0 ? `, ${getTotalItems()} item${getTotalItems() === 1 ? "" : "s"}` : ""}`}
               className="relative bg-brand-dark text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-brand-dark/90 transition-colors shadow-lg"
@@ -116,6 +141,7 @@ export function Navigation() {
       </div>
 
       <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <SignInDialog isOpen={isSignInOpen} onOpenChange={setIsSignInOpen} />
     </nav>
   );
 }
