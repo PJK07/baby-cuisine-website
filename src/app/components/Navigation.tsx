@@ -15,6 +15,10 @@ export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const { getTotalItems } = useCart();
   const { user } = useAuth();
+  const accountInitial = user?.email?.trim().charAt(0).toUpperCase() || "A";
+  const accountAvatarUrl =
+    (user?.user_metadata?.avatar_url as string | undefined) ||
+    (user?.user_metadata?.picture as string | undefined);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -72,20 +76,54 @@ export function Navigation() {
               aria-label={user ? `Account signed in as ${user.email}` : "Open sign in"}
               className={`hidden sm:flex h-12 items-center gap-2 rounded-full px-4 font-bold shadow-lg transition-colors ${
                 user
-                  ? "bg-brand-bg text-brand-dark hover:bg-brand-bg/80"
+                  ? "bg-transparent text-brand-dark shadow-none hover:bg-brand-bg/50"
                   : "bg-white text-brand-dark hover:bg-brand-bg/70"
               }`}
             >
-              <UserRound className="h-5 w-5 text-brand-primary" aria-hidden="true" />
-              <span>{user ? "Account" : "Sign in"}</span>
+              {user ? (
+                <span className="relative flex h-8 w-8 items-center justify-center text-sm font-black text-brand-primary">
+                  {accountAvatarUrl ? (
+                    <img
+                      src={accountAvatarUrl}
+                      alt=""
+                      className="h-8 w-8 rounded-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : (
+                    accountInitial
+                  )}
+                </span>
+              ) : (
+                <UserRound className="h-5 w-5 text-brand-primary" aria-hidden="true" />
+              )}
+              <span>{user ? "Profile" : "Sign in"}</span>
             </button>
 
             <button
               onClick={() => setIsSignInOpen(true)}
               aria-label={user ? `Account signed in as ${user.email}` : "Open sign in"}
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-brand-dark shadow-lg transition-colors hover:bg-brand-bg/70 sm:hidden"
+              className={`flex h-12 w-12 items-center justify-center rounded-full shadow-lg transition-colors sm:hidden ${
+                user
+                  ? "bg-transparent text-brand-dark shadow-none hover:bg-brand-bg/50"
+                  : "bg-white text-brand-dark hover:bg-brand-bg/70"
+              }`}
             >
-              <UserRound className="h-5 w-5 text-brand-primary" aria-hidden="true" />
+              {user ? (
+                <span className="relative flex h-8 w-8 items-center justify-center text-sm font-black text-brand-primary">
+                  {accountAvatarUrl ? (
+                    <img
+                      src={accountAvatarUrl}
+                      alt=""
+                      className="h-8 w-8 rounded-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : (
+                    accountInitial
+                  )}
+                </span>
+              ) : (
+                <UserRound className="h-5 w-5 text-brand-primary" aria-hidden="true" />
+              )}
             </button>
 
             <button

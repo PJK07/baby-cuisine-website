@@ -17,47 +17,51 @@ interface SaveOrderInput {
   total: number;
 }
 
+export interface SavedOrder {
+  id: string;
+  items: CartItem[];
+  total: number;
+}
+
 export async function saveOrder(input: SaveOrderInput) {
   if (!supabase) {
     throw new Error("Supabase is not configured yet.");
   }
 
-  const { error: contactError } = await supabase
-    .from("contacts")
-    .upsert(
-      {
-        user_id: input.userId,
-        email: input.email,
-        full_name: input.contact.fullName,
-        phone: input.contact.phone,
-        address: input.contact.address,
-        notes: input.contact.notes || null,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "user_id" },
-    );
+  const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+  if (sessionError) throw sessionError;
 
-  if (contactError) throw contactError;
+  const accessToken = sessionData.session?.access_token;
+  if (!accessToken) {
+    throw new Error("Please sign in before ordering so we can save your order.");
+  }
 
-  const { data, error: orderError } = await supabase
-    .from("orders")
-    .insert({
-      user_id: input.userId,
-      customer_email: input.email,
-      customer_name: input.contact.fullName,
-      customer_phone: input.contact.phone,
-      delivery_address: input.contact.address,
-      delivery_day: input.deliveryDay,
-      order_notes: input.contact.notes || null,
-      items: input.items,
-      total_amount: input.total,
-      status: "whatsapp_sent",
-    })
-    .select("id")
-    .single();
+  const response = await fetch("/api/orders", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(input),
+  });
 
-  if (orderError) throw orderError;
-  return data;
+  const result = (await response.json().catch(() => null)) as
+    | (SavedOrder & { error?: string })
+    | null;
+
+  if (!response.ok) {
+    throw new Error(result?.error || "Unable to save your order.");
+  }
+
+  if (!result?.id || !Array.isArray(result.items) || typeof result.total !== "number") {
+    throw new Error("Order service returned an invalid response.");
+  }
+
+  return {
+    id: result.id,
+    items: result.items,
+    total: result.total,
+  };
 }
 
 export async function getSavedContact(userId: string): Promise<ContactDetails | null> {

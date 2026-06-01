@@ -82,23 +82,10 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
     }
     setShowDeliveryError(false);
 
-    const orderText = items
-      .map((item) => {
-        const textureInfo = item.texture ? ` - ${item.texture}` : "";
-        return `${item.item} (${item.size}${textureInfo}) x${item.quantity} - $${(
-          item.price * item.quantity
-        ).toFixed(2)}`;
-      })
-      .join("\n");
-
-    const total = getTotalPrice().toFixed(2);
-    const message = `Hi! I'd like to order:\n\n${orderText}\n\nTotal: $${total}\n+ Delivery Charge according to the location\nDelivery: ${deliveryDay}\nName: ${contactDetails.fullName}\nPhone: ${contactDetails.phone}\nAddress: ${contactDetails.address}${contactDetails.notes ? `\nNotes: ${contactDetails.notes}` : ""}`;
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-
     try {
       isSubmittingRef.current = true;
       setIsSubmitting(true);
-      await saveOrder({
+      const savedOrder = await saveOrder({
         userId: user.id,
         email: user.email,
         contact: {
@@ -111,6 +98,18 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
         items,
         total: getTotalPrice(),
       });
+
+      const orderText = savedOrder.items
+        .map((item) => {
+          const textureInfo = item.texture ? ` - ${item.texture}` : "";
+          return `${item.item} (${item.size}${textureInfo}) x${item.quantity} - $${(
+            item.price * item.quantity
+          ).toFixed(2)}`;
+        })
+        .join("\n");
+
+      const message = `Hi! I'd like to order:\n\n${orderText}\n\nTotal: $${savedOrder.total.toFixed(2)}\n+ Delivery Charge according to the location\nDelivery: ${deliveryDay}\nName: ${contactDetails.fullName}\nPhone: ${contactDetails.phone}\nAddress: ${contactDetails.address}${contactDetails.notes ? `\nNotes: ${contactDetails.notes}` : ""}`;
+      const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
       window.open(whatsappUrl, "_blank");
       clearCart();
