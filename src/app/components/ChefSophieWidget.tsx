@@ -11,7 +11,12 @@ import { resolveCanonicalProduct } from "../utils/productResolver";
 import { PRODUCTS, type ProductData } from "../data/products";
 
 const AGENT_ID = "agent_9001kshhvbjcfhp8qmxcheks3ajx";
-const KNOWN_UNAVAILABLE_MENU_NAMES = ["Sweet Potato Salmon"];
+const KNOWN_UNAVAILABLE_MENU_NAMES = [
+  "Moujadara",
+  "Okra Stew With Meat",
+  "Roast Meat With Veggies",
+  "Sweet Potato Salmon",
+];
 const isDev = import.meta.env.DEV;
 
 const devLog = (...args: unknown[]) => {
@@ -59,6 +64,15 @@ type ClearCartParams = {
 type ChatFoodContext = {
   preferredFoods: string[];
 };
+
+type PendingOrder = {
+  itemName: string;
+  size?: string;
+  texture?: string;
+  quantity?: number;
+};
+
+type DeliveryDay = "Tuesday" | "Friday";
 
 type BabyRow = {
   name: string | null;
@@ -110,11 +124,19 @@ function getFirstName(contact: ContactRow | null, userMetadata: Record<string, u
   const metadataFirstName = userMetadata.first_name;
   const metadataName = userMetadata.name;
 
-  if (fullName) return fullName.split(/\s+/)[0];
-  if (typeof metadataFirstName === "string" && metadataFirstName.trim()) {
+  if (fullName && normalizeMenuText(fullName) !== "anonymous") return fullName.split(/\s+/)[0];
+  if (
+    typeof metadataFirstName === "string" &&
+    metadataFirstName.trim() &&
+    normalizeMenuText(metadataFirstName) !== "anonymous"
+  ) {
     return metadataFirstName.trim();
   }
-  if (typeof metadataName === "string" && metadataName.trim()) {
+  if (
+    typeof metadataName === "string" &&
+    metadataName.trim() &&
+    normalizeMenuText(metadataName) !== "anonymous"
+  ) {
     return metadataName.trim().split(/\s+/)[0];
   }
 
@@ -165,6 +187,38 @@ function normalizeMenuText(value: string): string {
     .trim();
 }
 
+function normalizeSingularMenuText(value: string): string {
+  return normalizeMenuText(value)
+    .split(" ")
+    .map((word) => (word.length > 3 && word.endsWith("s") ? word.slice(0, -1) : word))
+    .join(" ");
+}
+
+function normalizeCompactMenuText(value: string): string {
+  return normalizeMenuText(value).replace(/\s+/g, "");
+}
+
+function getEditDistance(a: string, b: string): number {
+  const previous = Array.from({ length: b.length + 1 }, (_, index) => index);
+
+  for (let i = 1; i <= a.length; i += 1) {
+    let diagonal = previous[0];
+    previous[0] = i;
+
+    for (let j = 1; j <= b.length; j += 1) {
+      const beforeUpdate = previous[j];
+      previous[j] = Math.min(
+        previous[j] + 1,
+        previous[j - 1] + 1,
+        diagonal + (a[i - 1] === b[j - 1] ? 0 : 1),
+      );
+      diagonal = beforeUpdate;
+    }
+  }
+
+  return previous[b.length];
+}
+
 function getExactMenuItems(products: ProductData[]): string[] {
   return Array.from(new Set(products.map((product) => product.Item).filter(Boolean))).sort();
 }
@@ -176,12 +230,23 @@ function getMenuCategoryPrompt(): string {
 function getMenuCategoryFromMessage(message: string): string | null {
   const normalized = normalizeMenuText(message);
 
-  if (normalized.includes("finger food") || normalized.includes("finger foods") || normalized === "finger") {
+  if (
+    normalized.includes("finger food") ||
+    normalized.includes("finger foods") ||
+    normalized === "finger" ||
+    getEditDistance(normalized, "finger food") <= 1
+  ) {
     return "Finger Food";
   }
-  if (normalized.includes("pudding") || normalized.includes("puddings")) return "Pudding";
-  if (normalized.includes("platter") || normalized.includes("platters")) return "Platter";
-  if (normalized.includes("biscuit") || normalized.includes("biscuits")) return "Biscuit";
+  if (normalized.includes("pudding") || normalized.includes("puddings") || getEditDistance(normalized, "pudding") <= 1) {
+    return "Pudding";
+  }
+  if (normalized.includes("platter") || normalized.includes("platters") || getEditDistance(normalized, "platter") <= 1) {
+    return "Platter";
+  }
+  if (normalized.includes("biscuit") || normalized.includes("biscuits") || getEditDistance(normalized, "biscuit") <= 1) {
+    return "Biscuit";
+  }
 
   return null;
 }
@@ -199,6 +264,37 @@ function getMenuCategoryAnswer(message: string, products: ProductData[]): string
   return `${category} options this week:\n${items.join("\n")}\nWhich one would you like?`;
 }
 
+function getExactItemFromMessage(message: string, products: ProductData[]): string | null {
+  const normalized = normalizeMenuText(message);
+  const singular = normalizeSingularMenuText(message);
+  const cleaned = normalizeSingularMenuText(
+    normalized
+      .replace(/^(i want|i would like|i d like|can i have|please add|add|order|get|give me)\s+/, "")
+      .replace(/^\d+\s+/, ""),
+  );
+  const compact = normalizeCompactMenuText(normalized);
+  const compactCleaned = normalizeCompactMenuText(cleaned);
+
+  return getExactMenuItems(products)
+    .sort((a, b) => b.length - a.length)
+    .find((item) => {
+      const itemKey = normalizeMenuText(item);
+      const singularItemKey = normalizeSingularMenuText(item);
+      const compactItemKey = normalizeCompactMenuText(item);
+      return (
+        normalized === itemKey ||
+        singular === singularItemKey ||
+        cleaned === singularItemKey ||
+        compact === compactItemKey ||
+        compact.includes(compactItemKey) ||
+        compactCleaned === compactItemKey ||
+        new RegExp(`(^|\\s)${itemKey}(\\s|$)`).test(normalized) ||
+        new RegExp(`(^|\\s)${singularItemKey}(\\s|$)`).test(singular) ||
+        getEditDistance(cleaned, singularItemKey) <= 1
+      );
+    }) ?? null;
+}
+
 function getProductSummary(products: ProductData[], itemName: string): string {
   const variants = products.filter((product) => product.Item === itemName);
   const category = variants[0]?.Category ?? "Menu";
@@ -212,6 +308,86 @@ function getProductSummary(products: ProductData[], itemName: string): string {
   const sizeText = sizes ? `, sizes: ${sizes}` : "";
 
   return `${itemName} (${category}${sizeText}${textureText}${startingPrice})`;
+}
+
+function getProductPriceSummary(products: ProductData[], itemName: string): string {
+  const variants = products.filter((product) => product.Item === itemName);
+  const category = variants[0]?.Category ?? "Menu";
+  const pricesBySize = variants.reduce<Map<string, Set<string>>>((groups, product) => {
+    const size = product.Size || "Item";
+    const prices = groups.get(size) ?? new Set<string>();
+    prices.add(`$${product.Unit_Price}`);
+    groups.set(size, prices);
+    return groups;
+  }, new Map());
+  const priceText = Array.from(pricesBySize)
+    .map(([size, prices]) => `${size}: ${Array.from(prices).join(" / ")}`)
+    .join(", ");
+
+  return `${itemName} (${category}) - ${priceText}`;
+}
+
+function getProductChoices(products: ProductData[], itemName: string) {
+  const variants = products.filter((product) => product.Item === itemName);
+  return {
+    sizes: uniqueValues(variants.map((product) => product.Size)),
+    textures: uniqueValues(variants.map((product) => product.Texture)),
+  };
+}
+
+function getItemSelectionPrompt(products: ProductData[], itemName: string): string {
+  const { sizes, textures } = getProductChoices(products, itemName);
+  const sizeText = sizes.length > 0 ? `size (${sizes.join(", ")})` : "";
+  const textureText = textures.length > 0 ? `texture (${textures.join(", ")})` : "";
+  const joiner = sizeText && textureText ? " and " : "";
+
+  return `Great choice. ${itemName} is on this week's exact menu.\nPlease choose ${sizeText}${joiner}${textureText}.`;
+}
+
+function getCategoryPriceSummary(products: ProductData[]): string {
+  const categories = uniqueValues(products.map((product) => product.Category)).sort();
+
+  return categories
+    .map((category) => {
+      const variants = products.filter((product) => product.Category === category);
+      const pricesBySize = variants.reduce<Map<string, Set<string>>>((groups, product) => {
+        const size = product.Size || "Item";
+        const prices = groups.get(size) ?? new Set<string>();
+        prices.add(`$${product.Unit_Price}`);
+        groups.set(size, prices);
+        return groups;
+      }, new Map());
+      const priceText = Array.from(pricesBySize)
+        .map(([size, prices]) => `${size}: ${Array.from(prices).sort().join(", ")}`)
+        .join("; ");
+
+      return `${category}: ${priceText}`;
+    })
+    .join("\n");
+}
+
+function getDeliveryDayForItem(products: ProductData[], itemName: string): DeliveryDay | null {
+  const days = uniqueValues(
+    products
+      .filter((product) => product.Item === itemName)
+      .map((product) => product.Delivery_Day),
+  );
+
+  return days.find((day): day is DeliveryDay => day === "Tuesday" || day === "Friday") ?? null;
+}
+
+function getItemsForDeliveryDay(products: ProductData[], day: DeliveryDay): string {
+  const items = Array.from(
+    new Set(
+      products
+        .filter((product) => product.Delivery_Day === day)
+        .map((product) => product.Item),
+    ),
+  ).sort();
+
+  if (items.length === 0) return `I do not see any exact items marked for ${day}.`;
+
+  return [`Exact ${day} items:`, items.join("\n")].join("\n");
 }
 
 const FOOD_KEYWORDS = [
@@ -234,8 +410,8 @@ function mergeUniqueValues(existing: string[], next: string[]): string[] {
 }
 
 function getFoodKeywords(message: string): string[] {
-  const normalized = normalizeMenuText(message);
-  return FOOD_KEYWORDS.filter((keyword) => normalized.includes(keyword));
+  const words = new Set(normalizeMenuText(message).split(" ").filter(Boolean));
+  return FOOD_KEYWORDS.filter((keyword) => words.has(keyword));
 }
 
 function productMatchesFood(product: ProductData, keywords: string[]): boolean {
@@ -283,6 +459,237 @@ function getRecommendationAnswer(
   ].join("\n");
 }
 
+function isPriceQuestion(message: string): boolean {
+  const normalized = normalizeMenuText(message);
+
+  return (
+    /\bprices?\b/.test(normalized) ||
+    normalized.includes("how much") ||
+    normalized.includes("cost")
+  );
+}
+
+function getBusinessAnswer(message: string): string | null {
+  const normalized = normalizeMenuText(message);
+
+  if (normalized.includes("allerg")) {
+    return "If your baby has allergies, tell us the allergy before ordering. We will guide you toward suitable exact menu items and your allergy note should be included with the order for confirmation.";
+  }
+
+  if (
+    normalized.includes("where are you located") ||
+    normalized.includes("what is your location") ||
+    normalized.includes("what is your address") ||
+    normalized === "location" ||
+    normalized === "address"
+  ) {
+    return "Baby Cuisine is located on St. Maroun Street, Horch Tabet, Lebanon.";
+  }
+
+  if (normalized.includes("where do you deliver") || normalized.includes("delivery") || normalized.includes("deliver")) {
+    return "Baby Cuisine delivers in Lebanon. The delivery charge depends on your location, and the checkout form will ask for your delivery address.";
+  }
+
+  if (
+    normalized.includes("got what") ||
+    normalized.includes("what do you mean") ||
+    normalized.includes("what did you get")
+  ) {
+    return "Sorry, I should be clearer. I can answer business questions, show exact menu items and prices, or help add an exact item to your cart.";
+  }
+
+  if (
+    normalized.includes("your business") ||
+    normalized.includes("about baby cuisine") ||
+    normalized.includes("about your business") ||
+    normalized.includes("who are you")
+  ) {
+    return "Baby Cuisine prepares fresh handmade baby food in Lebanon with 100% natural ingredients, no sugar, no preservatives, and no artificial colors.";
+  }
+
+  return null;
+}
+
+function getSpecialInstructionAnswer(message: string): string | null {
+  const normalized = normalizeMenuText(message);
+  const hasInstructionIntent = [
+    "label",
+    "ring",
+    "call",
+    "leave",
+    "concierge",
+    "pack",
+    "separate",
+    "bag",
+    "bags",
+    "receipt",
+    "landmark",
+    "gate",
+    "reception",
+  ].some((keyword) => normalized.includes(keyword));
+
+  const hasFulfillmentIntent =
+    normalized.includes("delivery") ||
+    normalized.includes("deliver") ||
+    normalized.includes("pickup") ||
+    normalized.includes("address");
+
+  if (!hasInstructionIntent && !hasFulfillmentIntent) return null;
+
+  return "I noted that instruction. Please also include it in the checkout form so the team sees it with your order.";
+}
+
+function getDeliveryAnswer(message: string, products: ProductData[], lastItemName: string | null): string | null {
+  const normalized = normalizeMenuText(message);
+  const explicitDay: DeliveryDay | null = normalized.includes("friday")
+    ? "Friday"
+    : normalized.includes("tuesday")
+      ? "Tuesday"
+      : null;
+
+  if (
+    explicitDay &&
+    (
+      normalized.includes("items") ||
+      normalized.includes("all") ||
+      normalized.includes("available") ||
+      normalized.includes("have") ||
+      normalized.includes("menu")
+    )
+  ) {
+    return getItemsForDeliveryDay(products, explicitDay);
+  }
+
+  if (
+    normalized.includes("which day") ||
+    normalized.includes("when it will be delivered") ||
+    normalized.includes("when will it be delivered") ||
+    normalized === "when" ||
+    normalized.includes("yeah i know but when")
+  ) {
+    if (!lastItemName) {
+      return "Tell me the item name and I can check its exact delivery day.";
+    }
+
+    const day = getDeliveryDayForItem(products, lastItemName);
+    if (!day) {
+      return `${lastItemName} is available, but I do not see a specific delivery day for it in the current menu data.`;
+    }
+
+    return `${lastItemName} is delivered on ${day}.`;
+  }
+
+  return null;
+}
+
+function parseSizeChoice(message: string, sizes: string[]): string | null {
+  const normalized = normalizeMenuText(message);
+  const aliases = new Map([
+    ["small", "120 ml"],
+    ["medium", "200 ml"],
+    ["big", "250 ml"],
+    ["large", "250 ml"],
+  ]);
+  const words = new Set(normalized.split(" ").filter(Boolean));
+  const alias = aliases.get(normalized) ?? Array.from(aliases).find(([key]) => words.has(key))?.[1];
+  if (alias && sizes.includes(alias)) return alias;
+
+  return sizes.find((size) => normalized.includes(normalizeMenuText(size))) ?? null;
+}
+
+function hasSizeIntent(message: string): boolean {
+  const normalized = normalizeMenuText(message);
+  return /\b(small|medium|big|large|box|piece|pieces|120|200|250|ml)\b/.test(normalized);
+}
+
+function getUnsupportedSizeMessage(message: string, itemName: string, sizes: string[]): string | null {
+  if (!hasSizeIntent(message) || parseSizeChoice(message, sizes)) return null;
+  return `${itemName} is available as ${sizes.join(", ")}, not the size you mentioned. Which available size would you like?`;
+}
+
+function getDefaultChoice(options: string[], message: string, parser: (message: string, options: string[]) => string | null): string | null {
+  return parser(message, options) ?? (options.length === 1 ? options[0] : null);
+}
+
+function parseTextureChoice(message: string, textures: string[]): string | null {
+  const normalized = normalizeMenuText(message);
+  return textures.find((texture) => normalizeMenuText(texture).split(" ").every((word) => normalized.includes(word))) ?? null;
+}
+
+function parseQuantityChoice(message: string): number | null {
+  const normalized = normalizeMenuText(message);
+  if (normalized === "one") return 1;
+  if (normalized === "two") return 2;
+  if (normalized === "three") return 3;
+  if (normalized.includes("make it one") || normalized.includes("change to one") || normalized.includes("actually one")) return 1;
+  if (normalized.includes("make it two") || normalized.includes("change to two") || normalized.includes("actually two")) return 2;
+  if (normalized.includes("make it three") || normalized.includes("change to three") || normalized.includes("actually three")) return 3;
+
+  const match = normalized.match(/\b([1-9]\d?)\b/);
+  return match ? Number(match[1]) : null;
+}
+
+function getAllergyConflictAnswer(message: string, itemName: string | null, products: ProductData[]): string | null {
+  const normalized = normalizeMenuText(message);
+  const allergenMatch = normalized.match(/\b(?:no|without|allergic to|allergy to)\s+(eggs?|milk|nuts?|almonds?|salmon|fish|lamb|chicken)\b/);
+  if (!allergenMatch?.[1] || !itemName) return null;
+
+  const allergen = allergenMatch[1].replace(/s$/, "");
+  const variants = products.filter((product) => product.Item === itemName);
+  const hasAllergen = variants.some((product) => normalizeMenuText(product.Ingredients ?? "").includes(allergen));
+
+  if (!hasAllergen) return null;
+  return `${itemName} includes ${allergen}. I cannot add that with a no-${allergen} instruction. Please choose a different exact menu item.`;
+}
+
+function getCartStatusAnswer(message: string, cartItems: CartItem[], totalItems: number): string | null {
+  const normalized = normalizeMenuText(message);
+  if (
+    !normalized.includes("cart") &&
+    !normalized.includes("they arent") &&
+    !normalized.includes("they are not") &&
+    !normalized.includes("i told you what i want")
+  ) {
+    return null;
+  }
+
+  if (totalItems === 0) {
+    return "Your cart is empty. Tell me the exact item, size, and quantity and I will add it.";
+  }
+
+  const lines = cartItems.map((item) => (
+    `${item.quantity} x ${item.item}, ${item.size}${item.texture ? `, ${item.texture}` : ""} - $${(item.price * item.quantity).toFixed(2)}`
+  ));
+
+  return ["Your cart currently has:", lines.join("\n")].join("\n");
+}
+
+function isConfirmationMessage(message: string): boolean {
+  const normalized = normalizeMenuText(message);
+  return ["ok", "okay", "yes", "confirm", "confirmed", "correct", "only this", "thats it", "that is it"].includes(normalized);
+}
+
+function getPriceAnswer(message: string, products: ProductData[]): string | null {
+  if (!isPriceQuestion(message)) return null;
+
+  const normalized = normalizeMenuText(message);
+  const exactItem = getExactMenuItems(products).find((item) => normalized.includes(normalizeMenuText(item)));
+
+  if (exactItem) {
+    return [
+      `Prices for ${exactItem}:`,
+      getProductPriceSummary(products, exactItem),
+      "Which size would you like?",
+    ].join("\n");
+  }
+
+  return [
+    "Here is the current price guide:",
+    getCategoryPriceSummary(products),
+    "Tell me the item name if you want exact prices for one item.",
+  ].join("\n");
+}
+
 function getOrderFirstAnswer(message: string): string | null {
   const normalized = normalizeMenuText(message);
 
@@ -290,10 +697,16 @@ function getOrderFirstAnswer(message: string): string | null {
     return "Hi! What would you like to order today?";
   }
 
+  if (["yes", "yeah", "yep", "ok great", "okay great", "great"].includes(normalized)) {
+    return "Great. What would you like to order today?";
+  }
+
   if (
     normalized.includes("how can you help") ||
     normalized.includes("what can you do") ||
-    normalized.includes("help me")
+    normalized.includes("help me") ||
+    normalized.includes("other thing") ||
+    normalized.includes("something else")
   ) {
     return "I can help you choose exact items from this week's menu and add them to your cart. What would you like to order today?";
   }
@@ -310,6 +723,15 @@ function isWeeklyMenuQuestion(message: string): boolean {
 
   return (
     normalized.includes("what do you have") ||
+    normalized.includes("what is there") ||
+    normalized.includes("whats there") ||
+    normalized.includes("what is available") ||
+    normalized.includes("whats available") ||
+    normalized.includes("available") ||
+    normalized.includes("what can i order") ||
+    normalized.includes("what can i buy") ||
+    normalized.includes("what can i get") ||
+    normalized.includes("what can we order") ||
     normalized.includes("what is on") ||
     normalized.includes("whats on") ||
     normalized.includes("this week") ||
@@ -477,6 +899,10 @@ function ChefSophieControl({
   const { status, message: statusMessage } = useConversationStatus();
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [draft, setDraft] = useState("");
+  const [pendingOrder, setPendingOrder] = useState<PendingOrder | null>(null);
+  const [lastItemName, setLastItemName] = useState<string | null>(null);
+  const [lastAddedCartLine, setLastAddedCartLine] = useState<CartItem | null>(null);
+  const { addItem, removeItem, updateQuantity, items: cartItems, getTotalItems } = useCart();
 
   const isActive = status === "connected" || status === "connecting";
   const isConnecting = status === "connecting";
@@ -546,24 +972,222 @@ function ChefSophieControl({
 
   const openChat = () => {
     setIsChatOpen(true);
-    if (isContextReady && !isActive) startSession({ textOnly: true });
+    setMessages((prev) => (
+      prev.length === 0 ? [{ role: "agent", text: getFirstMessage(variables) }] : prev
+    ));
+    if (isContextReady && !isActive) {
+      hideOpeningGreetingRef.current = true;
+      hiddenOpeningGreetingTextRef.current = getFirstMessage(variables);
+      startSession({ textOnly: true });
+    }
   };
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     const message = draft.trim();
     if (!message) return;
 
     setMessages((prev) => [...prev, { role: "user", text: message }]);
     setDraft("");
 
-    if (isAskingForName(message) && variables.customer_name && variables.customer_name !== "there") {
-      setMessages((prev) => [...prev, { role: "agent", text: `Your name is ${variables.customer_name}.` }]);
+    const cartStatusAnswer = getCartStatusAnswer(message, cartItems, getTotalItems());
+    if (cartStatusAnswer) {
+      setMessages((prev) => [...prev, { role: "agent", text: cartStatusAnswer }]);
+      return;
+    }
+
+    const deliveryAnswer = getDeliveryAnswer(message, menuProducts, pendingOrder?.itemName ?? lastItemName);
+    if (deliveryAnswer) {
+      setMessages((prev) => [...prev, { role: "agent", text: deliveryAnswer }]);
+      return;
+    }
+
+    const businessAnswer = getBusinessAnswer(message);
+    if (businessAnswer) {
+      setMessages((prev) => [...prev, { role: "agent", text: businessAnswer }]);
+      return;
+    }
+
+    const specialInstructionAnswer = getSpecialInstructionAnswer(message);
+    if (specialInstructionAnswer) {
+      setMessages((prev) => [...prev, { role: "agent", text: specialInstructionAnswer }]);
+      return;
+    }
+
+    if (isAskingForName(message)) {
+      const nameAnswer = variables.customer_name && variables.customer_name !== "there"
+        ? `Your name is ${variables.customer_name}.`
+        : "I do not have your name saved yet.";
+      setMessages((prev) => [...prev, { role: "agent", text: nameAnswer }]);
+      return;
+    }
+
+    if (pendingOrder) {
+      const normalized = normalizeMenuText(message);
+      if (normalized.includes("cancel") || normalized.includes("stop")) {
+        setPendingOrder(null);
+        setMessages((prev) => [...prev, { role: "agent", text: "Okay, I cancelled that item. What would you like instead?" }]);
+        return;
+      }
+
+      const allergyConflictAnswer = getAllergyConflictAnswer(message, pendingOrder.itemName, menuProducts);
+      if (allergyConflictAnswer) {
+        setPendingOrder(null);
+        setMessages((prev) => [...prev, { role: "agent", text: allergyConflictAnswer }]);
+        return;
+      }
+
+      const itemMention = getExactItemFromMessage(message, menuProducts);
+      if (itemMention && itemMention !== pendingOrder.itemName) {
+        const { sizes, textures } = getProductChoices(menuProducts, itemMention);
+        const nextOrder = {
+          itemName: itemMention,
+          size: getDefaultChoice(sizes, message, parseSizeChoice) ?? undefined,
+          texture: getDefaultChoice(textures, message, parseTextureChoice) ?? undefined,
+          quantity: parseQuantityChoice(message) ?? undefined,
+        };
+        setPendingOrder(nextOrder);
+        setLastItemName(itemMention);
+        setMessages((prev) => [...prev, { role: "agent", text: getItemSelectionPrompt(menuProducts, itemMention) }]);
+        return;
+      }
+
+      const { sizes, textures } = getProductChoices(menuProducts, pendingOrder.itemName);
+      const unsupportedSizeMessage = getUnsupportedSizeMessage(message, pendingOrder.itemName, sizes);
+      if (unsupportedSizeMessage) {
+        setMessages((prev) => [...prev, { role: "agent", text: unsupportedSizeMessage }]);
+        return;
+      }
+
+      const parsedQuantity = parseQuantityChoice(message);
+      const size = pendingOrder.size ?? getDefaultChoice(sizes, message, parseSizeChoice);
+      const texture = pendingOrder.texture ?? getDefaultChoice(textures, message, parseTextureChoice);
+      const quantity = parsedQuantity ?? pendingOrder.quantity;
+      const nextOrder = { ...pendingOrder, size, texture, quantity };
+
+      if (!size || (textures.length > 0 && !texture)) {
+        setPendingOrder(nextOrder);
+        setMessages((prev) => [...prev, { role: "agent", text: getItemSelectionPrompt(menuProducts, pendingOrder.itemName) }]);
+        return;
+      }
+
+      if (!quantity) {
+        setPendingOrder(nextOrder);
+        setMessages((prev) => [...prev, { role: "agent", text: `How many portions of ${pendingOrder.itemName} would you like?` }]);
+        return;
+      }
+
+      const resolvedProduct = await resolveCanonicalProduct({
+        itemName: pendingOrder.itemName,
+        size,
+        texture,
+        products: menuProducts,
+      });
+
+      if (!resolvedProduct.ok) {
+        setPendingOrder(null);
+        setMessages((prev) => [...prev, { role: "agent", text: resolvedProduct.details }]);
+        return;
+      }
+
+      const { product, price } = resolvedProduct;
+      if (!isConfirmationMessage(message)) {
+        setPendingOrder(nextOrder);
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "agent",
+            text: `Please confirm: ${quantity} x ${product.Item}, ${product.Size}${product.Texture ? `, ${product.Texture}` : ""} at $${price} each. Total: $${(price * quantity).toFixed(2)}.`,
+          },
+        ]);
+        return;
+      }
+
+      for (let i = 0; i < quantity; i += 1) {
+        addItem({
+          itemCode: product.Item_code,
+          category: product.Category,
+          item: product.Item,
+          size: product.Size,
+          texture: product.Texture || undefined,
+          price,
+        });
+      }
+      setLastAddedCartLine({
+        itemCode: product.Item_code,
+        category: product.Category,
+        item: product.Item,
+        size: product.Size,
+        texture: product.Texture || undefined,
+        price,
+        quantity,
+      });
+      setPendingOrder(null);
+      setLastItemName(product.Item);
+      setMessages((prev) => [...prev, { role: "agent", text: `${quantity} x ${product.Item} added to your cart at $${(price * quantity).toFixed(2)} total.` }]);
+      return;
+    }
+
+    const normalized = normalizeMenuText(message);
+    if (normalized.includes("cancel") && lastAddedCartLine) {
+      removeItem(lastAddedCartLine.itemCode, lastAddedCartLine.size, lastAddedCartLine.texture);
+      setLastAddedCartLine(null);
+      setMessages((prev) => [...prev, { role: "agent", text: `Okay, I removed ${lastAddedCartLine.item} from your cart. What would you like instead?` }]);
+      return;
+    }
+
+    const changedQuantity = parseQuantityChoice(message);
+    if (
+      lastAddedCartLine &&
+      changedQuantity &&
+      (
+        normalized.includes("change") ||
+        normalized.includes("make it") ||
+        normalized.includes("actually")
+      )
+    ) {
+      updateQuantity(lastAddedCartLine.itemCode, lastAddedCartLine.size, lastAddedCartLine.texture, changedQuantity);
+      setLastAddedCartLine({ ...lastAddedCartLine, quantity: changedQuantity });
+      setMessages((prev) => [
+        ...prev,
+        { role: "agent", text: `Updated ${lastAddedCartLine.item} to ${changedQuantity} portions. Cart line total is $${(lastAddedCartLine.price * changedQuantity).toFixed(2)}.` },
+      ]);
+      return;
+    }
+
+    const allergyConflictAnswer = getAllergyConflictAnswer(message, lastItemName, menuProducts);
+    if (allergyConflictAnswer) {
+      if (lastAddedCartLine?.item === lastItemName) {
+        removeItem(lastAddedCartLine.itemCode, lastAddedCartLine.size, lastAddedCartLine.texture);
+        setLastAddedCartLine(null);
+      }
+      setMessages((prev) => [...prev, { role: "agent", text: allergyConflictAnswer }]);
       return;
     }
 
     const knownUnavailableMenuNameAnswer = getKnownUnavailableMenuNameAnswer(message, menuProducts);
     if (knownUnavailableMenuNameAnswer) {
       setMessages((prev) => [...prev, { role: "agent", text: knownUnavailableMenuNameAnswer }]);
+      return;
+    }
+
+    const priceAnswer = getPriceAnswer(message, menuProducts);
+    if (priceAnswer) {
+      setMessages((prev) => [...prev, { role: "agent", text: priceAnswer }]);
+      return;
+    }
+
+    const exactItem = getExactItemFromMessage(message, menuProducts);
+    if (exactItem) {
+      const { sizes, textures } = getProductChoices(menuProducts, exactItem);
+      const nextOrder = {
+        itemName: exactItem,
+        size: getDefaultChoice(sizes, message, parseSizeChoice) ?? undefined,
+        texture: getDefaultChoice(textures, message, parseTextureChoice) ?? undefined,
+        quantity: parseQuantityChoice(message) ?? undefined,
+      };
+      setPendingOrder(nextOrder);
+      setLastItemName(exactItem);
+      setMessages((prev) => [...prev, { role: "agent", text: getItemSelectionPrompt(menuProducts, exactItem) }]);
       return;
     }
 
@@ -661,7 +1285,7 @@ function ChefSophieControl({
                       className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm shadow-sm ${
                         message.role === "user"
                           ? "bg-brand-primary text-white"
-                          : "bg-white text-brand-dark"
+                          : "whitespace-pre-line bg-white text-brand-dark"
                       }`}
                     >
                       {message.text}
@@ -685,14 +1309,14 @@ function ChefSophieControl({
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
               onKeyDown={(event) => {
-                if (event.key === "Enter") sendMessage();
+                if (event.key === "Enter") void sendMessage();
               }}
               className="min-w-0 flex-1 rounded-full border border-brand-dark/15 px-4 py-2 text-sm outline-none focus:border-brand-primary"
               placeholder="Type your message..."
             />
             <button
               type="button"
-              onClick={sendMessage}
+              onClick={() => void sendMessage()}
               className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-primary text-white transition hover:bg-brand-primary-hover"
               aria-label="Send message to Chef Sophie"
             >

@@ -63,6 +63,7 @@ const tests = [
       assert(source.widget.includes("function getMenuCategoryAnswer"), "Category follow-ups should list exact menu items by category.");
       assert(source.widget.includes("getMenuCategoryPrompt()"), "Menu questions should not dump the full menu.");
       assert(source.widget.includes('normalized.includes("menu")'), "Phrases like 'menu please' must be treated as menu questions.");
+      assert(source.widget.includes('normalized.includes("what is there")'), "Phrases like 'what is there' must be treated as menu questions.");
       assert(orderOf(source.widget, "if (isWeeklyMenuQuestion(message))", "sendUserMessage(message)") > 0, "Weekly menu guard must run before agent send.");
     },
   },
@@ -122,14 +123,20 @@ const tests = [
     },
   },
   {
-    name: "Sweet Potato Salmon is not treated as an exact current item",
+    name: "old hallucinated menu names are not treated as exact current items",
     run: () => {
       assert(source.widget.includes("KNOWN_UNAVAILABLE_MENU_NAMES"), "Known hallucinated names should be guarded before agent routing.");
       assert(source.widget.includes("getKnownUnavailableMenuNameAnswer"), "Known unavailable names should be rejected from any phrasing.");
+      assert(source.widget.includes('"Moujadara"'), "Old hallucinated platter Moujadara should be blocked.");
+      assert(source.widget.includes('"Okra Stew With Meat"'), "Old hallucinated platter Okra Stew With Meat should be blocked.");
+      assert(source.widget.includes('"Roast Meat With Veggies"'), "Old hallucinated platter Roast Meat With Veggies should be blocked.");
       assert(
         orderOf(source.widget, "const knownUnavailableMenuNameAnswer = getKnownUnavailableMenuNameAnswer(message, menuProducts)", "const recommendationAnswer = getRecommendationAnswer(message, menuProducts, foodContextRef.current)") > 0,
         "Known unavailable names must be rejected before food-preference recommendation logic.",
       );
+      assert(!source.products.includes('Item: "Moujadara"'), "Static fallback must not contain Moujadara unless it is truly on the menu.");
+      assert(!source.products.includes('Item: "Okra Stew With Meat"'), "Static fallback must not contain Okra Stew With Meat unless it is truly on the menu.");
+      assert(!source.products.includes('Item: "Roast Meat With Veggies"'), "Static fallback must not contain Roast Meat With Veggies unless it is truly on the menu.");
       assert(!source.products.includes('Item: "Sweet Potato Salmon"'), "Static fallback must not contain Sweet Potato Salmon unless it is truly on the menu.");
       assert(source.products.includes('Item: "Quinoa Salmon"'), "Expected exact salmon item is Quinoa Salmon.");
       assert(source.products.includes('Item: "Sweet Potato Kafta"'), "Expected exact sweet potato item is Sweet Potato Kafta.");

@@ -8,7 +8,8 @@
     "dev": "vite",
     "start": "vite preview",
     "telegram:sophie": "node scripts/telegram-sophie.mjs",
-    "test": "node scripts/smoke-test.mjs"
+    "test": "node scripts/smoke-test.mjs",
+    "stress:sophie": "node scripts/sophie-stress-harness.mjs"
   },
   "dependencies": {
     "@elevenlabs/react": "^1.6.3",
