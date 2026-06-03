@@ -4,6 +4,7 @@ import { ArrowLeft, X } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { PRODUCTS, type ProductData } from "../data/products";
 import { getProductImage } from "../utils/imageLoader";
+import { startLiveProductSync } from "../utils/liveProducts";
 import { FALLBACK_IMAGE } from "../constants";
 
 type ViewMode = "categories" | "items" | "detail";
@@ -53,10 +54,7 @@ export function Shop() {
   const [products, setProducts] = useState<ProductData[]>(PRODUCTS);
 
   useEffect(() => {
-    fetch('/api/products')
-      .then(r => { if (!r.ok) throw new Error(); return r.json(); })
-      .then((data: ProductData[]) => { if (Array.isArray(data) && data.length > 0) setProducts(data); })
-      .catch(() => { /* keep static fallback */ });
+    return startLiveProductSync(setProducts);
   }, []);
 
   const [viewMode, setViewMode] = useState<ViewMode>("categories");

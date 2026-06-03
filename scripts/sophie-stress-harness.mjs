@@ -109,12 +109,26 @@ function getExactMenuItems(products) {
   return Array.from(new Set(products.map((product) => product.item).filter(Boolean))).sort();
 }
 
-function getMenuCategoryPrompt() {
-  return "Which section would you like to see: Pudding, Platter, Finger Food, or Biscuit?";
+function getMenuCategoryPrompt(products) {
+  const preferredOrder = ["Pudding", "Platter", "Sweet Finger Food", "Savory Finger Food"];
+  const categories = preferredOrder.filter((category) =>
+    products.some((product) => product.category === category),
+  );
+  const visibleCategories = categories.length > 0 ? categories : preferredOrder;
+  const lastCategory = visibleCategories[visibleCategories.length - 1];
+  const leadingCategories = visibleCategories.slice(0, -1);
+
+  return `Which section would you like to see: ${leadingCategories.join(", ")}, or ${lastCategory}?`;
 }
 
 function getMenuCategoryFromMessage(message) {
   const normalized = normalizeText(message);
+  if (normalized.includes("sweet finger food") || normalized.includes("sweet finger foods")) {
+    return "Sweet Finger Food";
+  }
+  if (normalized.includes("savory finger food") || normalized.includes("savory finger foods")) {
+    return "Savory Finger Food";
+  }
   if (
     normalized.includes("finger food") ||
     normalized.includes("finger foods") ||
@@ -135,10 +149,39 @@ function getMenuCategoryFromMessage(message) {
   return null;
 }
 
+function getItemsForCategories(products, categories) {
+  const categorySet = new Set(categories);
+  return Array.from(
+    products.reduce((items, product) => {
+      if (categorySet.has(product.category) && product.item) items.add(product.item);
+      return items;
+    }, new Set()),
+  );
+}
+
 function getMenuCategoryAnswer(message, products) {
   const category = getMenuCategoryFromMessage(message);
   if (!category) return null;
-  const items = Array.from(new Set(products.filter((product) => product.category === category).map((product) => product.item))).sort();
+
+  if (category === "Finger Food") {
+    const sweetItems = getItemsForCategories(products, ["Sweet Finger Food"]);
+    const savoryItems = getItemsForCategories(products, ["Savory Finger Food"]);
+
+    if (sweetItems.length === 0 && savoryItems.length === 0) {
+      return "I do not see any exact finger food items on this week's menu.";
+    }
+
+    return [
+      "Sure. For finger food, we currently have:",
+      sweetItems.length > 0 ? `Sweet Finger Food:\n${sweetItems.join("\n")}` : "",
+      savoryItems.length > 0 ? `Savory Finger Food:\n${savoryItems.join("\n")}` : "",
+      "Which one would you like?",
+    ]
+      .filter(Boolean)
+      .join("\n\n");
+  }
+
+  const items = getItemsForCategories(products, [category]);
   if (items.length === 0) return `I do not see any exact ${category} items on this week's menu.`;
   return `${category} options this week:\n${items.join("\n")}\nWhich one would you like?`;
 }
@@ -748,7 +791,7 @@ class AgentSession {
       const itemNames = Array.from(new Set(candidateProducts.map((product) => product.item))).slice(0, 6);
       if (itemNames.length === 0) {
         this.clarificationAsked = true;
-        return `I do not see an exact ${preferredFoods.join(" or ")} item on this week's menu. ${getMenuCategoryPrompt()}`;
+        return `I do not see an exact ${preferredFoods.join(" or ")} item on this week's menu. ${getMenuCategoryPrompt(products)}`;
       }
       return [
         `Here are exact current-menu options for ${preferredFoods.join(" and ")}:`,
@@ -764,7 +807,7 @@ class AgentSession {
     if (categoryAnswer) return categoryAnswer;
 
     if (/\bwhat do you have\b|\bwhat is there\b|\bwhats there\b|\bwhat is available\b|\bwhats available\b|\bavailable\b|\bwhat can i order\b|\bwhat can i buy\b|\bwhat can i get\b|\bwhat can we order\b|\bwhat is on\b|\bwhats on\b|\bthis week\b|\bmenu\b/i.test(normalizeText(message))) {
-      return getMenuCategoryPrompt();
+      return getMenuCategoryPrompt(products);
     }
 
     const availability = getAvailabilityAnswer(message, products);

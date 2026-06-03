@@ -1,0 +1,23 @@
+
+> baby-cuisine-website@0.0.1 dev
+> vite --host 127.0.0.1 --port 5174
+
+
+  [32m[1mVITE[22m v7.3.2[39m  [2mready in [0m[1m1711[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m5174[22m/[39m
+[2m9:51:06 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/context/AuthContext.tsx, /src/styles/index.css[22m
+[2m9:51:06 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/context/AuthContext.tsx, /src/styles/index.css[22m
+[2m10:25:36 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/ChefSophieWidget.tsx, /src/styles/index.css[22m
+[2m10:25:36 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/ChefSophieWidget.tsx, /src/styles/index.css[22m
+[2m10:29:47 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/styles/index.css, /src/app/components/Shop.tsx, /src/app/components/ChefSophieWidget.tsx[22m
+[2m10:33:26 AM[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[2m10:33:26 AM[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[2m10:33:26 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m Re-optimizing dependencies because vite config has changed
+[2m10:33:27 AM[22m [36m[1m[vite][22m[39m server restarted.
+[2m10:36:07 AM[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[2m10:36:07 AM[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[2m10:36:08 AM[22m [36m[1m[vite][22m[39m server restarted.
+[2m11:27:42 AM[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[2m11:27:42 AM[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[2m11:27:43 AM[22m [36m[1m[vite][22m[39m server restarted.

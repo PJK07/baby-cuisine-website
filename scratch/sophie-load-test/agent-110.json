@@ -1,0 +1,270 @@
+{
+  "agent": "agent-110",
+  "persona": "Busy returning parent ordering for twins",
+  "behavior": "clear normal order",
+  "fulfillment": "Delivery to 123 Main Street, Beirut on Tuesday",
+  "specialInstructions": "Label puddings by child name; ring the bell once.",
+  "status": "pass",
+  "severity": "none",
+  "expectedItems": [
+    {
+      "item": "Almond Pancakes",
+      "size": "Box",
+      "quantity": 4
+    },
+    {
+      "item": "Veggie Soup",
+      "size": "200 ml",
+      "texture": "Fully Blended",
+      "quantity": 2
+    },
+    {
+      "item": "Riz B Halib",
+      "size": "250 ml",
+      "quantity": 6
+    }
+  ],
+  "parsedOrder": [
+    {
+      "itemCode": "almond pancakes",
+      "category": "Finger Food",
+      "item": "Almond Pancakes",
+      "size": "Box",
+      "texture": "",
+      "quantity": 4,
+      "price": 9,
+      "lineTotal": 36
+    },
+    {
+      "itemCode": "Veggie Soup",
+      "category": "Platter",
+      "item": "Veggie Soup",
+      "size": "200 ml",
+      "texture": "Fully Blended",
+      "quantity": 2,
+      "price": 5.5,
+      "lineTotal": 11
+    },
+    {
+      "itemCode": "riz bhalib",
+      "category": "Pudding",
+      "item": "Riz B Halib",
+      "size": "250 ml",
+      "texture": "",
+      "quantity": 6,
+      "price": 5,
+      "lineTotal": 30
+    }
+  ],
+  "expectedTotal": 77,
+  "finalOrderTotal": 77,
+  "transcript": [
+    {
+      "role": "agent",
+      "text": "Hi Maya, I'm Chef Sophie from Baby Cuisine. What would you like to order today?",
+      "at": "2026-06-02T11:12:49.953Z"
+    },
+    {
+      "role": "user",
+      "text": "hello",
+      "at": "2026-06-02T11:12:49.963Z"
+    },
+    {
+      "role": "agent",
+      "text": "Hi! What would you like to order today?",
+      "at": "2026-06-02T11:12:49.972Z"
+    },
+    {
+      "role": "user",
+      "text": "what do you have",
+      "at": "2026-06-02T11:12:49.996Z"
+    },
+    {
+      "role": "agent",
+      "text": "Which section would you like to see: Pudding, Platter, Finger Food, or Biscuit?",
+      "at": "2026-06-02T11:12:49.997Z"
+    },
+    {
+      "role": "user",
+      "text": "finger food",
+      "at": "2026-06-02T11:12:50.011Z"
+    },
+    {
+      "role": "agent",
+      "text": "Finger Food options this week:\nAlmond Pancakes\nCake\nChicken Fingers\nLamb Kebbe\nSalmon Fingers\nWhich one would you like?",
+      "at": "2026-06-02T11:12:50.012Z"
+    },
+    {
+      "role": "user",
+      "text": "almond pancakes",
+      "at": "2026-06-02T11:12:50.026Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Almond Pancakes is on this week's exact menu.\nPlease choose size (Box).",
+      "at": "2026-06-02T11:12:50.027Z"
+    },
+    {
+      "role": "user",
+      "text": "4",
+      "at": "2026-06-02T11:12:50.052Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 4 x Almond Pancakes, Box at $9 each. Total: $36.00.",
+      "at": "2026-06-02T11:12:50.053Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.064Z"
+    },
+    {
+      "role": "agent",
+      "text": "4 x Almond Pancakes added to your cart at $36.00 total.",
+      "at": "2026-06-02T11:12:50.064Z"
+    },
+    {
+      "role": "user",
+      "text": "i want other thing",
+      "at": "2026-06-02T11:12:50.072Z"
+    },
+    {
+      "role": "agent",
+      "text": "I can help you choose exact items from this week's menu and add them to your cart. What would you like to order today?",
+      "at": "2026-06-02T11:12:50.072Z"
+    },
+    {
+      "role": "user",
+      "text": "platter",
+      "at": "2026-06-02T11:12:50.083Z"
+    },
+    {
+      "role": "agent",
+      "text": "Platter options this week:\nBazella With Meat\nBurghol 3A Banadoura\nChicken Soup\nLemon Lentice Soup\nMoghrabieh\nQuinoa Salmon\nSiyadiyeh\nSweet Potato Kafta\nVeggie Soup\nWhich one would you like?",
+      "at": "2026-06-02T11:12:50.086Z"
+    },
+    {
+      "role": "user",
+      "text": "veggie soup",
+      "at": "2026-06-02T11:12:50.090Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Veggie Soup is on this week's exact menu.\nPlease choose size (250 ml, 120 ml, 200 ml) and texture (Fully Blended, Half Blended, Pieces).",
+      "at": "2026-06-02T11:12:50.091Z"
+    },
+    {
+      "role": "user",
+      "text": "200 ml fully blended",
+      "at": "2026-06-02T11:12:50.097Z"
+    },
+    {
+      "role": "agent",
+      "text": "How many portions of Veggie Soup would you like?",
+      "at": "2026-06-02T11:12:50.098Z"
+    },
+    {
+      "role": "user",
+      "text": "2",
+      "at": "2026-06-02T11:12:50.104Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 2 x Veggie Soup, 200 ml, Fully Blended at $5.5 each. Total: $11.00.",
+      "at": "2026-06-02T11:12:50.104Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.110Z"
+    },
+    {
+      "role": "agent",
+      "text": "2 x Veggie Soup added to your cart at $11.00 total.",
+      "at": "2026-06-02T11:12:50.111Z"
+    },
+    {
+      "role": "user",
+      "text": "add pudding",
+      "at": "2026-06-02T11:12:50.136Z"
+    },
+    {
+      "role": "agent",
+      "text": "Pudding options this week:\nApple Quinoa\nChia Berries\nChia Meghle\nCoconut Custard\nMhalabiye\nQuinoa Banana Blueberry\nRiz B Halib\nWhich one would you like?",
+      "at": "2026-06-02T11:12:50.137Z"
+    },
+    {
+      "role": "user",
+      "text": "riz b halib",
+      "at": "2026-06-02T11:12:50.147Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Riz B Halib is on this week's exact menu.\nPlease choose size (250 ml, 120 ml).",
+      "at": "2026-06-02T11:12:50.147Z"
+    },
+    {
+      "role": "user",
+      "text": "250 ml",
+      "at": "2026-06-02T11:12:50.159Z"
+    },
+    {
+      "role": "agent",
+      "text": "How many portions of Riz B Halib would you like?",
+      "at": "2026-06-02T11:12:50.159Z"
+    },
+    {
+      "role": "user",
+      "text": "6",
+      "at": "2026-06-02T11:12:50.164Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 6 x Riz B Halib, 250 ml at $5 each. Total: $30.00.",
+      "at": "2026-06-02T11:12:50.165Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.201Z"
+    },
+    {
+      "role": "agent",
+      "text": "6 x Riz B Halib added to your cart at $30.00 total.",
+      "at": "2026-06-02T11:12:50.202Z"
+    },
+    {
+      "role": "user",
+      "text": "Tuesday delivery please",
+      "at": "2026-06-02T11:12:50.239Z"
+    },
+    {
+      "role": "agent",
+      "text": "Baby Cuisine delivers in Lebanon. The delivery charge depends on your location, and the checkout form will ask for your delivery address.",
+      "at": "2026-06-02T11:12:50.239Z"
+    },
+    {
+      "role": "user",
+      "text": "123 Main Street, Beirut",
+      "at": "2026-06-02T11:12:50.284Z"
+    },
+    {
+      "role": "agent",
+      "text": "What would you like to order today?",
+      "at": "2026-06-02T11:12:50.285Z"
+    },
+    {
+      "role": "user",
+      "text": "please label the puddings for each twin and ring the bell once",
+      "at": "2026-06-02T11:12:50.354Z"
+    },
+    {
+      "role": "agent",
+      "text": "I noted that instruction. Please also include it in the checkout form so the team sees it with your order.",
+      "at": "2026-06-02T11:12:50.354Z"
+    }
+  ],
+  "errors": [],
+  "anomalies": []
+}

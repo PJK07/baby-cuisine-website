@@ -1,0 +1,219 @@
+{
+  "agent": "agent-116",
+  "persona": "Customer placing a very large but valid bulk order",
+  "behavior": "very large quantities",
+  "fulfillment": "Pickup for nursery event",
+  "specialInstructions": "Pack puddings by flavor and keep receipt itemized.",
+  "status": "pass",
+  "severity": "none",
+  "expectedItems": [
+    {
+      "item": "Chia Berries",
+      "size": "120 ml",
+      "quantity": 25
+    },
+    {
+      "item": "Riz B Halib",
+      "size": "250 ml",
+      "quantity": 30
+    },
+    {
+      "item": "Almond Pancakes",
+      "size": "Box",
+      "quantity": 10
+    }
+  ],
+  "parsedOrder": [
+    {
+      "itemCode": "chia berries",
+      "category": "Pudding",
+      "item": "Chia Berries",
+      "size": "120 ml",
+      "texture": "",
+      "quantity": 25,
+      "price": 3.5,
+      "lineTotal": 87.5
+    },
+    {
+      "itemCode": "riz bhalib",
+      "category": "Pudding",
+      "item": "Riz B Halib",
+      "size": "250 ml",
+      "texture": "",
+      "quantity": 30,
+      "price": 5,
+      "lineTotal": 150
+    },
+    {
+      "itemCode": "almond pancakes",
+      "category": "Finger Food",
+      "item": "Almond Pancakes",
+      "size": "Box",
+      "texture": "",
+      "quantity": 10,
+      "price": 9,
+      "lineTotal": 90
+    }
+  ],
+  "expectedTotal": 327.5,
+  "finalOrderTotal": 327.5,
+  "transcript": [
+    {
+      "role": "agent",
+      "text": "Hi Sara, I'm Chef Sophie from Baby Cuisine. What would you like to order today?",
+      "at": "2026-06-02T11:12:49.990Z"
+    },
+    {
+      "role": "user",
+      "text": "pudding",
+      "at": "2026-06-02T11:12:49.990Z"
+    },
+    {
+      "role": "agent",
+      "text": "Pudding options this week:\nApple Quinoa\nChia Berries\nChia Meghle\nCoconut Custard\nMhalabiye\nQuinoa Banana Blueberry\nRiz B Halib\nWhich one would you like?",
+      "at": "2026-06-02T11:12:49.990Z"
+    },
+    {
+      "role": "user",
+      "text": "chia berries",
+      "at": "2026-06-02T11:12:50.002Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Chia Berries is on this week's exact menu.\nPlease choose size (250 ml, 120 ml).",
+      "at": "2026-06-02T11:12:50.002Z"
+    },
+    {
+      "role": "user",
+      "text": "120 ml",
+      "at": "2026-06-02T11:12:50.015Z"
+    },
+    {
+      "role": "agent",
+      "text": "How many portions of Chia Berries would you like?",
+      "at": "2026-06-02T11:12:50.016Z"
+    },
+    {
+      "role": "user",
+      "text": "25",
+      "at": "2026-06-02T11:12:50.036Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 25 x Chia Berries, 120 ml at $3.5 each. Total: $87.50.",
+      "at": "2026-06-02T11:12:50.036Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.061Z"
+    },
+    {
+      "role": "agent",
+      "text": "25 x Chia Berries added to your cart at $87.50 total.",
+      "at": "2026-06-02T11:12:50.061Z"
+    },
+    {
+      "role": "user",
+      "text": "add another pudding",
+      "at": "2026-06-02T11:12:50.069Z"
+    },
+    {
+      "role": "agent",
+      "text": "Pudding options this week:\nApple Quinoa\nChia Berries\nChia Meghle\nCoconut Custard\nMhalabiye\nQuinoa Banana Blueberry\nRiz B Halib\nWhich one would you like?",
+      "at": "2026-06-02T11:12:50.070Z"
+    },
+    {
+      "role": "user",
+      "text": "riz b halib",
+      "at": "2026-06-02T11:12:50.075Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Riz B Halib is on this week's exact menu.\nPlease choose size (250 ml, 120 ml).",
+      "at": "2026-06-02T11:12:50.077Z"
+    },
+    {
+      "role": "user",
+      "text": "250 ml",
+      "at": "2026-06-02T11:12:50.088Z"
+    },
+    {
+      "role": "agent",
+      "text": "How many portions of Riz B Halib would you like?",
+      "at": "2026-06-02T11:12:50.089Z"
+    },
+    {
+      "role": "user",
+      "text": "30",
+      "at": "2026-06-02T11:12:50.094Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 30 x Riz B Halib, 250 ml at $5 each. Total: $150.00.",
+      "at": "2026-06-02T11:12:50.095Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.102Z"
+    },
+    {
+      "role": "agent",
+      "text": "30 x Riz B Halib added to your cart at $150.00 total.",
+      "at": "2026-06-02T11:12:50.102Z"
+    },
+    {
+      "role": "user",
+      "text": "finger food",
+      "at": "2026-06-02T11:12:50.107Z"
+    },
+    {
+      "role": "agent",
+      "text": "Finger Food options this week:\nAlmond Pancakes\nCake\nChicken Fingers\nLamb Kebbe\nSalmon Fingers\nWhich one would you like?",
+      "at": "2026-06-02T11:12:50.108Z"
+    },
+    {
+      "role": "user",
+      "text": "almond pancakes",
+      "at": "2026-06-02T11:12:50.126Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Almond Pancakes is on this week's exact menu.\nPlease choose size (Box).",
+      "at": "2026-06-02T11:12:50.127Z"
+    },
+    {
+      "role": "user",
+      "text": "10",
+      "at": "2026-06-02T11:12:50.144Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 10 x Almond Pancakes, Box at $9 each. Total: $90.00.",
+      "at": "2026-06-02T11:12:50.145Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.156Z"
+    },
+    {
+      "role": "agent",
+      "text": "10 x Almond Pancakes added to your cart at $90.00 total.",
+      "at": "2026-06-02T11:12:50.156Z"
+    },
+    {
+      "role": "user",
+      "text": "pickup for nursery event, pack each pudding flavor separately",
+      "at": "2026-06-02T11:12:50.162Z"
+    },
+    {
+      "role": "agent",
+      "text": "I noted that instruction. Please also include it in the checkout form so the team sees it with your order.",
+      "at": "2026-06-02T11:12:50.162Z"
+    }
+  ],
+  "errors": [],
+  "anomalies": []
+}

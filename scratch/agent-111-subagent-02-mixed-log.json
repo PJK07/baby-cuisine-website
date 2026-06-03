@@ -1,0 +1,314 @@
+﻿{
+    "requestedAgentId":  "Agent 111",
+    "subagent":  "2 of 10",
+    "persona":  "typo-heavy parent ordering mixed puddings and platters",
+    "mode":  "repo-local deterministic simulator artifact",
+    "productionDataTouched":  false,
+    "generatedAt":  "2026-06-02T10:00:49.143Z",
+    "status":  "pass",
+    "severity":  "none",
+    "promptsSent":  [
+                        {
+                            "role":  "user",
+                            "text":  "piudding",
+                            "at":  "2026-06-02T13:03:00.750Z"
+                        },
+                        {
+                            "role":  "user",
+                            "text":  "riz bhalib",
+                            "at":  "2026-06-02T13:03:02.250Z"
+                        },
+                        {
+                            "role":  "user",
+                            "text":  "250 ml",
+                            "at":  "2026-06-02T13:03:03.750Z"
+                        },
+                        {
+                            "role":  "user",
+                            "text":  "5",
+                            "at":  "2026-06-02T13:03:05.250Z"
+                        },
+                        {
+                            "role":  "user",
+                            "text":  "yes",
+                            "at":  "2026-06-02T13:03:06.750Z"
+                        },
+                        {
+                            "role":  "user",
+                            "text":  "chia berris",
+                            "at":  "2026-06-02T13:03:08.250Z"
+                        },
+                        {
+                            "role":  "user",
+                            "text":  "120 ml",
+                            "at":  "2026-06-02T13:03:09.750Z"
+                        },
+                        {
+                            "role":  "user",
+                            "text":  "3",
+                            "at":  "2026-06-02T13:03:11.250Z"
+                        },
+                        {
+                            "role":  "user",
+                            "text":  "yes",
+                            "at":  "2026-06-02T13:03:12.750Z"
+                        },
+                        {
+                            "role":  "user",
+                            "text":  "plater too",
+                            "at":  "2026-06-02T13:03:14.250Z"
+                        },
+                        {
+                            "role":  "user",
+                            "text":  "moghraabieh",
+                            "at":  "2026-06-02T13:03:15.750Z"
+                        },
+                        {
+                            "role":  "user",
+                            "text":  "big fully blendd",
+                            "at":  "2026-06-02T13:03:17.250Z"
+                        },
+                        {
+                            "role":  "user",
+                            "text":  "2",
+                            "at":  "2026-06-02T13:03:18.750Z"
+                        },
+                        {
+                            "role":  "user",
+                            "text":  "yes",
+                            "at":  "2026-06-02T13:03:20.250Z"
+                        },
+                        {
+                            "role":  "user",
+                            "text":  "deliver friday to hamra near aub main gate, call before delivery, no added sugar if possible",
+                            "at":  "2026-06-02T13:03:21.750Z"
+                        },
+                        {
+                            "role":  "user",
+                            "text":  "what is total",
+                            "at":  "2026-06-02T13:03:23.250Z"
+                        }
+                    ],
+    "transcript":  [
+                       {
+                           "role":  "agent",
+                           "text":  "Hi Omar, I\u0027m Chef Sophie from Baby Cuisine. What would you like to order today?",
+                           "at":  "2026-06-02T13:03:00.000Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "piudding",
+                           "at":  "2026-06-02T13:03:00.750Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "Pudding options this week:\nApple Quinoa\nChia Berries\nChia Meghle\nCoconut Custard\nMhalabiye\nQuinoa Banana Blueberry\nRiz B Halib\nWhich one would you like?",
+                           "at":  "2026-06-02T13:03:01.500Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "riz bhalib",
+                           "at":  "2026-06-02T13:03:02.250Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "Great choice. Riz B Halib is on this week\u0027s exact menu.\nPlease choose size (250 ml, 120 ml).",
+                           "at":  "2026-06-02T13:03:03.000Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "250 ml",
+                           "at":  "2026-06-02T13:03:03.750Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "How many portions of Riz B Halib would you like?",
+                           "at":  "2026-06-02T13:03:04.500Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "5",
+                           "at":  "2026-06-02T13:03:05.250Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "Please confirm: 5 x Riz B Halib, 250 ml at $5 each. Total: $25.00.",
+                           "at":  "2026-06-02T13:03:06.000Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "yes",
+                           "at":  "2026-06-02T13:03:06.750Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "5 x Riz B Halib added to your cart at $25.00 total.",
+                           "at":  "2026-06-02T13:03:07.500Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "chia berris",
+                           "at":  "2026-06-02T13:03:08.250Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "Great choice. Chia Berries is on this week\u0027s exact menu.\nPlease choose size (250 ml, 120 ml).",
+                           "at":  "2026-06-02T13:03:09.000Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "120 ml",
+                           "at":  "2026-06-02T13:03:09.750Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "How many portions of Chia Berries would you like?",
+                           "at":  "2026-06-02T13:03:10.500Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "3",
+                           "at":  "2026-06-02T13:03:11.250Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "Please confirm: 3 x Chia Berries, 120 ml at $3.5 each. Total: $10.50.",
+                           "at":  "2026-06-02T13:03:12.000Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "yes",
+                           "at":  "2026-06-02T13:03:12.750Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "3 x Chia Berries added to your cart at $10.50 total.",
+                           "at":  "2026-06-02T13:03:13.500Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "plater too",
+                           "at":  "2026-06-02T13:03:14.250Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "Platter options this week:\nBazella With Meat\nBurghol 3A Banadoura\nChicken Soup\nLemon Lentice Soup\nMoghrabieh\nQuinoa Salmon\nSiyadiyeh\nSweet Potato Kafta\nVeggie Soup\nWhich one would you like?",
+                           "at":  "2026-06-02T13:03:15.000Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "moghraabieh",
+                           "at":  "2026-06-02T13:03:15.750Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "Great choice. Moghrabieh is on this week\u0027s exact menu.\nPlease choose size (250 ml, 120 ml, 200 ml) and texture (Fully Blended, Half Blended, Pieces).",
+                           "at":  "2026-06-02T13:03:16.500Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "big fully blendd",
+                           "at":  "2026-06-02T13:03:17.250Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "How many portions of Moghrabieh would you like?",
+                           "at":  "2026-06-02T13:03:18.000Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "2",
+                           "at":  "2026-06-02T13:03:18.750Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "Please confirm: 2 x Moghrabieh, 250 ml, Fully Blended at $8 each. Total: $16.00.",
+                           "at":  "2026-06-02T13:03:19.500Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "yes",
+                           "at":  "2026-06-02T13:03:20.250Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "2 x Moghrabieh added to your cart at $16.00 total.",
+                           "at":  "2026-06-02T13:03:21.000Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "deliver friday to hamra near aub main gate, call before delivery, no added sugar if possible",
+                           "at":  "2026-06-02T13:03:21.750Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "Moghrabieh is delivered on Friday. Baby Cuisine delivers in Lebanon. The checkout form will ask for your exact delivery address and special instructions.",
+                           "at":  "2026-06-02T13:03:22.500Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "what is total",
+                           "at":  "2026-06-02T13:03:23.250Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "Your current cart total is $51.50.",
+                           "at":  "2026-06-02T13:03:24.000Z"
+                       }
+                   ],
+    "parsedOrder":  [
+                        {
+                            "itemCode":  "riz bhalib",
+                            "category":  "Pudding",
+                            "item":  "Riz B Halib",
+                            "size":  "250 ml",
+                            "texture":  "",
+                            "quantity":  5,
+                            "price":  5,
+                            "lineTotal":  25
+                        },
+                        {
+                            "itemCode":  "chia berries",
+                            "category":  "Pudding",
+                            "item":  "Chia Berries",
+                            "size":  "120 ml",
+                            "texture":  "",
+                            "quantity":  3,
+                            "price":  3.5,
+                            "lineTotal":  10.5
+                        },
+                        {
+                            "itemCode":  "Moghrabieh",
+                            "category":  "Platter",
+                            "item":  "Moghrabieh",
+                            "size":  "250 ml",
+                            "texture":  "Fully Blended",
+                            "quantity":  2,
+                            "price":  8,
+                            "lineTotal":  16
+                        }
+                    ],
+    "finalOrderTotal":  51.5,
+    "expectedTotal":  51.5,
+    "errors":  [
+
+               ],
+    "latencyMs":  {
+                      "average":  0.75,
+                      "total":  24
+                  },
+    "clarificationAsked":  true,
+    "confirmedCorrectItems":  true,
+    "anomalies":  [
+
+                  ],
+    "expectedChecks":  [
+                           "typo category piudding resolved to Pudding",
+                           "typo item chia berris resolved to Chia Berries",
+                           "typo item moghraabieh resolved to Moghrabieh",
+                           "big fully blendd resolved to 250 ml Fully Blended",
+                           "Friday delivery note preserved as delivery context",
+                           "no hallucinated products detected",
+                           "totals matched expected fixture prices"
+                       ]
+}

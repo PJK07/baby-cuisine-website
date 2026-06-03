@@ -1,0 +1,249 @@
+{
+  "agent": "agent-119",
+  "persona": "Customer cancels one confirmed item and replaces it",
+  "behavior": "cancellation or change after confirmation",
+  "fulfillment": "Tuesday delivery to office reception",
+  "specialInstructions": "Write baby name on the bag.",
+  "status": "pass",
+  "severity": "none",
+  "expectedItems": [
+    {
+      "item": "Quinoa Banana Blueberry",
+      "size": "250 ml",
+      "quantity": 2
+    },
+    {
+      "item": "Coconut Custard",
+      "size": "120 ml",
+      "quantity": 3
+    },
+    {
+      "item": "Salmon Fingers",
+      "size": "Box",
+      "quantity": 2
+    }
+  ],
+  "parsedOrder": [
+    {
+      "itemCode": "quinoa banana blueberry",
+      "category": "Pudding",
+      "item": "Quinoa Banana Blueberry",
+      "size": "250 ml",
+      "texture": "",
+      "quantity": 2,
+      "price": 5,
+      "lineTotal": 10
+    },
+    {
+      "itemCode": "coconut custard",
+      "category": "Pudding",
+      "item": "Coconut Custard",
+      "size": "120 ml",
+      "texture": "",
+      "quantity": 3,
+      "price": 4,
+      "lineTotal": 12
+    },
+    {
+      "itemCode": "salmon fingers",
+      "category": "Finger Food",
+      "item": "Salmon Fingers",
+      "size": "Box",
+      "texture": "",
+      "quantity": 2,
+      "price": 15,
+      "lineTotal": 30
+    }
+  ],
+  "expectedTotal": 52,
+  "finalOrderTotal": 52,
+  "transcript": [
+    {
+      "role": "agent",
+      "text": "Hi Yousef, I'm Chef Sophie from Baby Cuisine. What would you like to order today?",
+      "at": "2026-06-02T11:12:49.994Z"
+    },
+    {
+      "role": "user",
+      "text": "pudding",
+      "at": "2026-06-02T11:12:49.994Z"
+    },
+    {
+      "role": "agent",
+      "text": "Pudding options this week:\nApple Quinoa\nChia Berries\nChia Meghle\nCoconut Custard\nMhalabiye\nQuinoa Banana Blueberry\nRiz B Halib\nWhich one would you like?",
+      "at": "2026-06-02T11:12:49.996Z"
+    },
+    {
+      "role": "user",
+      "text": "mhalabiye",
+      "at": "2026-06-02T11:12:50.009Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Mhalabiye is on this week's exact menu.\nPlease choose size (250 ml, 120 ml).",
+      "at": "2026-06-02T11:12:50.011Z"
+    },
+    {
+      "role": "user",
+      "text": "120 ml",
+      "at": "2026-06-02T11:12:50.025Z"
+    },
+    {
+      "role": "agent",
+      "text": "How many portions of Mhalabiye would you like?",
+      "at": "2026-06-02T11:12:50.026Z"
+    },
+    {
+      "role": "user",
+      "text": "4",
+      "at": "2026-06-02T11:12:50.039Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 4 x Mhalabiye, 120 ml at $3.5 each. Total: $14.00.",
+      "at": "2026-06-02T11:12:50.052Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.063Z"
+    },
+    {
+      "role": "agent",
+      "text": "4 x Mhalabiye added to your cart at $14.00 total.",
+      "at": "2026-06-02T11:12:50.064Z"
+    },
+    {
+      "role": "user",
+      "text": "cancel it",
+      "at": "2026-06-02T11:12:50.071Z"
+    },
+    {
+      "role": "agent",
+      "text": "Okay, I removed Mhalabiye from your cart. What would you like instead?",
+      "at": "2026-06-02T11:12:50.072Z"
+    },
+    {
+      "role": "user",
+      "text": "instead quinoa banana blueberry",
+      "at": "2026-06-02T11:12:50.080Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Quinoa Banana Blueberry is on this week's exact menu.\nPlease choose size (250 ml, 120 ml).",
+      "at": "2026-06-02T11:12:50.082Z"
+    },
+    {
+      "role": "user",
+      "text": "250 ml",
+      "at": "2026-06-02T11:12:50.089Z"
+    },
+    {
+      "role": "agent",
+      "text": "How many portions of Quinoa Banana Blueberry would you like?",
+      "at": "2026-06-02T11:12:50.090Z"
+    },
+    {
+      "role": "user",
+      "text": "2",
+      "at": "2026-06-02T11:12:50.097Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 2 x Quinoa Banana Blueberry, 250 ml at $5 each. Total: $10.00.",
+      "at": "2026-06-02T11:12:50.097Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.104Z"
+    },
+    {
+      "role": "agent",
+      "text": "2 x Quinoa Banana Blueberry added to your cart at $10.00 total.",
+      "at": "2026-06-02T11:12:50.104Z"
+    },
+    {
+      "role": "user",
+      "text": "coconut custard",
+      "at": "2026-06-02T11:12:50.110Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Coconut Custard is on this week's exact menu.\nPlease choose size (250 ml, 120 ml).",
+      "at": "2026-06-02T11:12:50.110Z"
+    },
+    {
+      "role": "user",
+      "text": "120 ml",
+      "at": "2026-06-02T11:12:50.134Z"
+    },
+    {
+      "role": "agent",
+      "text": "How many portions of Coconut Custard would you like?",
+      "at": "2026-06-02T11:12:50.135Z"
+    },
+    {
+      "role": "user",
+      "text": "3",
+      "at": "2026-06-02T11:12:50.146Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 3 x Coconut Custard, 120 ml at $4 each. Total: $12.00.",
+      "at": "2026-06-02T11:12:50.147Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.158Z"
+    },
+    {
+      "role": "agent",
+      "text": "3 x Coconut Custard added to your cart at $12.00 total.",
+      "at": "2026-06-02T11:12:50.159Z"
+    },
+    {
+      "role": "user",
+      "text": "salmon fingers",
+      "at": "2026-06-02T11:12:50.164Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Salmon Fingers is on this week's exact menu.\nPlease choose size (Box).",
+      "at": "2026-06-02T11:12:50.164Z"
+    },
+    {
+      "role": "user",
+      "text": "2",
+      "at": "2026-06-02T11:12:50.200Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 2 x Salmon Fingers, Box at $15 each. Total: $30.00.",
+      "at": "2026-06-02T11:12:50.201Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.239Z"
+    },
+    {
+      "role": "agent",
+      "text": "2 x Salmon Fingers added to your cart at $30.00 total.",
+      "at": "2026-06-02T11:12:50.239Z"
+    },
+    {
+      "role": "user",
+      "text": "Tuesday delivery to office reception, write baby name on the bag",
+      "at": "2026-06-02T11:12:50.284Z"
+    },
+    {
+      "role": "agent",
+      "text": "Baby Cuisine delivers in Lebanon. The delivery charge depends on your location, and the checkout form will ask for your delivery address.",
+      "at": "2026-06-02T11:12:50.284Z"
+    }
+  ],
+  "errors": [],
+  "anomalies": []
+}

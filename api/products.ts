@@ -1,7 +1,7 @@
 // Vercel Edge Function — served at /api/products
 // Fetches the Google Sheet CSV server-side (no CORS / no mobile redirect issues).
-// Cached at Vercel's CDN edge for 60 s; stale responses served for up to 5 min
-// while a fresh fetch runs in the background.
+// Do not cache menu responses; menu edits in the published sheet should appear
+// as soon as Google updates the CSV feed.
 
 export const config = { runtime: 'edge' };
 
@@ -27,7 +27,10 @@ function parseCSVRow(str: string): string[] {
 
 export default async function handler(): Promise<Response> {
   try {
-    const res = await fetch(CSV_URL);
+    const res = await fetch(CSV_URL, {
+      cache: 'no-store',
+      headers: { Accept: 'text/csv' },
+    });
     if (!res.ok) throw new Error(`Sheet returned ${res.status}`);
 
     const text = await res.text();
@@ -63,9 +66,7 @@ export default async function handler(): Promise<Response> {
     return new Response(JSON.stringify(products), {
       headers: {
         'Content-Type': 'application/json',
-        // 60 s CDN cache; stale-while-revalidate keeps serving old data while
-        // a fresh fetch runs, so users never see a loading delay.
-        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+        'Cache-Control': 'no-store',
       },
     });
   } catch (err) {

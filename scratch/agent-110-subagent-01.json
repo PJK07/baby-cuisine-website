@@ -1,0 +1,120 @@
+{
+  "agent": "Agent 110",
+  "subagent": 1,
+  "persona": "busy returning parent ordering for twins",
+  "generatedAt": "2026-06-02T12:59:31+03:00",
+  "mode": "existing local stress harness / local-simulator",
+  "productionDataModified": false,
+  "messages": [
+    "Hi Sophie, this is Paul. I am a returning parent and I need a big order for my twins for Friday delivery.",
+    "finger food",
+    "almond pancakes",
+    "4",
+    "yes",
+    "chicken fingers",
+    "box",
+    "2",
+    "yes",
+    "platter",
+    "moghrabieh",
+    "250 ml fully blended",
+    "2",
+    "yes",
+    "veggie soup",
+    "200 ml half blended",
+    "4",
+    "yes",
+    "pudding",
+    "riz b halib",
+    "250 ml",
+    "4",
+    "yes",
+    "chia berries",
+    "120 ml",
+    "4",
+    "yes",
+    "Friday delivery please. Address is Building 12, 3rd floor, near ABC Achrafieh, Beirut. Please label half Twin A and half Twin B. Ring once because babies may be sleeping."
+  ],
+  "expectedCart": [
+    {
+      "item": "Almond Pancakes",
+      "category": "Finger Food",
+      "size": "Box",
+      "texture": "",
+      "quantity": 4,
+      "unitPrice": 9,
+      "lineTotal": 36
+    },
+    {
+      "item": "Chicken Fingers",
+      "category": "Finger Food",
+      "size": "Box",
+      "texture": "",
+      "quantity": 2,
+      "unitPrice": 15,
+      "lineTotal": 30
+    },
+    {
+      "item": "Moghrabieh",
+      "category": "Platter",
+      "size": "250 ml",
+      "texture": "Fully Blended",
+      "quantity": 2,
+      "unitPrice": 8,
+      "lineTotal": 16
+    },
+    {
+      "item": "Veggie Soup",
+      "category": "Platter",
+      "size": "200 ml",
+      "texture": "Half Blended",
+      "quantity": 4,
+      "unitPrice": 5.5,
+      "lineTotal": 22
+    },
+    {
+      "item": "Riz B Halib",
+      "category": "Pudding",
+      "size": "250 ml",
+      "texture": "",
+      "quantity": 4,
+      "unitPrice": 5,
+      "lineTotal": 20
+    },
+    {
+      "item": "Chia Berries",
+      "category": "Pudding",
+      "size": "120 ml",
+      "texture": "",
+      "quantity": 4,
+      "unitPrice": 3.5,
+      "lineTotal": 14
+    }
+  ],
+  "expectedSubtotal": 138,
+  "delivery": {
+    "day": "Friday",
+    "address": "Building 12, 3rd floor, near ABC Achrafieh, Beirut",
+    "specialInstructions": "Please label half Twin A and half Twin B. Ring once because babies may be sleeping."
+  },
+  "runResult": {
+    "fullHarnessReport": "scratch/sophie-stress-report.json",
+    "fullHarnessPassed": "10 / 10",
+    "personaScenarioExecutedDirectly": false,
+    "reason": "Existing harness has no CLI option for injecting one custom scenario without editing shared test definitions."
+  },
+  "anomalies": [
+    {
+      "severity": "low",
+      "type": "test-harness-limitation",
+      "detail": "The reusable harness cannot run a single custom persona scenario from CLI.",
+      "reproductionSteps": [
+        "Run npm run stress:sophie",
+        "Observe it executes the built-in 10 scenarios only",
+        "There is no --agent or --scenario-file option for Agent 110"
+      ],
+      "suggestedFix": "Add a non-production --scenario-file option to scripts/sophie-stress-harness.mjs."
+    }
+  ],
+  "status": "completed_with_documented_limitation"
+}

@@ -9,6 +9,7 @@ import { supabase } from "../lib/supabase";
 import { CartItem, useCart } from "../context/CartContext";
 import { resolveCanonicalProduct } from "../utils/productResolver";
 import { PRODUCTS, type ProductData } from "../data/products";
+import { startLiveProductSync } from "../utils/liveProducts";
 
 const AGENT_ID = "agent_9001kshhvbjcfhp8qmxcheks3ajx";
 const KNOWN_UNAVAILABLE_MENU_NAMES = [
@@ -21,10 +22,6 @@ const isDev = import.meta.env.DEV;
 
 const devLog = (...args: unknown[]) => {
   if (isDev) console.log(...args);
-};
-
-const devWarn = (...args: unknown[]) => {
-  if (isDev) console.warn(...args);
 };
 
 const devError = (...args: unknown[]) => {
@@ -223,13 +220,28 @@ function getExactMenuItems(products: ProductData[]): string[] {
   return Array.from(new Set(products.map((product) => product.Item).filter(Boolean))).sort();
 }
 
-function getMenuCategoryPrompt(): string {
-  return "Which section would you like to see: Pudding, Platter, Finger Food, or Biscuit?";
+function getMenuCategoryPrompt(products: ProductData[]): string {
+  const preferredOrder = ["Pudding", "Platter", "Sweet Finger Food", "Savory Finger Food"];
+  const categories = preferredOrder.filter((category) =>
+    products.some((product) => product.Category === category),
+  );
+
+  const visibleCategories = categories.length > 0 ? categories : preferredOrder;
+  const lastCategory = visibleCategories[visibleCategories.length - 1];
+  const leadingCategories = visibleCategories.slice(0, -1);
+
+  return `Which section would you like to see: ${leadingCategories.join(", ")}, or ${lastCategory}?`;
 }
 
 function getMenuCategoryFromMessage(message: string): string | null {
   const normalized = normalizeMenuText(message);
 
+  if (normalized.includes("sweet finger food") || normalized.includes("sweet finger foods")) {
+    return "Sweet Finger Food";
+  }
+  if (normalized.includes("savory finger food") || normalized.includes("savory finger foods")) {
+    return "Savory Finger Food";
+  }
   if (
     normalized.includes("finger food") ||
     normalized.includes("finger foods") ||
@@ -251,13 +263,39 @@ function getMenuCategoryFromMessage(message: string): string | null {
   return null;
 }
 
+function getItemsForCategories(products: ProductData[], categories: string[]): string[] {
+  const categorySet = new Set(categories);
+  return Array.from(
+    products.reduce<Set<string>>((items, product) => {
+      if (categorySet.has(product.Category) && product.Item) items.add(product.Item);
+      return items;
+    }, new Set()),
+  );
+}
+
 function getMenuCategoryAnswer(message: string, products: ProductData[]): string | null {
   const category = getMenuCategoryFromMessage(message);
   if (!category) return null;
 
-  const items = Array.from(
-    new Set(products.filter((product) => product.Category === category).map((product) => product.Item)),
-  ).sort();
+  if (category === "Finger Food") {
+    const sweetItems = getItemsForCategories(products, ["Sweet Finger Food"]);
+    const savoryItems = getItemsForCategories(products, ["Savory Finger Food"]);
+
+    if (sweetItems.length === 0 && savoryItems.length === 0) {
+      return "I do not see any exact finger food items on this week's menu.";
+    }
+
+    return [
+      "Sure. For finger food, we currently have:",
+      sweetItems.length > 0 ? `Sweet Finger Food:\n${sweetItems.join("\n")}` : "",
+      savoryItems.length > 0 ? `Savory Finger Food:\n${savoryItems.join("\n")}` : "",
+      "Which one would you like?",
+    ]
+      .filter(Boolean)
+      .join("\n\n");
+  }
+
+  const items = getItemsForCategories(products, [category]);
 
   if (items.length === 0) return `I do not see any exact ${category} items on this week's menu.`;
 
@@ -447,7 +485,7 @@ function getRecommendationAnswer(
 
   const itemNames = Array.from(new Set(candidateProducts.map((product) => product.Item))).slice(0, 6);
   if (itemNames.length === 0 && preferredFoods.length > 0) {
-    return `I do not see an exact ${preferredFoods.join(" or ")} item on this week's menu. ${getMenuCategoryPrompt()}`;
+    return `I do not see an exact ${preferredFoods.join(" or ")} item on this week's menu. ${getMenuCategoryPrompt(products)}`;
   }
 
   const choices = itemNames.map((itemName) => getProductSummary(products, itemName)).join("\n");
@@ -771,21 +809,6 @@ function getKnownUnavailableMenuNameAnswer(message: string, products: ProductDat
   return null;
 }
 
-async function loadCurrentProducts(): Promise<ProductData[]> {
-  if (typeof window === "undefined") return PRODUCTS;
-
-  return fetch("/api/products")
-    .then((response) => {
-      if (!response.ok) throw new Error(`Product API returned ${response.status}`);
-      return response.json();
-    })
-    .then((data: unknown) => (Array.isArray(data) && data.length > 0 ? data as ProductData[] : PRODUCTS))
-    .catch((error) => {
-      devWarn("Chef Sophie menu load failed; using fallback products:", error);
-      return PRODUCTS;
-    });
-}
-
 function getExactMenuPrompt(products: ProductData[]): string {
   const items = Array.from(
     products.reduce<Map<string, ProductData[]>>((groups, product) => {
@@ -870,6 +893,7 @@ function ChefSophieControl({
   const hideOpeningGreetingRef = useRef(false);
   const hiddenOpeningGreetingTextRef = useRef<string | null>(null);
   const contextSentForSessionRef = useRef<string | null>(null);
+  const contextValueSentRef = useRef<string | null>(null);
   const foodContextRef = useRef<ChatFoodContext>({
     preferredFoods: getFoodKeywords(variables.baby_preferences),
   });
@@ -921,7 +945,9 @@ function ChefSophieControl({
     if (status !== "connected") return;
 
     const sessionId = getId();
-    if (contextSentForSessionRef.current === sessionId) {
+    const contextKey = `${sessionId}:${sessionContext}`;
+
+    if (contextSentForSessionRef.current === sessionId && contextValueSentRef.current === contextKey) {
       if (!pendingMessageRef.current) return;
 
       sendUserMessage(pendingMessageRef.current);
@@ -932,6 +958,7 @@ function ChefSophieControl({
     const timer = window.setTimeout(() => {
       sendContextualUpdate(sessionContext, { contextId: "current-weekly-menu" });
       contextSentForSessionRef.current = sessionId;
+      contextValueSentRef.current = contextKey;
 
       if (!pendingMessageRef.current) return;
 
@@ -981,6 +1008,24 @@ function ChefSophieControl({
       startSession({ textOnly: true });
     }
   };
+
+  const closeChat = useCallback(() => {
+    setIsChatOpen(false);
+    if (isActive) endSession();
+
+    setMessages([]);
+    setDraft("");
+    setPendingOrder(null);
+    setLastItemName(null);
+    setLastAddedCartLine(null);
+    setIsWaitingForReply(false);
+
+    pendingMessageRef.current = null;
+    hideOpeningGreetingRef.current = false;
+    hiddenOpeningGreetingTextRef.current = null;
+    contextSentForSessionRef.current = null;
+    contextValueSentRef.current = null;
+  }, [endSession, isActive]);
 
   const sendMessage = async () => {
     const message = draft.trim();
@@ -1215,7 +1260,7 @@ function ChefSophieControl({
     }
 
     if (isWeeklyMenuQuestion(message)) {
-      setMessages((prev) => [...prev, { role: "agent", text: getMenuCategoryPrompt() }]);
+      setMessages((prev) => [...prev, { role: "agent", text: getMenuCategoryPrompt(menuProducts) }]);
       return;
     }
 
@@ -1261,7 +1306,7 @@ function ChefSophieControl({
             </div>
             <button
               type="button"
-              onClick={() => setIsChatOpen(false)}
+              onClick={closeChat}
               className="rounded-full p-1 transition hover:bg-white/15"
               aria-label="Close Chef Sophie chat"
             >
@@ -1367,16 +1412,13 @@ export default function ChefSophieWidget() {
   const { addItem, clearCart } = useCart();
 
   useEffect(() => {
-    let cancelled = false;
-
-    loadCurrentProducts().then((products) => {
-      if (cancelled) return;
+    const stopSync = startLiveProductSync((products) => {
       setMenuProducts(products);
       setIsMenuReady(true);
     });
 
     return () => {
-      cancelled = true;
+      stopSync();
     };
   }, []);
 

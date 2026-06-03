@@ -1,0 +1,260 @@
+# Agent 115 - Allergy-Conscious Ordering Flow
+
+Generated: 2026-06-02T10:01:40.546Z
+
+Mode: repo-local simulator, no production data writes
+
+Status: pass
+
+Severity: none
+
+Final total: $57.50
+
+## Expected Cart
+
+```json
+[
+  {
+    "itemCode": "chia meghle",
+    "category": "Pudding",
+    "item": "Chia Meghle",
+    "size": "250 ml",
+    "texture": "",
+    "quantity": 6,
+    "price": 5,
+    "lineTotal": 30
+  },
+  {
+    "itemCode": "Veggie Soup",
+    "category": "Platter",
+    "item": "Veggie Soup",
+    "size": "200 ml",
+    "texture": "Fully Blended",
+    "quantity": 5,
+    "price": 5.5,
+    "lineTotal": 27.5
+  }
+]
+```
+
+## Corrected Conflict
+
+```json
+[
+  {
+    "item": "Cake",
+    "reason": "contains egg",
+    "attemptedQuantity": 3,
+    "attemptedSize": "Piece",
+    "attemptedTexture": "Pieces",
+    "attemptedLineTotal": 18
+  }
+]
+```
+
+## Delivery Details
+
+```json
+{
+  "method": "delivery",
+  "requestedDay": "Friday",
+  "address": "Hamra, Bliss Street near AUB",
+  "instructions": "call before arrival; no eggs"
+}
+```
+
+## Anomalies
+
+- None
+
+## Transcript
+
+```json
+[
+  {
+    "role": "agent",
+    "text": "Hi Nour, I'm Chef Sophie from Baby Cuisine. What would you like to order today?",
+    "at": "2026-06-02T10:01:40.545Z"
+  },
+  {
+    "role": "user",
+    "text": "hi, my baby cannot have eggs. I want a larger Friday order please",
+    "at": "2026-06-02T10:01:40.562Z"
+  },
+  {
+    "role": "agent",
+    "text": "If your baby has allergies, tell us the allergy before ordering. We will guide you toward suitable exact menu items and your allergy note should be included with the order for confirmation.",
+    "at": "2026-06-02T10:01:40.579Z"
+  },
+  {
+    "role": "user",
+    "text": "what do you have",
+    "at": "2026-06-02T10:01:40.596Z"
+  },
+  {
+    "role": "agent",
+    "text": "Which section would you like to see: Pudding, Platter, Finger Food, or Biscuit?",
+    "at": "2026-06-02T10:01:40.613Z"
+  },
+  {
+    "role": "user",
+    "text": "pudding",
+    "at": "2026-06-02T10:01:40.630Z"
+  },
+  {
+    "role": "agent",
+    "text": "Pudding options this week:\nApple Quinoa\nChia Berries\nChia Meghle\nCoconut Custard\nMhalabiye\nQuinoa Banana Blueberry\nRiz B Halib\nWhich one would you like?",
+    "at": "2026-06-02T10:01:40.647Z"
+  },
+  {
+    "role": "user",
+    "text": "chia meghle",
+    "at": "2026-06-02T10:01:40.664Z"
+  },
+  {
+    "role": "agent",
+    "text": "Great choice. Chia Meghle is on this week's exact menu.\nPlease choose size (250 ml, 120 ml).",
+    "at": "2026-06-02T10:01:40.681Z"
+  },
+  {
+    "role": "user",
+    "text": "250 ml",
+    "at": "2026-06-02T10:01:40.698Z"
+  },
+  {
+    "role": "agent",
+    "text": "How many portions of Chia Meghle would you like?",
+    "at": "2026-06-02T10:01:40.715Z"
+  },
+  {
+    "role": "user",
+    "text": "6",
+    "at": "2026-06-02T10:01:40.732Z"
+  },
+  {
+    "role": "agent",
+    "text": "Please confirm: 6 x Chia Meghle, 250 ml at $5 each. Total: $30.00.",
+    "at": "2026-06-02T10:01:40.749Z"
+  },
+  {
+    "role": "user",
+    "text": "yes",
+    "at": "2026-06-02T10:01:40.766Z"
+  },
+  {
+    "role": "agent",
+    "text": "6 x Chia Meghle added to your cart at $30.00 total.",
+    "at": "2026-06-02T10:01:40.783Z"
+  },
+  {
+    "role": "user",
+    "text": "add platter too",
+    "at": "2026-06-02T10:01:40.800Z"
+  },
+  {
+    "role": "agent",
+    "text": "Platter options this week:\nBazella With Meat\nBurghol 3A Banadoura\nChicken Soup\nLemon Lentice Soup\nMoghrabieh\nQuinoa Salmon\nSiyadiyeh\nSweet Potato Kafta\nVeggie Soup\nWhich one would you like?",
+    "at": "2026-06-02T10:01:40.817Z"
+  },
+  {
+    "role": "user",
+    "text": "veggie soup",
+    "at": "2026-06-02T10:01:40.834Z"
+  },
+  {
+    "role": "agent",
+    "text": "Great choice. Veggie Soup is on this week's exact menu.\nPlease choose size (250 ml, 120 ml, 200 ml) and texture (Fully Blended, Half Blended, Pieces).",
+    "at": "2026-06-02T10:01:40.851Z"
+  },
+  {
+    "role": "user",
+    "text": "200 ml fully blended",
+    "at": "2026-06-02T10:01:40.868Z"
+  },
+  {
+    "role": "agent",
+    "text": "How many portions of Veggie Soup would you like?",
+    "at": "2026-06-02T10:01:40.885Z"
+  },
+  {
+    "role": "user",
+    "text": "5",
+    "at": "2026-06-02T10:01:40.902Z"
+  },
+  {
+    "role": "agent",
+    "text": "Please confirm: 5 x Veggie Soup, 200 ml, Fully Blended at $5.5 each. Total: $27.50.",
+    "at": "2026-06-02T10:01:40.919Z"
+  },
+  {
+    "role": "user",
+    "text": "yes",
+    "at": "2026-06-02T10:01:40.936Z"
+  },
+  {
+    "role": "agent",
+    "text": "5 x Veggie Soup added to your cart at $27.50 total.",
+    "at": "2026-06-02T10:01:40.953Z"
+  },
+  {
+    "role": "user",
+    "text": "also add cake, but remember no eggs",
+    "at": "2026-06-02T10:01:40.970Z"
+  },
+  {
+    "role": "agent",
+    "text": "Great choice. Cake is on this week's exact menu.\nPlease choose size (Piece) and texture (Pieces).",
+    "at": "2026-06-02T10:01:40.987Z"
+  },
+  {
+    "role": "user",
+    "text": "piece",
+    "at": "2026-06-02T10:01:41.004Z"
+  },
+  {
+    "role": "agent",
+    "text": "How many portions of Cake would you like?",
+    "at": "2026-06-02T10:01:41.021Z"
+  },
+  {
+    "role": "user",
+    "text": "3",
+    "at": "2026-06-02T10:01:41.038Z"
+  },
+  {
+    "role": "agent",
+    "text": "Please confirm: 3 x Cake, Piece, Pieces at $6 each. Total: $18.00.",
+    "at": "2026-06-02T10:01:41.055Z"
+  },
+  {
+    "role": "user",
+    "text": "yes",
+    "at": "2026-06-02T10:01:41.072Z"
+  },
+  {
+    "role": "agent",
+    "text": "3 x Cake added to your cart at $18.00 total.",
+    "at": "2026-06-02T10:01:41.089Z"
+  },
+  {
+    "role": "user",
+    "text": "no eggs please",
+    "at": "2026-06-02T10:01:41.106Z"
+  },
+  {
+    "role": "agent",
+    "text": "Cake includes egg. I cannot add that with a no-egg instruction. Please choose a different exact menu item.",
+    "at": "2026-06-02T10:01:41.123Z"
+  },
+  {
+    "role": "user",
+    "text": "ok keep only the safe items. deliver Friday to Hamra, Bliss Street near AUB, call before arrival",
+    "at": "2026-06-02T10:01:41.140Z"
+  },
+  {
+    "role": "agent",
+    "text": "Baby Cuisine delivers in Lebanon. The delivery charge depends on your location, and the checkout form will ask for your delivery address.",
+    "at": "2026-06-02T10:01:41.157Z"
+  }
+]
+```

@@ -1,0 +1,210 @@
+﻿{
+    "subagent":  "3 of 10",
+    "assignedAgent":  "Agent 112",
+    "persona":  "parent making valid substitutions mid-order",
+    "sourceHarness":  "scripts/sophie-stress-harness.mjs",
+    "generatedAt":  "2026-06-02T09:59:31.4689374Z",
+    "result":  {
+                   "agent":  "agent-03",
+                   "label":  "Item substitutions",
+                   "behavior":  "item substitutions",
+                   "transcript":  [
+                                      {
+                                          "role":  "agent",
+                                          "text":  "Hi Nadine, I\u0027m Chef Sophie from Baby Cuisine. What would you like to order today?",
+                                          "at":  "2026-06-02T09:59:21.035Z"
+                                      },
+                                      {
+                                          "role":  "user",
+                                          "text":  "what can i order",
+                                          "at":  "2026-06-02T09:59:21.035Z"
+                                      },
+                                      {
+                                          "role":  "agent",
+                                          "text":  "Which section would you like to see: Pudding, Platter, Finger Food, or Biscuit?",
+                                          "at":  "2026-06-02T09:59:21.035Z"
+                                      },
+                                      {
+                                          "role":  "user",
+                                          "text":  "platter",
+                                          "at":  "2026-06-02T09:59:21.035Z"
+                                      },
+                                      {
+                                          "role":  "agent",
+                                          "text":  "Platter options this week:\nBazella With Meat\nBurghol 3A Banadoura\nChicken Soup\nLemon Lentice Soup\nMoghrabieh\nQuinoa Salmon\nSiyadiyeh\nSweet Potato Kafta\nVeggie Soup\nWhich one would you like?",
+                                          "at":  "2026-06-02T09:59:21.036Z"
+                                      },
+                                      {
+                                          "role":  "user",
+                                          "text":  "chicken soup",
+                                          "at":  "2026-06-02T09:59:21.036Z"
+                                      },
+                                      {
+                                          "role":  "agent",
+                                          "text":  "Great choice. Chicken Soup is on this week\u0027s exact menu.\nPlease choose size (250 ml, 120 ml, 200 ml) and texture (Fully Blended, Half Blended, Pieces).",
+                                          "at":  "2026-06-02T09:59:21.036Z"
+                                      },
+                                      {
+                                          "role":  "user",
+                                          "text":  "200 ml pieces",
+                                          "at":  "2026-06-02T09:59:21.036Z"
+                                      },
+                                      {
+                                          "role":  "agent",
+                                          "text":  "How many portions of Chicken Soup would you like?",
+                                          "at":  "2026-06-02T09:59:21.036Z"
+                                      },
+                                      {
+                                          "role":  "user",
+                                          "text":  "2",
+                                          "at":  "2026-06-02T09:59:21.036Z"
+                                      },
+                                      {
+                                          "role":  "agent",
+                                          "text":  "Please confirm: 2 x Chicken Soup, 200 ml, Pieces at $5.5 each. Total: $11.00.",
+                                          "at":  "2026-06-02T09:59:21.037Z"
+                                      },
+                                      {
+                                          "role":  "user",
+                                          "text":  "actually salmon fingers",
+                                          "at":  "2026-06-02T09:59:21.037Z"
+                                      },
+                                      {
+                                          "role":  "agent",
+                                          "text":  "Great choice. Salmon Fingers is on this week\u0027s exact menu.\nPlease choose size (Box).",
+                                          "at":  "2026-06-02T09:59:21.037Z"
+                                      },
+                                      {
+                                          "role":  "user",
+                                          "text":  "box",
+                                          "at":  "2026-06-02T09:59:21.037Z"
+                                      },
+                                      {
+                                          "role":  "agent",
+                                          "text":  "How many portions of Salmon Fingers would you like?",
+                                          "at":  "2026-06-02T09:59:21.037Z"
+                                      },
+                                      {
+                                          "role":  "user",
+                                          "text":  "3",
+                                          "at":  "2026-06-02T09:59:21.037Z"
+                                      },
+                                      {
+                                          "role":  "agent",
+                                          "text":  "Please confirm: 3 x Salmon Fingers, Box at $15 each. Total: $45.00.",
+                                          "at":  "2026-06-02T09:59:21.037Z"
+                                      },
+                                      {
+                                          "role":  "user",
+                                          "text":  "yes",
+                                          "at":  "2026-06-02T09:59:21.037Z"
+                                      },
+                                      {
+                                          "role":  "agent",
+                                          "text":  "3 x Salmon Fingers added to your cart at $45.00 total.",
+                                          "at":  "2026-06-02T09:59:21.037Z"
+                                      },
+                                      {
+                                          "role":  "user",
+                                          "text":  "add pudding too",
+                                          "at":  "2026-06-02T09:59:21.037Z"
+                                      },
+                                      {
+                                          "role":  "agent",
+                                          "text":  "Pudding options this week:\nApple Quinoa\nChia Berries\nChia Meghle\nCoconut Custard\nMhalabiye\nQuinoa Banana Blueberry\nRiz B Halib\nWhich one would you like?",
+                                          "at":  "2026-06-02T09:59:21.038Z"
+                                      },
+                                      {
+                                          "role":  "user",
+                                          "text":  "chia meghle",
+                                          "at":  "2026-06-02T09:59:21.038Z"
+                                      },
+                                      {
+                                          "role":  "agent",
+                                          "text":  "Great choice. Chia Meghle is on this week\u0027s exact menu.\nPlease choose size (250 ml, 120 ml).",
+                                          "at":  "2026-06-02T09:59:21.038Z"
+                                      },
+                                      {
+                                          "role":  "user",
+                                          "text":  "120 ml",
+                                          "at":  "2026-06-02T09:59:21.038Z"
+                                      },
+                                      {
+                                          "role":  "agent",
+                                          "text":  "How many portions of Chia Meghle would you like?",
+                                          "at":  "2026-06-02T09:59:21.038Z"
+                                      },
+                                      {
+                                          "role":  "user",
+                                          "text":  "1",
+                                          "at":  "2026-06-02T09:59:21.038Z"
+                                      },
+                                      {
+                                          "role":  "agent",
+                                          "text":  "Please confirm: 1 x Chia Meghle, 120 ml at $3.5 each. Total: $3.50.",
+                                          "at":  "2026-06-02T09:59:21.038Z"
+                                      },
+                                      {
+                                          "role":  "user",
+                                          "text":  "yes",
+                                          "at":  "2026-06-02T09:59:21.038Z"
+                                      },
+                                      {
+                                          "role":  "agent",
+                                          "text":  "1 x Chia Meghle added to your cart at $3.50 total.",
+                                          "at":  "2026-06-02T09:59:21.038Z"
+                                      }
+                                  ],
+                   "parsedOrder":  [
+                                       {
+                                           "itemCode":  "salmon fingers",
+                                           "category":  "Finger Food",
+                                           "item":  "Salmon Fingers",
+                                           "size":  "Box",
+                                           "texture":  "",
+                                           "quantity":  3,
+                                           "price":  15,
+                                           "lineTotal":  45
+                                       },
+                                       {
+                                           "itemCode":  "chia meghle",
+                                           "category":  "Pudding",
+                                           "item":  "Chia Meghle",
+                                           "size":  "120 ml",
+                                           "texture":  "",
+                                           "quantity":  1,
+                                           "price":  3.5,
+                                           "lineTotal":  3.5
+                                       }
+                                   ],
+                   "finalOrderTotal":  48.5,
+                   "expectedTotal":  48.5,
+                   "errors":  [
+
+                              ],
+                   "latenciesMs":  [
+                                       0.42,
+                                       0.35,
+                                       0.51,
+                                       0.23,
+                                       0.28,
+                                       0.16,
+                                       0.18,
+                                       0.15,
+                                       0.15,
+                                       0.26,
+                                       0.2,
+                                       0.16,
+                                       0.14,
+                                       0.14
+                                   ],
+                   "averageLatencyMs":  0.24,
+                   "clarified":  true,
+                   "confirmedCorrectItems":  true,
+                   "anomalies":  [
+
+                                 ],
+                   "severity":  "none",
+                   "pass":  true
+               }
+}

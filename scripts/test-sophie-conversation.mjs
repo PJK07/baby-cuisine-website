@@ -36,13 +36,27 @@ function exactMenuItems(products) {
   return Array.from(new Set(products.map((product) => product.item).filter(Boolean))).sort();
 }
 
-function menuCategoryPrompt() {
-  return "Which section would you like to see: Pudding, Platter, Finger Food, or Biscuit?";
+function menuCategoryPrompt(products) {
+  const preferredOrder = ["Pudding", "Platter", "Sweet Finger Food", "Savory Finger Food"];
+  const categories = preferredOrder.filter((category) =>
+    products.some((product) => product.category === category),
+  );
+  const visibleCategories = categories.length > 0 ? categories : preferredOrder;
+  const lastCategory = visibleCategories[visibleCategories.length - 1];
+  const leadingCategories = visibleCategories.slice(0, -1);
+
+  return `Which section would you like to see: ${leadingCategories.join(", ")}, or ${lastCategory}?`;
 }
 
 function menuCategoryFromMessage(message) {
   const normalized = normalizeMenuText(message);
 
+  if (normalized.includes("sweet finger food") || normalized.includes("sweet finger foods")) {
+    return "Sweet Finger Food";
+  }
+  if (normalized.includes("savory finger food") || normalized.includes("savory finger foods")) {
+    return "Savory Finger Food";
+  }
   if (normalized.includes("finger food") || normalized.includes("finger foods") || normalized === "finger") {
     return "Finger Food";
   }
@@ -53,13 +67,39 @@ function menuCategoryFromMessage(message) {
   return null;
 }
 
+function itemsForCategories(products, categories) {
+  const categorySet = new Set(categories);
+  return Array.from(
+    products.reduce((items, product) => {
+      if (categorySet.has(product.category) && product.item) items.add(product.item);
+      return items;
+    }, new Set()),
+  );
+}
+
 function menuCategoryAnswer(message, products) {
   const category = menuCategoryFromMessage(message);
   if (!category) return null;
 
-  const items = Array.from(
-    new Set(products.filter((product) => product.category === category).map((product) => product.item)),
-  ).sort();
+  if (category === "Finger Food") {
+    const sweetItems = itemsForCategories(products, ["Sweet Finger Food"]);
+    const savoryItems = itemsForCategories(products, ["Savory Finger Food"]);
+
+    if (sweetItems.length === 0 && savoryItems.length === 0) {
+      return "I do not see any exact finger food items on this week's menu.";
+    }
+
+    return [
+      "Sure. For finger food, we currently have:",
+      sweetItems.length > 0 ? `Sweet Finger Food:\n${sweetItems.join("\n")}` : "",
+      savoryItems.length > 0 ? `Savory Finger Food:\n${savoryItems.join("\n")}` : "",
+      "Which one would you like?",
+    ]
+      .filter(Boolean)
+      .join("\n\n");
+  }
+
+  const items = itemsForCategories(products, [category]);
 
   if (items.length === 0) return `I do not see any exact ${category} items on this week's menu.`;
 
@@ -134,7 +174,7 @@ function recommendationAnswer(message, products, foodContext) {
 
   const itemNames = Array.from(new Set(candidateProducts.map((product) => product.item))).slice(0, 6);
   if (itemNames.length === 0 && preferredFoods.length > 0) {
-    return `I do not see an exact ${preferredFoods.join(" or ")} item on this week's menu. ${menuCategoryPrompt()}`;
+    return `I do not see an exact ${preferredFoods.join(" or ")} item on this week's menu. ${menuCategoryPrompt(products)}`;
   }
 
   const choices = itemNames.map((itemName) => productSummary(products, itemName)).join("\n");
@@ -387,7 +427,7 @@ async function main() {
     }
 
     if (isWeeklyMenuQuestion(text)) {
-      transcript.push({ role: "sophie", text: menuCategoryPrompt() });
+      transcript.push({ role: "sophie", text: menuCategoryPrompt(products) });
       continue;
     }
 
@@ -443,7 +483,7 @@ async function main() {
   }
 
   const menuPrompt = transcript.find(
-    (message) => message.role === "sophie" && message.text === menuCategoryPrompt(),
+    (message) => message.role === "sophie" && message.text === menuCategoryPrompt(products),
   );
   if (!menuPrompt) {
     throw new Error("Menu questions should ask for a category instead of listing every item.");

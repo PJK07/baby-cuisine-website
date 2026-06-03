@@ -1,4 +1,5 @@
 import { PRODUCTS, type ProductData } from "../data/products";
+import { loadLiveProducts } from "./liveProducts";
 
 export type ProductLookupRequest = {
   itemCode?: string;
@@ -10,8 +11,6 @@ export type ProductLookupRequest = {
 export type ProductLookupResult =
   | { ok: true; product: ProductData; price: number }
   | { ok: false; message: string; details?: Record<string, unknown> };
-
-let productsPromise: Promise<ProductData[]> | null = null;
 
 function normalizeText(value: string | undefined): string {
   return (value ?? "")
@@ -56,18 +55,7 @@ export function parseProductPrice(value: string | undefined): number {
 
 async function loadProducts(): Promise<ProductData[]> {
   if (typeof window === "undefined") return PRODUCTS;
-
-  if (!productsPromise) {
-    productsPromise = fetch("/api/products")
-      .then((response) => {
-        if (!response.ok) throw new Error(`Product API returned ${response.status}`);
-        return response.json();
-      })
-      .then((data: unknown) => (Array.isArray(data) && data.length > 0 ? data as ProductData[] : PRODUCTS))
-      .catch(() => PRODUCTS);
-  }
-
-  return productsPromise;
+  return loadLiveProducts();
 }
 
 export async function resolveCanonicalProduct(

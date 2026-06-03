@@ -1,0 +1,286 @@
+{
+  "agent": "agent-117",
+  "persona": "Multilingual customer mixing French, English, and Lebanese phrasing",
+  "behavior": "multilingual or mixed-language request",
+  "fulfillment": "Friday delivery to Gemmayzeh",
+  "specialInstructions": "Send message before delivery; toddler prefers fully blended platters.",
+  "status": "pass",
+  "severity": "none",
+  "expectedItems": [
+    {
+      "item": "Moghrabieh",
+      "size": "250 ml",
+      "texture": "Fully Blended",
+      "quantity": 1
+    },
+    {
+      "item": "Almond Pancakes",
+      "size": "Box",
+      "quantity": 2
+    },
+    {
+      "item": "Siyadiyeh",
+      "size": "200 ml",
+      "texture": "Fully Blended",
+      "quantity": 2
+    },
+    {
+      "item": "Quinoa Banana Blueberry",
+      "size": "120 ml",
+      "quantity": 3
+    }
+  ],
+  "parsedOrder": [
+    {
+      "itemCode": "Moghrabieh",
+      "category": "Platter",
+      "item": "Moghrabieh",
+      "size": "250 ml",
+      "texture": "Fully Blended",
+      "quantity": 1,
+      "price": 8,
+      "lineTotal": 8
+    },
+    {
+      "itemCode": "almond pancakes",
+      "category": "Finger Food",
+      "item": "Almond Pancakes",
+      "size": "Box",
+      "texture": "",
+      "quantity": 2,
+      "price": 9,
+      "lineTotal": 18
+    },
+    {
+      "itemCode": "Siyadiyeh",
+      "category": "Platter",
+      "item": "Siyadiyeh",
+      "size": "200 ml",
+      "texture": "Fully Blended",
+      "quantity": 2,
+      "price": 7.5,
+      "lineTotal": 15
+    },
+    {
+      "itemCode": "quinoa banana blueberry",
+      "category": "Pudding",
+      "item": "Quinoa Banana Blueberry",
+      "size": "120 ml",
+      "texture": "",
+      "quantity": 3,
+      "price": 3.5,
+      "lineTotal": 10.5
+    }
+  ],
+  "expectedTotal": 51.5,
+  "finalOrderTotal": 51.5,
+  "transcript": [
+    {
+      "role": "agent",
+      "text": "Hi Lea, I'm Chef Sophie from Baby Cuisine. What would you like to order today?",
+      "at": "2026-06-02T11:12:49.990Z"
+    },
+    {
+      "role": "user",
+      "text": "bonjour chef sophie",
+      "at": "2026-06-02T11:12:49.990Z"
+    },
+    {
+      "role": "agent",
+      "text": "What would you like to order today?",
+      "at": "2026-06-02T11:12:49.993Z"
+    },
+    {
+      "role": "user",
+      "text": "platter please",
+      "at": "2026-06-02T11:12:50.002Z"
+    },
+    {
+      "role": "agent",
+      "text": "Platter options this week:\nBazella With Meat\nBurghol 3A Banadoura\nChicken Soup\nLemon Lentice Soup\nMoghrabieh\nQuinoa Salmon\nSiyadiyeh\nSweet Potato Kafta\nVeggie Soup\nWhich one would you like?",
+      "at": "2026-06-02T11:12:50.003Z"
+    },
+    {
+      "role": "user",
+      "text": "je veux moghrabieh",
+      "at": "2026-06-02T11:12:50.016Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Moghrabieh is on this week's exact menu.\nPlease choose size (250 ml, 120 ml, 200 ml) and texture (Fully Blended, Half Blended, Pieces).",
+      "at": "2026-06-02T11:12:50.017Z"
+    },
+    {
+      "role": "user",
+      "text": "big fully blended",
+      "at": "2026-06-02T11:12:50.036Z"
+    },
+    {
+      "role": "agent",
+      "text": "How many portions of Moghrabieh would you like?",
+      "at": "2026-06-02T11:12:50.037Z"
+    },
+    {
+      "role": "user",
+      "text": "1",
+      "at": "2026-06-02T11:12:50.062Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 1 x Moghrabieh, 250 ml, Fully Blended at $8 each. Total: $8.00.",
+      "at": "2026-06-02T11:12:50.062Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.070Z"
+    },
+    {
+      "role": "agent",
+      "text": "1 x Moghrabieh added to your cart at $8.00 total.",
+      "at": "2026-06-02T11:12:50.071Z"
+    },
+    {
+      "role": "user",
+      "text": "et aussi almond pancake",
+      "at": "2026-06-02T11:12:50.077Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Almond Pancakes is on this week's exact menu.\nPlease choose size (Box).",
+      "at": "2026-06-02T11:12:50.079Z"
+    },
+    {
+      "role": "user",
+      "text": "box",
+      "at": "2026-06-02T11:12:50.089Z"
+    },
+    {
+      "role": "agent",
+      "text": "How many portions of Almond Pancakes would you like?",
+      "at": "2026-06-02T11:12:50.089Z"
+    },
+    {
+      "role": "user",
+      "text": "2",
+      "at": "2026-06-02T11:12:50.095Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 2 x Almond Pancakes, Box at $9 each. Total: $18.00.",
+      "at": "2026-06-02T11:12:50.095Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.102Z"
+    },
+    {
+      "role": "agent",
+      "text": "2 x Almond Pancakes added to your cart at $18.00 total.",
+      "at": "2026-06-02T11:12:50.103Z"
+    },
+    {
+      "role": "user",
+      "text": "w kamen siyadiyeh",
+      "at": "2026-06-02T11:12:50.108Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Siyadiyeh is on this week's exact menu.\nPlease choose size (250 ml, 120 ml, 200 ml) and texture (Fully Blended, Half Blended, Pieces).",
+      "at": "2026-06-02T11:12:50.109Z"
+    },
+    {
+      "role": "user",
+      "text": "200 ml fully blended",
+      "at": "2026-06-02T11:12:50.127Z"
+    },
+    {
+      "role": "agent",
+      "text": "How many portions of Siyadiyeh would you like?",
+      "at": "2026-06-02T11:12:50.129Z"
+    },
+    {
+      "role": "user",
+      "text": "2",
+      "at": "2026-06-02T11:12:50.145Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 2 x Siyadiyeh, 200 ml, Fully Blended at $7.5 each. Total: $15.00.",
+      "at": "2026-06-02T11:12:50.146Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.156Z"
+    },
+    {
+      "role": "agent",
+      "text": "2 x Siyadiyeh added to your cart at $15.00 total.",
+      "at": "2026-06-02T11:12:50.157Z"
+    },
+    {
+      "role": "user",
+      "text": "pudding",
+      "at": "2026-06-02T11:12:50.163Z"
+    },
+    {
+      "role": "agent",
+      "text": "Pudding options this week:\nApple Quinoa\nChia Berries\nChia Meghle\nCoconut Custard\nMhalabiye\nQuinoa Banana Blueberry\nRiz B Halib\nWhich one would you like?",
+      "at": "2026-06-02T11:12:50.163Z"
+    },
+    {
+      "role": "user",
+      "text": "quinoa banana blueberry",
+      "at": "2026-06-02T11:12:50.198Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Quinoa Banana Blueberry is on this week's exact menu.\nPlease choose size (250 ml, 120 ml).",
+      "at": "2026-06-02T11:12:50.199Z"
+    },
+    {
+      "role": "user",
+      "text": "120 ml",
+      "at": "2026-06-02T11:12:50.238Z"
+    },
+    {
+      "role": "agent",
+      "text": "How many portions of Quinoa Banana Blueberry would you like?",
+      "at": "2026-06-02T11:12:50.238Z"
+    },
+    {
+      "role": "user",
+      "text": "3",
+      "at": "2026-06-02T11:12:50.283Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 3 x Quinoa Banana Blueberry, 120 ml at $3.5 each. Total: $10.50.",
+      "at": "2026-06-02T11:12:50.284Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.292Z"
+    },
+    {
+      "role": "agent",
+      "text": "3 x Quinoa Banana Blueberry added to your cart at $10.50 total.",
+      "at": "2026-06-02T11:12:50.293Z"
+    },
+    {
+      "role": "user",
+      "text": "delivery vendredi Gemmayzeh please message before delivery",
+      "at": "2026-06-02T11:12:50.375Z"
+    },
+    {
+      "role": "agent",
+      "text": "Baby Cuisine delivers in Lebanon. The delivery charge depends on your location, and the checkout form will ask for your delivery address.",
+      "at": "2026-06-02T11:12:50.375Z"
+    }
+  ],
+  "errors": [],
+  "anomalies": []
+}

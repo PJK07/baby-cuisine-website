@@ -1,0 +1,259 @@
+{
+  "agent": "agent-112",
+  "persona": "Parent making valid substitutions mid-order",
+  "behavior": "item substitutions",
+  "fulfillment": "Pickup request after 4 PM",
+  "specialInstructions": "Separate savory finger foods from puddings.",
+  "status": "pass",
+  "severity": "none",
+  "expectedItems": [
+    {
+      "item": "Salmon Fingers",
+      "size": "Box",
+      "quantity": 3
+    },
+    {
+      "item": "Chia Meghle",
+      "size": "120 ml",
+      "quantity": 1
+    },
+    {
+      "item": "Chicken Fingers",
+      "size": "Box",
+      "quantity": 2
+    }
+  ],
+  "parsedOrder": [
+    {
+      "itemCode": "salmon fingers",
+      "category": "Finger Food",
+      "item": "Salmon Fingers",
+      "size": "Box",
+      "texture": "",
+      "quantity": 3,
+      "price": 15,
+      "lineTotal": 45
+    },
+    {
+      "itemCode": "chia meghle",
+      "category": "Pudding",
+      "item": "Chia Meghle",
+      "size": "120 ml",
+      "texture": "",
+      "quantity": 1,
+      "price": 3.5,
+      "lineTotal": 3.5
+    },
+    {
+      "itemCode": "chicken fingers",
+      "category": "Finger Food",
+      "item": "Chicken Fingers",
+      "size": "Box",
+      "texture": "",
+      "quantity": 2,
+      "price": 15,
+      "lineTotal": 30
+    }
+  ],
+  "expectedTotal": 78.5,
+  "finalOrderTotal": 78.5,
+  "transcript": [
+    {
+      "role": "agent",
+      "text": "Hi Nadine, I'm Chef Sophie from Baby Cuisine. What would you like to order today?",
+      "at": "2026-06-02T11:12:49.977Z"
+    },
+    {
+      "role": "user",
+      "text": "what can i order",
+      "at": "2026-06-02T11:12:49.977Z"
+    },
+    {
+      "role": "agent",
+      "text": "Which section would you like to see: Pudding, Platter, Finger Food, or Biscuit?",
+      "at": "2026-06-02T11:12:49.984Z"
+    },
+    {
+      "role": "user",
+      "text": "platter",
+      "at": "2026-06-02T11:12:49.999Z"
+    },
+    {
+      "role": "agent",
+      "text": "Platter options this week:\nBazella With Meat\nBurghol 3A Banadoura\nChicken Soup\nLemon Lentice Soup\nMoghrabieh\nQuinoa Salmon\nSiyadiyeh\nSweet Potato Kafta\nVeggie Soup\nWhich one would you like?",
+      "at": "2026-06-02T11:12:49.999Z"
+    },
+    {
+      "role": "user",
+      "text": "chicken soup",
+      "at": "2026-06-02T11:12:50.013Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Chicken Soup is on this week's exact menu.\nPlease choose size (250 ml, 120 ml, 200 ml) and texture (Fully Blended, Half Blended, Pieces).",
+      "at": "2026-06-02T11:12:50.014Z"
+    },
+    {
+      "role": "user",
+      "text": "200 ml pieces",
+      "at": "2026-06-02T11:12:50.029Z"
+    },
+    {
+      "role": "agent",
+      "text": "How many portions of Chicken Soup would you like?",
+      "at": "2026-06-02T11:12:50.032Z"
+    },
+    {
+      "role": "user",
+      "text": "2",
+      "at": "2026-06-02T11:12:50.056Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 2 x Chicken Soup, 200 ml, Pieces at $5.5 each. Total: $11.00.",
+      "at": "2026-06-02T11:12:50.057Z"
+    },
+    {
+      "role": "user",
+      "text": "actually salmon fingers",
+      "at": "2026-06-02T11:12:50.066Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Salmon Fingers is on this week's exact menu.\nPlease choose size (Box).",
+      "at": "2026-06-02T11:12:50.066Z"
+    },
+    {
+      "role": "user",
+      "text": "box",
+      "at": "2026-06-02T11:12:50.073Z"
+    },
+    {
+      "role": "agent",
+      "text": "How many portions of Salmon Fingers would you like?",
+      "at": "2026-06-02T11:12:50.073Z"
+    },
+    {
+      "role": "user",
+      "text": "3",
+      "at": "2026-06-02T11:12:50.087Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 3 x Salmon Fingers, Box at $15 each. Total: $45.00.",
+      "at": "2026-06-02T11:12:50.087Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.091Z"
+    },
+    {
+      "role": "agent",
+      "text": "3 x Salmon Fingers added to your cart at $45.00 total.",
+      "at": "2026-06-02T11:12:50.092Z"
+    },
+    {
+      "role": "user",
+      "text": "add pudding too",
+      "at": "2026-06-02T11:12:50.099Z"
+    },
+    {
+      "role": "agent",
+      "text": "Pudding options this week:\nApple Quinoa\nChia Berries\nChia Meghle\nCoconut Custard\nMhalabiye\nQuinoa Banana Blueberry\nRiz B Halib\nWhich one would you like?",
+      "at": "2026-06-02T11:12:50.100Z"
+    },
+    {
+      "role": "user",
+      "text": "chia meghle",
+      "at": "2026-06-02T11:12:50.105Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Chia Meghle is on this week's exact menu.\nPlease choose size (250 ml, 120 ml).",
+      "at": "2026-06-02T11:12:50.106Z"
+    },
+    {
+      "role": "user",
+      "text": "120 ml",
+      "at": "2026-06-02T11:12:50.121Z"
+    },
+    {
+      "role": "agent",
+      "text": "How many portions of Chia Meghle would you like?",
+      "at": "2026-06-02T11:12:50.122Z"
+    },
+    {
+      "role": "user",
+      "text": "1",
+      "at": "2026-06-02T11:12:50.138Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 1 x Chia Meghle, 120 ml at $3.5 each. Total: $3.50.",
+      "at": "2026-06-02T11:12:50.139Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.150Z"
+    },
+    {
+      "role": "agent",
+      "text": "1 x Chia Meghle added to your cart at $3.50 total.",
+      "at": "2026-06-02T11:12:50.151Z"
+    },
+    {
+      "role": "user",
+      "text": "add chicken fingers",
+      "at": "2026-06-02T11:12:50.160Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Chicken Fingers is on this week's exact menu.\nPlease choose size (Box).",
+      "at": "2026-06-02T11:12:50.161Z"
+    },
+    {
+      "role": "user",
+      "text": "box",
+      "at": "2026-06-02T11:12:50.165Z"
+    },
+    {
+      "role": "agent",
+      "text": "How many portions of Chicken Fingers would you like?",
+      "at": "2026-06-02T11:12:50.165Z"
+    },
+    {
+      "role": "user",
+      "text": "2",
+      "at": "2026-06-02T11:12:50.236Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 2 x Chicken Fingers, Box at $15 each. Total: $30.00.",
+      "at": "2026-06-02T11:12:50.237Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.239Z"
+    },
+    {
+      "role": "agent",
+      "text": "2 x Chicken Fingers added to your cart at $30.00 total.",
+      "at": "2026-06-02T11:12:50.240Z"
+    },
+    {
+      "role": "user",
+      "text": "pickup after 4 pm and separate savory from pudding",
+      "at": "2026-06-02T11:12:50.285Z"
+    },
+    {
+      "role": "agent",
+      "text": "I noted that instruction. Please also include it in the checkout form so the team sees it with your order.",
+      "at": "2026-06-02T11:12:50.285Z"
+    }
+  ],
+  "errors": [],
+  "anomalies": []
+}

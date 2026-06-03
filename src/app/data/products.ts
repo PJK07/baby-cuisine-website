@@ -36,7 +36,7 @@ export const PRODUCTS: ProductData[] = [
   { Item_code: "chicken fingers",    Category: "Finger Food", Item: "Chicken Fingers",           Size: "Box",   Texture: "",            Unit_Price: "15",  Ingredients: "olive oil, onions, pepper, potatoes, chicken breast" },
   { Item_code: "lamb kebbe",         Category: "Finger Food", Item: "Lamb Kebbe",                Size: "Box",   Texture: "",            Unit_Price: "10",  Ingredients: "olive oil, lamb" },
   { Item_code: "salmon fingers",     Category: "Finger Food", Item: "Salmon Fingers",            Size: "Box",   Texture: "",            Unit_Price: "15",  Ingredients: "olive oil, onions, pepper, potatoes, salmon" },
-  { Item_code: "cake",               Category: "Finger Food", Item: "Cake",                      Size: "Piece", Texture: "Pieces",      Unit_Price: "6",   Ingredients: "dates, oat flour, eggs, coconut oil, vanilla, baking powder" },
+  { Item_code: "cake",               Category: "Finger Food", Item: "Cake",                      Size: "Piece", Texture: "",            Unit_Price: "6",   Ingredients: "dates, oat flour, eggs, coconut oil, vanilla, baking powder" },
 
   // ── PLATTER ───────────────────────────────────────────────────────────────
   // Tuesday platters

@@ -104,6 +104,7 @@ function parseCSVRow(str: string): string[] {
 async function loadProducts(): Promise<ProductData[]> {
   try {
     const response = await fetch(CSV_URL, {
+      cache: "no-store",
       headers: { Accept: "text/csv" },
     });
 

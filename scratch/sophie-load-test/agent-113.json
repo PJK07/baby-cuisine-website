@@ -1,0 +1,279 @@
+{
+  "agent": "agent-113",
+  "persona": "Customer repeatedly editing quantities before and after confirmation",
+  "behavior": "repeated item edits",
+  "fulfillment": "Delivery to Hamra, cash on delivery",
+  "specialInstructions": "Put biscuits in two separate bags.",
+  "status": "pass",
+  "severity": "none",
+  "expectedItems": [
+    {
+      "item": "Sourdough Biscuits",
+      "size": "Box",
+      "quantity": 10
+    },
+    {
+      "item": "Almond Pancakes",
+      "size": "Box",
+      "quantity": 6
+    },
+    {
+      "item": "Mhalabiye",
+      "size": "120 ml",
+      "quantity": 3
+    }
+  ],
+  "parsedOrder": [
+    {
+      "itemCode": "sourdough biscuits",
+      "category": "Biscuit",
+      "item": "Sourdough Biscuits",
+      "size": "Box",
+      "texture": "",
+      "quantity": 10,
+      "price": 5.5,
+      "lineTotal": 55
+    },
+    {
+      "itemCode": "almond pancakes",
+      "category": "Finger Food",
+      "item": "Almond Pancakes",
+      "size": "Box",
+      "texture": "",
+      "quantity": 6,
+      "price": 9,
+      "lineTotal": 54
+    },
+    {
+      "itemCode": "mhalabiye",
+      "category": "Pudding",
+      "item": "Mhalabiye",
+      "size": "120 ml",
+      "texture": "",
+      "quantity": 3,
+      "price": 3.5,
+      "lineTotal": 10.5
+    }
+  ],
+  "expectedTotal": 119.5,
+  "finalOrderTotal": 119.5,
+  "transcript": [
+    {
+      "role": "agent",
+      "text": "Hi Karim, I'm Chef Sophie from Baby Cuisine. What would you like to order today?",
+      "at": "2026-06-02T11:12:49.985Z"
+    },
+    {
+      "role": "user",
+      "text": "biscuit",
+      "at": "2026-06-02T11:12:49.985Z"
+    },
+    {
+      "role": "agent",
+      "text": "Biscuit options this week:\nSourdough Biscuits\nWhich one would you like?",
+      "at": "2026-06-02T11:12:49.986Z"
+    },
+    {
+      "role": "user",
+      "text": "sourdough biscuits",
+      "at": "2026-06-02T11:12:49.999Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Sourdough Biscuits is on this week's exact menu.\nPlease choose size (Box).",
+      "at": "2026-06-02T11:12:50.000Z"
+    },
+    {
+      "role": "user",
+      "text": "box",
+      "at": "2026-06-02T11:12:50.014Z"
+    },
+    {
+      "role": "agent",
+      "text": "How many portions of Sourdough Biscuits would you like?",
+      "at": "2026-06-02T11:12:50.014Z"
+    },
+    {
+      "role": "user",
+      "text": "6",
+      "at": "2026-06-02T11:12:50.032Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 6 x Sourdough Biscuits, Box at $5.5 each. Total: $33.00.",
+      "at": "2026-06-02T11:12:50.035Z"
+    },
+    {
+      "role": "user",
+      "text": "make it 8",
+      "at": "2026-06-02T11:12:50.057Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 8 x Sourdough Biscuits, Box at $5.5 each. Total: $44.00.",
+      "at": "2026-06-02T11:12:50.058Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.066Z"
+    },
+    {
+      "role": "agent",
+      "text": "8 x Sourdough Biscuits added to your cart at $44.00 total.",
+      "at": "2026-06-02T11:12:50.067Z"
+    },
+    {
+      "role": "user",
+      "text": "no change to 5",
+      "at": "2026-06-02T11:12:50.074Z"
+    },
+    {
+      "role": "agent",
+      "text": "Updated Sourdough Biscuits to 5 portions. Cart line total is $27.50.",
+      "at": "2026-06-02T11:12:50.074Z"
+    },
+    {
+      "role": "user",
+      "text": "actually 5 yes",
+      "at": "2026-06-02T11:12:50.087Z"
+    },
+    {
+      "role": "agent",
+      "text": "Updated Sourdough Biscuits to 5 portions. Cart line total is $27.50.",
+      "at": "2026-06-02T11:12:50.087Z"
+    },
+    {
+      "role": "user",
+      "text": "finger food",
+      "at": "2026-06-02T11:12:50.092Z"
+    },
+    {
+      "role": "agent",
+      "text": "Finger Food options this week:\nAlmond Pancakes\nCake\nChicken Fingers\nLamb Kebbe\nSalmon Fingers\nWhich one would you like?",
+      "at": "2026-06-02T11:12:50.093Z"
+    },
+    {
+      "role": "user",
+      "text": "almond pancakes",
+      "at": "2026-06-02T11:12:50.100Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Almond Pancakes is on this week's exact menu.\nPlease choose size (Box).",
+      "at": "2026-06-02T11:12:50.101Z"
+    },
+    {
+      "role": "user",
+      "text": "4",
+      "at": "2026-06-02T11:12:50.106Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 4 x Almond Pancakes, Box at $9 each. Total: $36.00.",
+      "at": "2026-06-02T11:12:50.106Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.122Z"
+    },
+    {
+      "role": "agent",
+      "text": "4 x Almond Pancakes added to your cart at $36.00 total.",
+      "at": "2026-06-02T11:12:50.122Z"
+    },
+    {
+      "role": "user",
+      "text": "change to 6",
+      "at": "2026-06-02T11:12:50.140Z"
+    },
+    {
+      "role": "agent",
+      "text": "Updated Almond Pancakes to 6 portions. Cart line total is $54.00.",
+      "at": "2026-06-02T11:12:50.140Z"
+    },
+    {
+      "role": "user",
+      "text": "pudding",
+      "at": "2026-06-02T11:12:50.151Z"
+    },
+    {
+      "role": "agent",
+      "text": "Pudding options this week:\nApple Quinoa\nChia Berries\nChia Meghle\nCoconut Custard\nMhalabiye\nQuinoa Banana Blueberry\nRiz B Halib\nWhich one would you like?",
+      "at": "2026-06-02T11:12:50.153Z"
+    },
+    {
+      "role": "user",
+      "text": "mhalabiye",
+      "at": "2026-06-02T11:12:50.161Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Mhalabiye is on this week's exact menu.\nPlease choose size (250 ml, 120 ml).",
+      "at": "2026-06-02T11:12:50.162Z"
+    },
+    {
+      "role": "user",
+      "text": "120 ml",
+      "at": "2026-06-02T11:12:50.165Z"
+    },
+    {
+      "role": "agent",
+      "text": "How many portions of Mhalabiye would you like?",
+      "at": "2026-06-02T11:12:50.165Z"
+    },
+    {
+      "role": "user",
+      "text": "3",
+      "at": "2026-06-02T11:12:50.237Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 3 x Mhalabiye, 120 ml at $3.5 each. Total: $10.50.",
+      "at": "2026-06-02T11:12:50.237Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.240Z"
+    },
+    {
+      "role": "agent",
+      "text": "3 x Mhalabiye added to your cart at $10.50 total.",
+      "at": "2026-06-02T11:12:50.241Z"
+    },
+    {
+      "role": "user",
+      "text": "delivery to Hamra cash on delivery, biscuits in two bags",
+      "at": "2026-06-02T11:12:50.285Z"
+    },
+    {
+      "role": "agent",
+      "text": "Baby Cuisine delivers in Lebanon. The delivery charge depends on your location, and the checkout form will ask for your delivery address.",
+      "at": "2026-06-02T11:12:50.285Z"
+    },
+    {
+      "role": "user",
+      "text": "sourdough biscuits box, 5 boxes",
+      "at": "2026-06-02T11:12:50.372Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Sourdough Biscuits is on this week's exact menu.\nPlease choose size (Box).",
+      "at": "2026-06-02T11:12:50.374Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.402Z"
+    },
+    {
+      "role": "agent",
+      "text": "5 x Sourdough Biscuits added to your cart at $27.50 total.",
+      "at": "2026-06-02T11:12:50.403Z"
+    }
+  ],
+  "errors": [],
+  "anomalies": []
+}

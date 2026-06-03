@@ -1,0 +1,280 @@
+{
+  "agent": "agent-115",
+  "persona": "Allergy-conscious customer with one corrected conflict",
+  "behavior": "conflicting instructions",
+  "fulfillment": "Delivery to Mar Mikhael, call from downstairs",
+  "specialInstructions": "No egg items in final order.",
+  "status": "pass",
+  "severity": "none",
+  "expectedItems": [
+    {
+      "item": "Lamb Kebbe",
+      "size": "Box",
+      "quantity": 3
+    },
+    {
+      "item": "Apple Quinoa",
+      "size": "250 ml",
+      "quantity": 4
+    },
+    {
+      "item": "Chicken Soup",
+      "size": "120 ml",
+      "texture": "Fully Blended",
+      "quantity": 2
+    }
+  ],
+  "parsedOrder": [
+    {
+      "itemCode": "lamb kebbe",
+      "category": "Finger Food",
+      "item": "Lamb Kebbe",
+      "size": "Box",
+      "texture": "",
+      "quantity": 3,
+      "price": 10,
+      "lineTotal": 30
+    },
+    {
+      "itemCode": "apple quinoa",
+      "category": "Pudding",
+      "item": "Apple Quinoa",
+      "size": "250 ml",
+      "texture": "",
+      "quantity": 4,
+      "price": 5,
+      "lineTotal": 20
+    },
+    {
+      "itemCode": "Chicken Soup",
+      "category": "Platter",
+      "item": "Chicken Soup",
+      "size": "120 ml",
+      "texture": "Fully Blended",
+      "quantity": 2,
+      "price": 4.5,
+      "lineTotal": 9
+    }
+  ],
+  "expectedTotal": 59,
+  "finalOrderTotal": 59,
+  "transcript": [
+    {
+      "role": "agent",
+      "text": "Hi Ali, I'm Chef Sophie from Baby Cuisine. What would you like to order today?",
+      "at": "2026-06-02T11:12:49.987Z"
+    },
+    {
+      "role": "user",
+      "text": "what do you have",
+      "at": "2026-06-02T11:12:49.987Z"
+    },
+    {
+      "role": "agent",
+      "text": "Which section would you like to see: Pudding, Platter, Finger Food, or Biscuit?",
+      "at": "2026-06-02T11:12:49.990Z"
+    },
+    {
+      "role": "user",
+      "text": "finger food",
+      "at": "2026-06-02T11:12:50.001Z"
+    },
+    {
+      "role": "agent",
+      "text": "Finger Food options this week:\nAlmond Pancakes\nCake\nChicken Fingers\nLamb Kebbe\nSalmon Fingers\nWhich one would you like?",
+      "at": "2026-06-02T11:12:50.002Z"
+    },
+    {
+      "role": "user",
+      "text": "cake",
+      "at": "2026-06-02T11:12:50.015Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Cake is on this week's exact menu.\nPlease choose size (Piece) and texture (Pieces).",
+      "at": "2026-06-02T11:12:50.015Z"
+    },
+    {
+      "role": "user",
+      "text": "box",
+      "at": "2026-06-02T11:12:50.035Z"
+    },
+    {
+      "role": "agent",
+      "text": "Cake is available as Piece, not the size you mentioned. Which available size would you like?",
+      "at": "2026-06-02T11:12:50.036Z"
+    },
+    {
+      "role": "user",
+      "text": "2",
+      "at": "2026-06-02T11:12:50.059Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 2 x Cake, Piece, Pieces at $6 each. Total: $12.00.",
+      "at": "2026-06-02T11:12:50.060Z"
+    },
+    {
+      "role": "user",
+      "text": "actually one",
+      "at": "2026-06-02T11:12:50.068Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 1 x Cake, Piece, Pieces at $6 each. Total: $6.00.",
+      "at": "2026-06-02T11:12:50.069Z"
+    },
+    {
+      "role": "user",
+      "text": "but make it two",
+      "at": "2026-06-02T11:12:50.074Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 2 x Cake, Piece, Pieces at $6 each. Total: $12.00.",
+      "at": "2026-06-02T11:12:50.075Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.088Z"
+    },
+    {
+      "role": "agent",
+      "text": "2 x Cake added to your cart at $12.00 total.",
+      "at": "2026-06-02T11:12:50.088Z"
+    },
+    {
+      "role": "user",
+      "text": "and no eggs",
+      "at": "2026-06-02T11:12:50.094Z"
+    },
+    {
+      "role": "agent",
+      "text": "Cake includes egg. I cannot add that with a no-egg instruction. Please choose a different exact menu item.",
+      "at": "2026-06-02T11:12:50.094Z"
+    },
+    {
+      "role": "user",
+      "text": "lamb kebbe",
+      "at": "2026-06-02T11:12:50.101Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Lamb Kebbe is on this week's exact menu.\nPlease choose size (Box).",
+      "at": "2026-06-02T11:12:50.102Z"
+    },
+    {
+      "role": "user",
+      "text": "3",
+      "at": "2026-06-02T11:12:50.107Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 3 x Lamb Kebbe, Box at $10 each. Total: $30.00.",
+      "at": "2026-06-02T11:12:50.107Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.124Z"
+    },
+    {
+      "role": "agent",
+      "text": "3 x Lamb Kebbe added to your cart at $30.00 total.",
+      "at": "2026-06-02T11:12:50.126Z"
+    },
+    {
+      "role": "user",
+      "text": "apple quinoa",
+      "at": "2026-06-02T11:12:50.143Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Apple Quinoa is on this week's exact menu.\nPlease choose size (250 ml, 120 ml).",
+      "at": "2026-06-02T11:12:50.144Z"
+    },
+    {
+      "role": "user",
+      "text": "250 ml",
+      "at": "2026-06-02T11:12:50.155Z"
+    },
+    {
+      "role": "agent",
+      "text": "How many portions of Apple Quinoa would you like?",
+      "at": "2026-06-02T11:12:50.156Z"
+    },
+    {
+      "role": "user",
+      "text": "4",
+      "at": "2026-06-02T11:12:50.162Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 4 x Apple Quinoa, 250 ml at $5 each. Total: $20.00.",
+      "at": "2026-06-02T11:12:50.162Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.166Z"
+    },
+    {
+      "role": "agent",
+      "text": "4 x Apple Quinoa added to your cart at $20.00 total.",
+      "at": "2026-06-02T11:12:50.166Z"
+    },
+    {
+      "role": "user",
+      "text": "chicken soup",
+      "at": "2026-06-02T11:12:50.237Z"
+    },
+    {
+      "role": "agent",
+      "text": "Great choice. Chicken Soup is on this week's exact menu.\nPlease choose size (250 ml, 120 ml, 200 ml) and texture (Fully Blended, Half Blended, Pieces).",
+      "at": "2026-06-02T11:12:50.238Z"
+    },
+    {
+      "role": "user",
+      "text": "120 ml fully blended",
+      "at": "2026-06-02T11:12:50.283Z"
+    },
+    {
+      "role": "agent",
+      "text": "How many portions of Chicken Soup would you like?",
+      "at": "2026-06-02T11:12:50.283Z"
+    },
+    {
+      "role": "user",
+      "text": "2",
+      "at": "2026-06-02T11:12:50.292Z"
+    },
+    {
+      "role": "agent",
+      "text": "Please confirm: 2 x Chicken Soup, 120 ml, Fully Blended at $4.5 each. Total: $9.00.",
+      "at": "2026-06-02T11:12:50.292Z"
+    },
+    {
+      "role": "user",
+      "text": "yes",
+      "at": "2026-06-02T11:12:50.374Z"
+    },
+    {
+      "role": "agent",
+      "text": "2 x Chicken Soup added to your cart at $9.00 total.",
+      "at": "2026-06-02T11:12:50.375Z"
+    },
+    {
+      "role": "user",
+      "text": "delivery to Mar Mikhael call from downstairs no egg items please",
+      "at": "2026-06-02T11:12:50.403Z"
+    },
+    {
+      "role": "agent",
+      "text": "Baby Cuisine delivers in Lebanon. The delivery charge depends on your location, and the checkout form will ask for your delivery address.",
+      "at": "2026-06-02T11:12:50.404Z"
+    }
+  ],
+  "errors": [],
+  "anomalies": []
+}

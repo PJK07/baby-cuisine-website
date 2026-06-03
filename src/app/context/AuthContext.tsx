@@ -16,7 +16,24 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 function getRedirectUrl() {
   const configuredRedirectUrl = import.meta.env.VITE_AUTH_REDIRECT_URL as string | undefined;
-  return configuredRedirectUrl || `${window.location.origin}/`;
+  const currentRedirectUrl = `${window.location.origin}/`;
+
+  if (!configuredRedirectUrl) return currentRedirectUrl;
+
+  try {
+    const configuredUrl = new URL(configuredRedirectUrl);
+    const currentUrl = new URL(currentRedirectUrl);
+    const configuredIsLocal =
+      configuredUrl.hostname === "localhost" || configuredUrl.hostname === "127.0.0.1";
+    const currentIsLocal =
+      currentUrl.hostname === "localhost" || currentUrl.hostname === "127.0.0.1";
+
+    if (configuredIsLocal && currentIsLocal) return currentRedirectUrl;
+  } catch {
+    return currentRedirectUrl;
+  }
+
+  return configuredRedirectUrl;
 }
 
 async function signInWithProvider(provider: "google" | "azure") {

@@ -4,6 +4,7 @@ const files = {
   widget: "src/app/components/ChefSophieWidget.tsx",
   resolver: "src/app/utils/productResolver.ts",
   products: "src/app/data/products.ts",
+  liveProducts: "src/app/utils/liveProducts.ts",
   apiProducts: "api/products.ts",
   conversationTest: "scripts/test-sophie-conversation.mjs",
 };
@@ -61,7 +62,7 @@ const tests = [
       assert(source.widget.includes("function isWeeklyMenuQuestion"), "Missing weekly menu guard.");
       assert(source.widget.includes("function getMenuCategoryPrompt"), "Menu questions should ask the customer to choose a section.");
       assert(source.widget.includes("function getMenuCategoryAnswer"), "Category follow-ups should list exact menu items by category.");
-      assert(source.widget.includes("getMenuCategoryPrompt()"), "Menu questions should not dump the full menu.");
+      assert(source.widget.includes("getMenuCategoryPrompt(menuProducts)"), "Menu questions should ask from the loaded menu data instead of dumping the full menu.");
       assert(source.widget.includes('normalized.includes("menu")'), "Phrases like 'menu please' must be treated as menu questions.");
       assert(source.widget.includes('normalized.includes("what is there")'), "Phrases like 'what is there' must be treated as menu questions.");
       assert(orderOf(source.widget, "if (isWeeklyMenuQuestion(message))", "sendUserMessage(message)") > 0, "Weekly menu guard must run before agent send.");
@@ -109,9 +110,11 @@ const tests = [
   {
     name: "weekly menu loads from API with static fallback",
     run: () => {
-      assert(source.widget.includes('fetch("/api/products")'), "Widget must attempt current menu API fetch.");
-      assert(source.widget.includes("PRODUCTS"), "Widget must retain static fallback.");
-      assert(source.apiProducts.includes("stale-while-revalidate=300"), "Production menu API should keep short weekly-menu cache behavior.");
+      assert(source.widget.includes("startLiveProductSync"), "Widget must subscribe to live menu updates.");
+      assert(source.liveProducts.includes('fetch("/api/products"'), "Live product loader must attempt current menu API fetch.");
+      assert(source.liveProducts.includes("PRODUCTS"), "Live product loader must retain static fallback.");
+      assert(source.liveProducts.includes('cache: "no-store"'), "Live product loader should bypass browser cache.");
+      assert(source.apiProducts.includes("'Cache-Control': 'no-store'"), "Production menu API should not cache menu data.");
     },
   },
   {

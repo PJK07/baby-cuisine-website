@@ -1,0 +1,132 @@
+﻿{
+    "subagent":  "5 of 10",
+    "agent":  "Agent 114",
+    "persona":  "customer asks for unavailable item, accepts valid alternative",
+    "sourceAgent":  "agent-05",
+    "mode":  "local-simulator",
+    "generatedAt":  "2026-06-02T10:00:12.935Z",
+    "status":  "pass",
+    "pass":  true,
+    "severity":  "none",
+    "behavior":  "out-of-stock item request",
+    "averageLatencyMs":  0.18,
+    "latenciesMs":  [
+                        0.09,
+                        0.08,
+                        0.1,
+                        0.23,
+                        0.25,
+                        0.17,
+                        0.34
+                    ],
+    "clarificationAsked":  true,
+    "confirmedCorrectItems":  true,
+    "expectedCart":  [
+                         {
+                             "item":  "Veggie Soup",
+                             "category":  "Platter",
+                             "size":  "200 ml",
+                             "texture":  "Fully Blended",
+                             "quantity":  2,
+                             "unitPrice":  5.5,
+                             "lineTotal":  11
+                         }
+                     ],
+    "expectedTotal":  11,
+    "parsedOrder":  [
+                        {
+                            "itemCode":  "Veggie Soup",
+                            "category":  "Platter",
+                            "item":  "Veggie Soup",
+                            "size":  "200 ml",
+                            "texture":  "Fully Blended",
+                            "quantity":  2,
+                            "price":  5.5,
+                            "lineTotal":  11
+                        }
+                    ],
+    "finalOrderTotal":  11,
+    "anomalies":  [
+
+                  ],
+    "errors":  [
+
+               ],
+    "transcript":  [
+                       {
+                           "role":  "agent",
+                           "text":  "Hi Hala, I\u0027m Chef Sophie from Baby Cuisine. What would you like to order today?",
+                           "at":  "2026-06-02T10:00:12.922Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "do you have Sweet Potato Salmon",
+                           "at":  "2026-06-02T10:00:12.922Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "Sweet Potato Salmon is not on this week\u0027s exact menu.",
+                           "at":  "2026-06-02T10:00:12.922Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "I want Sweet Potato Salmon",
+                           "at":  "2026-06-02T10:00:12.922Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "Sweet Potato Salmon is not on this week\u0027s exact menu.",
+                           "at":  "2026-06-02T10:00:12.923Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "what else do you have on Friday",
+                           "at":  "2026-06-02T10:00:12.923Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "Exact Friday items:\nLemon Lentice Soup\nMoghrabieh\nSiyadiyeh\nSweet Potato Kafta\nVeggie Soup",
+                           "at":  "2026-06-02T10:00:12.923Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "veggie soup",
+                           "at":  "2026-06-02T10:00:12.923Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "Great choice. Veggie Soup is on this week\u0027s exact menu.\nPlease choose size (250 ml, 120 ml, 200 ml) and texture (Fully Blended, Half Blended, Pieces).",
+                           "at":  "2026-06-02T10:00:12.923Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "200 ml fully blended",
+                           "at":  "2026-06-02T10:00:12.923Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "How many portions of Veggie Soup would you like?",
+                           "at":  "2026-06-02T10:00:12.923Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "2",
+                           "at":  "2026-06-02T10:00:12.923Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "Please confirm: 2 x Veggie Soup, 200 ml, Fully Blended at $5.5 each. Total: $11.00.",
+                           "at":  "2026-06-02T10:00:12.923Z"
+                       },
+                       {
+                           "role":  "user",
+                           "text":  "yes",
+                           "at":  "2026-06-02T10:00:12.923Z"
+                       },
+                       {
+                           "role":  "agent",
+                           "text":  "2 x Veggie Soup added to your cart at $11.00 total.",
+                           "at":  "2026-06-02T10:00:12.924Z"
+                       }
+                   ]
+}
