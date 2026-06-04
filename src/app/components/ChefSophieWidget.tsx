@@ -587,6 +587,9 @@ function getDeliveryAnswer(message: string, products: ProductData[], lastItemNam
 function parseSizeChoice(message: string, sizes: string[]): string | null {
   const normalized = normalizeMenuText(message);
   const aliases = new Map([
+    ["120", "120 ml"],
+    ["200", "200 ml"],
+    ["250", "250 ml"],
     ["small", "120 ml"],
     ["medium", "200 ml"],
     ["big", "250 ml"],

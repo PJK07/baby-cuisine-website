@@ -16,7 +16,7 @@ const ELEVENLABS_AGENT_ID =
   process.env.ELEVENLABS_AGENT_ID || "agent_9001kshhvbjcfhp8qmxcheks3ajx";
 const WEBSITE_URL = process.env.WEBSITE_URL || "https://codex-baby-cuisine-website-1b1v.vercel.app/";
 const RESPONSE_TIMEOUT_MS = Number(process.env.SOPHIE_RESPONSE_TIMEOUT_MS || 90000);
-const SESSION_IDLE_MS = Number(process.env.SOPHIE_SESSION_IDLE_MS || 10 * 60 * 1000);
+const SESSION_IDLE_MS = Number(process.env.SOPHIE_SESSION_IDLE_MS || 60 * 60 * 1000);
 
 if (!TELEGRAM_BOT_TOKEN) {
   throw new Error("Missing TELEGRAM_BOT_TOKEN. Add it to .env before running the Telegram bot.");
@@ -88,6 +88,9 @@ function getProductChoices(itemName) {
 function parseSizeChoice(message, sizes) {
   const normalized = normalizeMenuText(message);
   const aliases = new Map([
+    ["120", "120 ml"],
+    ["200", "200 ml"],
+    ["250", "250 ml"],
     ["small", "120 ml"],
     ["medium", "200 ml"],
     ["big", "250 ml"],
@@ -152,6 +155,10 @@ function getMenuPrompt() {
 
 function getUnknownOrderItemAnswer(message) {
   const normalized = normalizeMenuText(message);
+  if (/^(120|200|250|120 ml|200 ml|250 ml|small|medium|big|large|box|piece)$/.test(normalized)) {
+    return "Which exact menu item is this size for?";
+  }
+
   const cleaned = normalized
     .replace(/^(i want|i would like|i d like|can i have|please add|add|order|get|give me)\s+/, "")
     .replace(/^\d+\s+/, "")
@@ -228,6 +235,30 @@ function getLocalTelegramReply(message, session) {
   }
 
   return getUnknownOrderItemAnswer(message);
+}
+
+if (process.argv.includes("--check-local-order")) {
+  const session = {};
+  const firstReply = getLocalTelegramReply("i want quinoa apple", session);
+  const sizeReply = getLocalTelegramReply("250", session);
+  const quantityReply = getLocalTelegramReply("2", session);
+  const orphanSizeReply = getLocalTelegramReply("120 ml", {});
+
+  if (!firstReply?.includes("Please choose size (250 ml, 120 ml).")) {
+    throw new Error(`Unexpected item reply: ${firstReply}`);
+  }
+  if (sizeReply !== "How many portions of Apple Quinoa would you like?") {
+    throw new Error(`Unexpected size reply: ${sizeReply}`);
+  }
+  if (!quantityReply?.includes("cart will be ready")) {
+    throw new Error(`Unexpected quantity reply: ${quantityReply}`);
+  }
+  if (orphanSizeReply !== "Which exact menu item is this size for?") {
+    throw new Error(`Unexpected orphan size reply: ${orphanSizeReply}`);
+  }
+
+  console.log("Chef Sophie Telegram local order check passed.");
+  process.exit(0);
 }
 
 function getFallbackWsUrl() {
