@@ -9,6 +9,7 @@
     "start": "vite preview",
     "telegram:sophie": "node scripts/telegram-sophie.mjs",
     "test": "node scripts/smoke-test.mjs",
+    "test:menu-matching": "node scripts/test-menu-item-matching.mjs",
     "stress:sophie": "node scripts/sophie-stress-harness.mjs"
   },
   "dependencies": {

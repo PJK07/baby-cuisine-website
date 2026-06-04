@@ -8,6 +8,12 @@ import { MessageCircle, Mic, Phone, PhoneOff, Send, X } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import { CartItem, useCart } from "../context/CartContext";
 import { resolveCanonicalProduct } from "../utils/productResolver";
+import {
+  getAmbiguousItemPrompt,
+  getExactItemFromMessage,
+  getMenuItemMatchFromMessage,
+  getNextOrderPrompt,
+} from "../utils/menuItemMatching";
 import { PRODUCTS, type ProductData } from "../data/products";
 import { startLiveProductSync } from "../utils/liveProducts";
 
@@ -184,17 +190,6 @@ function normalizeMenuText(value: string): string {
     .trim();
 }
 
-function normalizeSingularMenuText(value: string): string {
-  return normalizeMenuText(value)
-    .split(" ")
-    .map((word) => (word.length > 3 && word.endsWith("s") ? word.slice(0, -1) : word))
-    .join(" ");
-}
-
-function normalizeCompactMenuText(value: string): string {
-  return normalizeMenuText(value).replace(/\s+/g, "");
-}
-
 function getEditDistance(a: string, b: string): number {
   const previous = Array.from({ length: b.length + 1 }, (_, index) => index);
 
@@ -300,37 +295,6 @@ function getMenuCategoryAnswer(message: string, products: ProductData[]): string
   if (items.length === 0) return `I do not see any exact ${category} items on this week's menu.`;
 
   return `${category} options this week:\n${items.join("\n")}\nWhich one would you like?`;
-}
-
-function getExactItemFromMessage(message: string, products: ProductData[]): string | null {
-  const normalized = normalizeMenuText(message);
-  const singular = normalizeSingularMenuText(message);
-  const cleaned = normalizeSingularMenuText(
-    normalized
-      .replace(/^(i want|i would like|i d like|can i have|please add|add|order|get|give me)\s+/, "")
-      .replace(/^\d+\s+/, ""),
-  );
-  const compact = normalizeCompactMenuText(normalized);
-  const compactCleaned = normalizeCompactMenuText(cleaned);
-
-  return getExactMenuItems(products)
-    .sort((a, b) => b.length - a.length)
-    .find((item) => {
-      const itemKey = normalizeMenuText(item);
-      const singularItemKey = normalizeSingularMenuText(item);
-      const compactItemKey = normalizeCompactMenuText(item);
-      return (
-        normalized === itemKey ||
-        singular === singularItemKey ||
-        cleaned === singularItemKey ||
-        compact === compactItemKey ||
-        compact.includes(compactItemKey) ||
-        compactCleaned === compactItemKey ||
-        new RegExp(`(^|\\s)${itemKey}(\\s|$)`).test(normalized) ||
-        new RegExp(`(^|\\s)${singularItemKey}(\\s|$)`).test(singular) ||
-        getEditDistance(cleaned, singularItemKey) <= 1
-      );
-    }) ?? null;
 }
 
 function getProductSummary(products: ProductData[], itemName: string): string {
@@ -756,6 +720,25 @@ function getOrderFirstAnswer(message: string): string | null {
   return null;
 }
 
+function getUnknownOrderItemAnswer(message: string): string | null {
+  const normalized = normalizeMenuText(message);
+  const cleaned = normalized
+    .replace(/^(i want|i would like|i d like|can i have|please add|add|order|get|give me)\s+/, "")
+    .replace(/^\d+\s+/, "")
+    .trim();
+
+  if (!cleaned || cleaned.length < 3) return null;
+  if (isBabyProfileOnlyMessage(message) || isWeeklyMenuQuestion(message)) return null;
+  if (/^(hi|hello|hey|yes|no|ok|okay|thanks|thank you)$/.test(cleaned)) return null;
+  if (/\b(how|what|when|where|why|who|help|cart|delivery|price|cost|allerg)\b/.test(cleaned)) return null;
+
+  const hasOrderVerb = /^(i want|i would like|i d like|can i have|please add|add|order|get|give me)\b/.test(normalized);
+  const isShortItemOnly = cleaned.split(" ").length <= 3;
+  if (!hasOrderVerb && !isShortItemOnly) return null;
+
+  return `${cleaned.replace(/\b\w/g, (letter) => letter.toUpperCase())} is not on this week's exact menu. Please choose an exact item from the current menu.`;
+}
+
 function isWeeklyMenuQuestion(message: string): boolean {
   const normalized = normalizeMenuText(message);
 
@@ -1092,7 +1075,7 @@ function ChefSophieControl({
         };
         setPendingOrder(nextOrder);
         setLastItemName(itemMention);
-        setMessages((prev) => [...prev, { role: "agent", text: getItemSelectionPrompt(menuProducts, itemMention) }]);
+        setMessages((prev) => [...prev, { role: "agent", text: getNextOrderPrompt(menuProducts, nextOrder) }]);
         return;
       }
 
@@ -1221,8 +1204,14 @@ function ChefSophieControl({
       return;
     }
 
-    const exactItem = getExactItemFromMessage(message, menuProducts);
-    if (exactItem) {
+    const menuItemMatch = getMenuItemMatchFromMessage(message, menuProducts);
+    if (menuItemMatch.kind === "ambiguous") {
+      setMessages((prev) => [...prev, { role: "agent", text: getAmbiguousItemPrompt(menuItemMatch.itemNames) }]);
+      return;
+    }
+
+    if (menuItemMatch.kind === "exact") {
+      const exactItem = menuItemMatch.itemName;
       const { sizes, textures } = getProductChoices(menuProducts, exactItem);
       const nextOrder = {
         itemName: exactItem,
@@ -1232,7 +1221,7 @@ function ChefSophieControl({
       };
       setPendingOrder(nextOrder);
       setLastItemName(exactItem);
-      setMessages((prev) => [...prev, { role: "agent", text: getItemSelectionPrompt(menuProducts, exactItem) }]);
+      setMessages((prev) => [...prev, { role: "agent", text: getNextOrderPrompt(menuProducts, nextOrder) }]);
       return;
     }
 
@@ -1267,6 +1256,12 @@ function ChefSophieControl({
     const availabilityAnswer = getAvailabilityAnswer(message, menuProducts);
     if (availabilityAnswer) {
       setMessages((prev) => [...prev, { role: "agent", text: availabilityAnswer }]);
+      return;
+    }
+
+    const unknownOrderItemAnswer = getUnknownOrderItemAnswer(message);
+    if (unknownOrderItemAnswer) {
+      setMessages((prev) => [...prev, { role: "agent", text: unknownOrderItemAnswer }]);
       return;
     }
 
