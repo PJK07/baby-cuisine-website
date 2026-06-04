@@ -1,4 +1,5 @@
 import { Component, ReactNode } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
 import { Shop } from "./components/Shop";
@@ -67,6 +68,7 @@ export default function App() {
           <WhatsAppFAB />
         </div>
       </div>
+      <Analytics />
     </CartProvider>
   );
 }
