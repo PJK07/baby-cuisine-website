@@ -15,6 +15,8 @@ const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
 const ELEVENLABS_AGENT_ID =
   process.env.ELEVENLABS_AGENT_ID || "agent_9001kshhvbjcfhp8qmxcheks3ajx";
 const WEBSITE_URL = process.env.WEBSITE_URL || "https://codex-baby-cuisine-website-1b1v.vercel.app/";
+const TELEGRAM_CHECKOUT_URL =
+  process.env.TELEGRAM_CHECKOUT_URL || "https://codex-baby-cuisine-website-1b1v.vercel.app/";
 const RESPONSE_TIMEOUT_MS = Number(process.env.SOPHIE_RESPONSE_TIMEOUT_MS || 90000);
 const SESSION_IDLE_MS = Number(process.env.SOPHIE_SESSION_IDLE_MS || 60 * 60 * 1000);
 
@@ -129,7 +131,7 @@ function getItemProduct(itemName, size) {
 
 function buildCartUrl(order) {
   const product = getItemProduct(order.itemName, order.size);
-  const url = new URL(WEBSITE_URL);
+  const url = new URL(TELEGRAM_CHECKOUT_URL);
   url.searchParams.set("cart_item", order.itemName);
   url.searchParams.set("cart_size", order.size);
   if (product?.Texture) url.searchParams.set("cart_texture", product.Texture);
@@ -252,6 +254,9 @@ if (process.argv.includes("--check-local-order")) {
   }
   if (!quantityReply?.includes("cart will be ready")) {
     throw new Error(`Unexpected quantity reply: ${quantityReply}`);
+  }
+  if (!quantityReply.includes("https://codex-baby-cuisine-website-1b1v.vercel.app/")) {
+    throw new Error(`Unexpected checkout URL: ${quantityReply}`);
   }
   if (orphanSizeReply !== "Which exact menu item is this size for?") {
     throw new Error(`Unexpected orphan size reply: ${orphanSizeReply}`);

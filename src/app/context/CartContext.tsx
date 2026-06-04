@@ -25,6 +25,7 @@ interface CartContextType {
 const LEGACY_STORAGE_KEY = "baby-cuisine-cart";
 const STORAGE_KEY_PREFIX = "baby-cuisine-cart";
 const GUEST_STORAGE_KEY = `${STORAGE_KEY_PREFIX}:guest`;
+const PENDING_URL_CART_KEY = "baby-cuisine-pending-url-cart";
 
 function getUserStorageKey(userId: string) {
   return `${STORAGE_KEY_PREFIX}:user:${userId}`;
@@ -120,6 +121,32 @@ function findCartProductFromUrl(search: string): CartItem | null {
   };
 }
 
+function loadPendingUrlCartItem(): CartItem | null {
+  try {
+    const raw = sessionStorage.getItem(PENDING_URL_CART_KEY);
+    if (!raw) return null;
+    return toValidCartItem(JSON.parse(raw));
+  } catch {
+    return null;
+  }
+}
+
+function savePendingUrlCartItem(item: CartItem): void {
+  try {
+    sessionStorage.setItem(PENDING_URL_CART_KEY, JSON.stringify(item));
+  } catch {
+    // session storage unavailable - cart still applies for the current storage key
+  }
+}
+
+function clearPendingUrlCartItem(): void {
+  try {
+    sessionStorage.removeItem(PENDING_URL_CART_KEY);
+  } catch {
+    // session storage unavailable
+  }
+}
+
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
@@ -156,7 +183,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!storageKey || hydratedStorageKey !== storageKey || typeof window === "undefined") return;
 
-    const cartProduct = findCartProductFromUrl(window.location.search);
+    const urlCartProduct = findCartProductFromUrl(window.location.search);
+    if (urlCartProduct) savePendingUrlCartItem(urlCartProduct);
+
+    const cartProduct = urlCartProduct ?? loadPendingUrlCartItem();
     if (!cartProduct) return;
 
     setItems((prev) => {
@@ -180,12 +210,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
       return [...prev, cartProduct];
     });
 
-    const cleanUrl = new URL(window.location.href);
-    ["cart_item", "cart_size", "cart_texture", "cart_qty"].forEach((key) => {
-      cleanUrl.searchParams.delete(key);
-    });
-    window.history.replaceState({}, "", `${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}`);
-  }, [hydratedStorageKey, storageKey]);
+    if (user) clearPendingUrlCartItem();
+
+    if (urlCartProduct) {
+      const cleanUrl = new URL(window.location.href);
+      ["cart_item", "cart_size", "cart_texture", "cart_qty"].forEach((key) => {
+        cleanUrl.searchParams.delete(key);
+      });
+      window.history.replaceState({}, "", `${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}`);
+    }
+  }, [hydratedStorageKey, storageKey, user]);
 
   const addItem = useCallback((newItem: Omit<CartItem, "quantity">) => {
     const validItem = toValidCartItem({ ...newItem, quantity: 1 });
