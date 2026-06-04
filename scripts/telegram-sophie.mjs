@@ -3,12 +3,18 @@ import "dotenv/config";
 import process from "node:process";
 import { Telegraf } from "telegraf";
 import WebSocket from "ws";
+import { PRODUCTS } from "../src/app/data/products.ts";
+import {
+  getAmbiguousItemPrompt,
+  getMenuItemMatchFromMessage,
+  getNextOrderPrompt,
+} from "../src/app/utils/menuItemMatching.ts";
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
 const ELEVENLABS_AGENT_ID =
   process.env.ELEVENLABS_AGENT_ID || "agent_9001kshhvbjcfhp8qmxcheks3ajx";
-const WEBSITE_URL = process.env.WEBSITE_URL || "https://babycuisine.com";
+const WEBSITE_URL = process.env.WEBSITE_URL || "https://codex-baby-cuisine-website-1b1v.vercel.app/";
 const RESPONSE_TIMEOUT_MS = Number(process.env.SOPHIE_RESPONSE_TIMEOUT_MS || 90000);
 const SESSION_IDLE_MS = Number(process.env.SOPHIE_SESSION_IDLE_MS || 10 * 60 * 1000);
 
@@ -55,6 +61,173 @@ function getDisplayName(from) {
 
 function getSessionKey(ctx) {
   return String(ctx.chat?.id || ctx.from?.id);
+}
+
+function uniqueValues(values) {
+  return Array.from(new Set(values.filter(Boolean)));
+}
+
+function normalizeMenuText(value) {
+  return String(value ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getProductChoices(itemName) {
+  const variants = PRODUCTS.filter((product) => product.Item === itemName);
+  return {
+    sizes: uniqueValues(variants.map((product) => product.Size)),
+    textures: uniqueValues(variants.map((product) => product.Texture)),
+  };
+}
+
+function parseSizeChoice(message, sizes) {
+  const normalized = normalizeMenuText(message);
+  const aliases = new Map([
+    ["small", "120 ml"],
+    ["medium", "200 ml"],
+    ["big", "250 ml"],
+    ["large", "250 ml"],
+  ]);
+  const words = new Set(normalized.split(" ").filter(Boolean));
+  const alias = aliases.get(normalized) ?? Array.from(aliases).find(([key]) => words.has(key))?.[1];
+  if (alias && sizes.includes(alias)) return alias;
+
+  return sizes.find((size) => normalized.includes(normalizeMenuText(size))) ?? null;
+}
+
+function parseQuantityChoice(message) {
+  const normalized = normalizeMenuText(message);
+  if (normalized === "one") return 1;
+  if (normalized === "two") return 2;
+  if (normalized === "three") return 3;
+
+  const match = normalized.match(/\b([1-9]\d?)\b/);
+  return match ? Number(match[1]) : null;
+}
+
+function getDefaultChoice(options, message, parser) {
+  return parser(message, options) ?? (options.length === 1 ? options[0] : null);
+}
+
+function getItemPrice(itemName, size) {
+  const product = PRODUCTS.find((entry) => entry.Item === itemName && entry.Size === size);
+  const price = Number.parseFloat(String(product?.Unit_Price ?? "").replace(/[^0-9.]/g, ""));
+  return Number.isFinite(price) ? price : null;
+}
+
+function getItemProduct(itemName, size) {
+  return PRODUCTS.find((entry) => entry.Item === itemName && entry.Size === size) ?? null;
+}
+
+function buildCartUrl(order) {
+  const product = getItemProduct(order.itemName, order.size);
+  const url = new URL(WEBSITE_URL);
+  url.searchParams.set("cart_item", order.itemName);
+  url.searchParams.set("cart_size", order.size);
+  if (product?.Texture) url.searchParams.set("cart_texture", product.Texture);
+  url.searchParams.set("cart_qty", String(order.quantity));
+  return url.toString();
+}
+
+function isWeeklyMenuQuestion(message) {
+  const normalized = normalizeMenuText(message);
+  return (
+    normalized.includes("what do you have") ||
+    normalized.includes("what is there") ||
+    normalized.includes("whats there") ||
+    normalized.includes("what is available") ||
+    normalized.includes("menu")
+  );
+}
+
+function getMenuPrompt() {
+  const items = uniqueValues(PRODUCTS.map((product) => product.Item)).join("\n");
+  return `This week's exact menu:\n${items}\n\nWhich item would you like?`;
+}
+
+function getUnknownOrderItemAnswer(message) {
+  const normalized = normalizeMenuText(message);
+  const cleaned = normalized
+    .replace(/^(i want|i would like|i d like|can i have|please add|add|order|get|give me)\s+/, "")
+    .replace(/^\d+\s+/, "")
+    .trim();
+
+  if (!cleaned || cleaned.length < 3) return null;
+  if (isWeeklyMenuQuestion(message)) return null;
+  if (/^(hi|hello|hey|yes|no|ok|okay|thanks|thank you)$/.test(cleaned)) return null;
+  if (/\b(how|what|when|where|why|who|help|cart|delivery|price|cost|allerg)\b/.test(cleaned)) return null;
+
+  const hasOrderVerb = /^(i want|i would like|i d like|can i have|please add|add|order|get|give me)\b/.test(normalized);
+  const isShortItemOnly = cleaned.split(" ").length <= 3;
+  if (!hasOrderVerb && !isShortItemOnly) return null;
+
+  return `${cleaned.replace(/\b\w/g, (letter) => letter.toUpperCase())} is not on this week's exact menu. Please choose an exact item from the current menu.`;
+}
+
+function buildOrderSummary(order) {
+  const price = getItemPrice(order.itemName, order.size);
+  const total = price === null ? "" : ` Total: $${(price * order.quantity).toFixed(2)}.`;
+  const cartUrl = buildCartUrl(order);
+  return `Got it: ${order.quantity} x ${order.itemName}, ${order.size}.${total}\nOpen this link and your cart will be ready:\n${cartUrl}`;
+}
+
+function getLocalTelegramReply(message, session) {
+  const normalized = normalizeMenuText(message);
+
+  if (["hi", "hello", "hey", "heyy"].includes(normalized)) {
+    return "Hi, I'm Chef Sophie from Baby Cuisine. What would you like to order today?";
+  }
+
+  if (isWeeklyMenuQuestion(message)) {
+    return getMenuPrompt();
+  }
+
+  if (session.localOrder) {
+    const { sizes } = getProductChoices(session.localOrder.itemName);
+    const size = session.localOrder.size ?? getDefaultChoice(sizes, message, parseSizeChoice);
+    const quantity = session.localOrder.quantity ?? parseQuantityChoice(message);
+    session.localOrder = { ...session.localOrder, size, quantity };
+
+    if (!size) {
+      return getNextOrderPrompt(PRODUCTS, session.localOrder);
+    }
+
+    if (!quantity) {
+      return `How many portions of ${session.localOrder.itemName} would you like?`;
+    }
+
+    const reply = buildOrderSummary(session.localOrder);
+    session.localOrder = null;
+    return reply;
+  }
+
+  const match = getMenuItemMatchFromMessage(message, PRODUCTS);
+  if (match.kind === "ambiguous") {
+    return getAmbiguousItemPrompt(match.itemNames);
+  }
+
+  if (match.kind === "exact") {
+    const { sizes } = getProductChoices(match.itemName);
+    const order = {
+      itemName: match.itemName,
+      size: getDefaultChoice(sizes, message, parseSizeChoice),
+      quantity: parseQuantityChoice(message),
+    };
+
+    if (order.size && order.quantity) {
+      return buildOrderSummary(order);
+    }
+
+    session.localOrder = order;
+    return getNextOrderPrompt(PRODUCTS, order);
+  }
+
+  return getUnknownOrderItemAnswer(message);
 }
 
 function getFallbackWsUrl() {
@@ -318,6 +491,13 @@ bot.on("text", async (ctx) => {
   const session = getSession(ctx);
 
   try {
+    const localReply = getLocalTelegramReply(message, session);
+    if (localReply) {
+      console.log(`Sending local Chef Sophie reply to chat ${ctx.chat.id}: ${localReply.slice(0, 120)}`);
+      await ctx.reply(localReply);
+      return;
+    }
+
     await ctx.sendChatAction("typing");
     const reply = await session.askQueued(message);
     console.log(`Sending Chef Sophie reply to chat ${ctx.chat.id}: ${reply.slice(0, 120)}`);

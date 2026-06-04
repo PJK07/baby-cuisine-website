@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, ReactNode } from "react";
 import { useAuth } from "./AuthContext";
+import { PRODUCTS } from "../data/products";
 
 export interface CartItem {
   itemCode: string;
@@ -84,6 +85,41 @@ function loadFromStorage(storageKey: string): CartItem[] {
   }
 }
 
+function parseNumber(value: string | null): number {
+  const parsed = Number.parseInt(value ?? "", 10);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : 1;
+}
+
+function findCartProductFromUrl(search: string): CartItem | null {
+  const params = new URLSearchParams(search);
+  const itemName = params.get("cart_item");
+  const size = params.get("cart_size");
+  const texture = params.get("cart_texture") || undefined;
+
+  if (!itemName || !size) return null;
+
+  const product = PRODUCTS.find((entry) => (
+    entry.Item === itemName &&
+    entry.Size === size &&
+    (!texture || entry.Texture === texture)
+  ));
+
+  if (!product) return null;
+
+  const price = Number.parseFloat(String(product.Unit_Price).replace(/[^0-9.]/g, ""));
+  if (!Number.isFinite(price)) return null;
+
+  return {
+    itemCode: product.Item_code,
+    category: product.Category,
+    item: product.Item,
+    size: product.Size,
+    texture: product.Texture || undefined,
+    price,
+    quantity: parseNumber(params.get("cart_qty")),
+  };
+}
+
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
@@ -116,6 +152,40 @@ export function CartProvider({ children }: { children: ReactNode }) {
       // storage quota exceeded or private browsing - silently skip
     }
   }, [hydratedStorageKey, items, storageKey]);
+
+  useEffect(() => {
+    if (!storageKey || hydratedStorageKey !== storageKey || typeof window === "undefined") return;
+
+    const cartProduct = findCartProductFromUrl(window.location.search);
+    if (!cartProduct) return;
+
+    setItems((prev) => {
+      const existing = prev.find(
+        (item) =>
+          item.itemCode === cartProduct.itemCode &&
+          item.size === cartProduct.size &&
+          item.texture === cartProduct.texture
+      );
+
+      if (existing) {
+        return prev.map((item) =>
+          item.itemCode === cartProduct.itemCode &&
+          item.size === cartProduct.size &&
+          item.texture === cartProduct.texture
+            ? { ...item, quantity: cartProduct.quantity }
+            : item
+        );
+      }
+
+      return [...prev, cartProduct];
+    });
+
+    const cleanUrl = new URL(window.location.href);
+    ["cart_item", "cart_size", "cart_texture", "cart_qty"].forEach((key) => {
+      cleanUrl.searchParams.delete(key);
+    });
+    window.history.replaceState({}, "", `${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}`);
+  }, [hydratedStorageKey, storageKey]);
 
   const addItem = useCallback((newItem: Omit<CartItem, "quantity">) => {
     const validItem = toValidCartItem({ ...newItem, quantity: 1 });
