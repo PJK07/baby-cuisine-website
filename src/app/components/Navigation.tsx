@@ -10,7 +10,7 @@ export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { getTotalItems } = useCart();
+  const { totalItems } = useCart();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -65,13 +65,13 @@ export function Navigation() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setIsCartOpen(true)}
-              aria-label={`Open shopping cart${getTotalItems() > 0 ? `, ${getTotalItems()} item${getTotalItems() === 1 ? "" : "s"}` : ""}`}
+              aria-label={`Open shopping cart${totalItems > 0 ? `, ${totalItems} item${totalItems === 1 ? "" : "s"}` : ""}`}
               className="relative bg-brand-dark text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-brand-dark/90 transition-colors shadow-lg"
             >
               <ShoppingCart className="w-5 h-5" aria-hidden="true" />
-              {getTotalItems() > 0 && (
+              {totalItems > 0 && (
                 <span className="absolute -top-1 -right-1 bg-brand-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
-                  {getTotalItems()}
+                  {totalItems}
                 </span>
               )}
             </button>
