@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ShoppingCart, Menu, X } from "lucide-react";
+import { ShoppingCart, Menu, X, ChevronDown } from "lucide-react";
 import { FALLBACK_IMAGE } from "../constants";
 const logoImage560 = "/images/logo-560w.webp";
 const logoImage280 = "/images/logo-280w.webp";
@@ -9,6 +9,7 @@ import { CartSidebar } from "./CartSidebar";
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isResourcesOpen, setIsResourcesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { getTotalItems } = useCart();
 
@@ -59,6 +60,22 @@ export function Navigation() {
                 {link}
               </a>
             ))}
+
+            {/* Resources Dropdown */}
+            <div className="relative group">
+              <button className="flex items-center gap-1 text-brand-dark font-medium hover:text-brand-primary transition-colors focus:outline-none cursor-pointer">
+                <span>Resources</span>
+                <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+              </button>
+              <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-brand-dark/5 rounded-2xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <a
+                  href="#growth-tracker"
+                  className="block px-4 py-2 text-sm text-brand-dark hover:bg-brand-primary/10 hover:text-[#a85c0a] font-medium transition-colors"
+                >
+                  Baby Growth Tracker
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* Cart & Mobile Menu */}
@@ -97,7 +114,7 @@ export function Navigation() {
         <div
           id="mobile-menu"
           className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-            isOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
+            isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
           }`}
         >
           <div className="pt-6 pb-4 space-y-4">
@@ -111,6 +128,33 @@ export function Navigation() {
                 {link}
               </a>
             ))}
+
+            {/* Resources (Mobile) */}
+            <div className="space-y-2 py-2">
+              <button
+                onClick={() => setIsResourcesOpen(!isResourcesOpen)}
+                className="flex items-center justify-between w-full text-brand-dark font-medium hover:text-brand-primary transition-colors focus:outline-none"
+              >
+                <span>Resources</span>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isResourcesOpen ? "rotate-180" : ""}`} />
+              </button>
+              <div
+                className={`pl-4 space-y-2 overflow-hidden transition-all duration-300 ${
+                  isResourcesOpen ? "max-h-20 opacity-100" : "max-h-0 opacity-0"
+                }`}
+              >
+                <a
+                  href="#growth-tracker"
+                  className="block text-brand-dark/80 font-medium hover:text-brand-primary transition-colors py-1 text-sm"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setIsResourcesOpen(false);
+                  }}
+                >
+                  Baby Growth Tracker
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>

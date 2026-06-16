@@ -1,4 +1,4 @@
-import { Component, ReactNode } from "react";
+import { Component, ReactNode, useState, useEffect } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
@@ -12,6 +12,7 @@ import { FloatingIngredients } from "./components/FloatingIngredients";
 import { WhatsAppFAB } from "./components/WhatsAppFAB";
 import { CartProvider } from "./context/CartContext";
 import { Toaster } from "sonner";
+import { GrowthTracker } from "./components/GrowthTracker";
 
 class ErrorBoundary extends Component<{ children: ReactNode }, { crashed: boolean }> {
   state = { crashed: false };
@@ -23,6 +24,35 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { crashed: boolea
 }
 
 export default function App() {
+  const [currentView, setCurrentView] = useState<'home' | 'growth-tracker'>('home');
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      if (hash === '#growth-tracker') {
+        setCurrentView('growth-tracker');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        setCurrentView('home');
+        if (hash && hash !== '#') {
+          // If switching back from growth tracker, wait for render to complete, then scroll
+          setTimeout(() => {
+            const element = document.getElementById(hash.substring(1));
+            if (element) {
+              element.scrollIntoView({ behavior: 'smooth' });
+            }
+          }, 50);
+        }
+      }
+    };
+
+    // Run once on mount
+    handleHashChange();
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
   return (
     <CartProvider>
       <Toaster
@@ -49,18 +79,32 @@ export default function App() {
             <Navigation />
           </ErrorBoundary>
           <main id="main-content">
-            <ErrorBoundary>
-              <Hero />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <Shop />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <TrustSection />
-              <Testimonials />
-              <BrandStory />
-              <CallToAction />
-            </ErrorBoundary>
+            {currentView === 'home' ? (
+              <>
+                <ErrorBoundary>
+                  <Hero />
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <Shop />
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <TrustSection />
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <Testimonials />
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <BrandStory />
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <CallToAction />
+                </ErrorBoundary>
+              </>
+            ) : (
+              <ErrorBoundary>
+                <GrowthTracker />
+              </ErrorBoundary>
+            )}
           </main>
           <ErrorBoundary>
             <Footer />
