@@ -24,35 +24,6 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { crashed: boolea
 }
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'growth-tracker'>('home');
-
-  useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash;
-      if (hash === '#growth-tracker') {
-        setCurrentView('growth-tracker');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        setCurrentView('home');
-        if (hash && hash !== '#') {
-          // If switching back from growth tracker, wait for render to complete, then scroll
-          setTimeout(() => {
-            const element = document.getElementById(hash.substring(1));
-            if (element) {
-              element.scrollIntoView({ behavior: 'smooth' });
-            }
-          }, 50);
-        }
-      }
-    };
-
-    // Run once on mount
-    handleHashChange();
-
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
-
   return (
     <CartProvider>
       <Toaster
@@ -79,32 +50,27 @@ export default function App() {
             <Navigation />
           </ErrorBoundary>
           <main id="main-content">
-            {currentView === 'home' ? (
-              <>
-                <ErrorBoundary>
-                  <Hero />
-                </ErrorBoundary>
-                <ErrorBoundary>
-                  <Shop />
-                </ErrorBoundary>
-                <ErrorBoundary>
-                  <TrustSection />
-                </ErrorBoundary>
-                <ErrorBoundary>
-                  <Testimonials />
-                </ErrorBoundary>
-                <ErrorBoundary>
-                  <BrandStory />
-                </ErrorBoundary>
-                <ErrorBoundary>
-                  <CallToAction />
-                </ErrorBoundary>
-              </>
-            ) : (
-              <ErrorBoundary>
-                <GrowthTracker />
-              </ErrorBoundary>
-            )}
+            <ErrorBoundary>
+              <Hero />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <GrowthTracker />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <Shop />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <TrustSection />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <Testimonials />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <BrandStory />
+            </ErrorBoundary>
+            <ErrorBoundary>
+              <CallToAction />
+            </ErrorBoundary>
           </main>
           <ErrorBoundary>
             <Footer />

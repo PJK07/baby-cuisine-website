@@ -48,10 +48,16 @@ export function Hero() {
                 onClick={() => {
                   document.getElementById("shop")?.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="bg-brand-primary text-white px-10 py-5 rounded-full text-lg font-semibold hover:bg-brand-primary-hover transition-all shadow-xl hover:shadow-2xl"
+                className="bg-brand-primary text-white px-10 py-5 rounded-full text-lg font-semibold hover:bg-brand-primary-hover transition-all shadow-xl hover:shadow-2xl cursor-pointer"
               >
                 Explore Menu
               </button>
+              <a
+                href="#bmi-calculator"
+                className="border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white px-10 py-5 rounded-full text-lg font-semibold transition-all shadow-xl hover:shadow-2xl cursor-pointer text-center"
+              >
+                BMI Calculator
+              </a>
             </div>
 
             <div className="flex flex-wrap gap-8 justify-center lg:justify-start text-brand-dark/80">

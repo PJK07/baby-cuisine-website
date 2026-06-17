@@ -19,7 +19,7 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const navLinks = ["Shop", "Our Story", "Why Us", "Contact"];
+  const navLinks = ["Shop", "Our Story", "Why Us", "Contact", "BMI Calculator"];
 
   return (
     <nav
@@ -69,10 +69,10 @@ export function Navigation() {
               </button>
               <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-brand-dark/5 rounded-2xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <a
-                  href="#growth-tracker"
+                  href="#bmi-calculator"
                   className="block px-4 py-2 text-sm text-brand-dark hover:bg-brand-primary/10 hover:text-[#a85c0a] font-medium transition-colors"
                 >
-                  Baby Growth Tracker
+                  Baby Growth Tracker / BMI
                 </a>
               </div>
             </div>
@@ -144,7 +144,7 @@ export function Navigation() {
                 }`}
               >
                 <a
-                  href="#growth-tracker"
+                  href="#bmi-calculator"
                   className="block text-brand-dark/80 font-medium hover:text-brand-primary transition-colors py-1 text-sm"
                   onClick={() => {
                     setIsOpen(false);

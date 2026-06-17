@@ -1,6 +1,7 @@
 import { useState, useId } from "react";
-import { Baby, Calendar, Scale, Ruler, HeartPulse, ChevronRight, Sparkles } from "lucide-react";
+import { Baby, Calendar, Scale, Ruler, HeartPulse, ChevronRight, Sparkles, MessageCircle } from "lucide-react";
 import { calculateGrowthPercentile, type GrowthResult } from "../utils/growthCalculator";
+import { WHATSAPP_NUMBER } from "../constants";
 
 export function GrowthTracker() {
   const [sex, setSex] = useState<"boy" | "girl">("boy");
@@ -55,8 +56,23 @@ export function GrowthTracker() {
     setError(null);
   };
 
+  const getWhatsAppLink = () => {
+    if (!result) return "";
+    const sexText = sex === "boy" ? "boy" : "girl";
+    const statusText = result.status === "healthy" ? "healthy weight" : result.status;
+    const baseMessage = `Hi! I just used your Baby Growth Tracker. Here are my baby's results:
+- Sex: ${sexText}
+- Age: ${ageMonths} months
+- Weight: ${weightKg} kg
+- Length: ${lengthCm} cm
+- Percentile: ${result.percentile}th percentile (${statusText})
+
+I'd love to book a consultation to discuss the best meal plans and nutrition for my baby.`;
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(baseMessage)}`;
+  };
+
   return (
-    <section id="growth-tracker" className="py-24 px-6 bg-gradient-to-b from-[#FDFBF7] to-white overflow-hidden">
+    <section id="bmi-calculator" className="py-24 px-6 bg-gradient-to-b from-[#FDFBF7] to-white overflow-hidden">
       <div className="container mx-auto max-w-4xl">
         {/* Header */}
         <div className="text-center mb-12">
@@ -294,8 +310,28 @@ export function GrowthTracker() {
                   </div>
                 </div>
 
-                {/* Soft CTA to Meal Plans */}
-                <div className="mt-8 pt-6 border-t border-brand-dark/5">
+                {/* Action CTA buttons */}
+                <div className="mt-8 pt-6 border-t border-brand-dark/5 space-y-3">
+                  {/* Book a Consultation */}
+                  <a
+                    href={getWhatsAppLink()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center justify-between p-4 bg-[#25D366]/10 hover:bg-[#25D366]/15 rounded-2xl border border-[#25D366]/30 transition-all shadow-sm cursor-pointer"
+                  >
+                    <div className="text-left pr-2">
+                      <p className="text-xs font-semibold text-[#128C7E] uppercase tracking-wider mb-0.5 font-bold">Personal Guidance</p>
+                      <h4 className="text-sm font-bold text-brand-dark group-hover:text-[#128C7E] transition-colors">
+                        Book a Nutrition Consultation
+                      </h4>
+                      <p className="text-[11px] text-brand-dark/60 mt-0.5">Share this growth report with us on WhatsApp</p>
+                    </div>
+                    <div className="w-8 h-8 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform">
+                      <MessageCircle className="w-4 h-4 text-white fill-white" />
+                    </div>
+                  </a>
+
+                  {/* Soft CTA to Meal Plans */}
                   <a
                     href="#shop"
                     className="group flex items-center justify-between p-4 bg-[#C4915F]/5 hover:bg-[#C4915F]/10 rounded-2xl border border-[#C4915F]/20 transition-all shadow-sm cursor-pointer"
