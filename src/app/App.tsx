@@ -9,7 +9,7 @@ import { CallToAction } from "./components/CallToAction";
 import { Footer } from "./components/Footer";
 import { FloatingIngredients } from "./components/FloatingIngredients";
 import { WhatsAppFAB } from "./components/WhatsAppFAB";
-import ChefSophieWidget from "./components/ChefSophieWidget";
+// import ChefSophieWidget from "./components/ChefSophieWidget"; // disabled
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "sonner";
@@ -68,9 +68,11 @@ export default function App() {
               <Footer />
             </ErrorBoundary>
             <WhatsAppFAB />
+            {/* Chef Sophie disabled
             <ErrorBoundary>
               <ChefSophieWidget />
             </ErrorBoundary>
+            */}
           </div>
         </div>
       </CartProvider>

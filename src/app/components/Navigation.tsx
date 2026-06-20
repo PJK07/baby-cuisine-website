@@ -19,6 +19,11 @@ export function Navigation() {
   const accountAvatarUrl =
     (user?.user_metadata?.avatar_url as string | undefined) ||
     (user?.user_metadata?.picture as string | undefined);
+  const accountName =
+    (user?.user_metadata?.full_name as string | undefined) ||
+    (user?.user_metadata?.name as string | undefined) ||
+    user?.email ||
+    "Profile";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -76,12 +81,12 @@ export function Navigation() {
               aria-label={user ? `Account signed in as ${user.email}` : "Open sign in"}
               className={`hidden sm:flex h-12 items-center gap-2 rounded-full px-4 font-bold shadow-lg transition-colors ${
                 user
-                  ? "bg-transparent text-brand-dark shadow-none hover:bg-brand-bg/50"
+                  ? "bg-white text-brand-dark ring-1 ring-brand-primary/30 hover:bg-brand-bg/60"
                   : "bg-white text-brand-dark hover:bg-brand-bg/70"
               }`}
             >
               {user ? (
-                <span className="relative flex h-8 w-8 items-center justify-center text-sm font-black text-brand-primary">
+                <span className="relative flex h-8 w-8 items-center justify-center rounded-full bg-brand-primary text-sm font-black text-white">
                   {accountAvatarUrl ? (
                     <img
                       src={accountAvatarUrl}
@@ -96,7 +101,7 @@ export function Navigation() {
               ) : (
                 <UserRound className="h-5 w-5 text-brand-primary" aria-hidden="true" />
               )}
-              <span>{user ? "Profile" : "Sign in"}</span>
+              <span className="max-w-[160px] truncate">{user ? accountName : "Sign in"}</span>
             </button>
 
             <button
@@ -104,12 +109,12 @@ export function Navigation() {
               aria-label={user ? `Account signed in as ${user.email}` : "Open sign in"}
               className={`flex h-12 w-12 items-center justify-center rounded-full shadow-lg transition-colors sm:hidden ${
                 user
-                  ? "bg-transparent text-brand-dark shadow-none hover:bg-brand-bg/50"
+                  ? "bg-white text-brand-dark ring-1 ring-brand-primary/30 hover:bg-brand-bg/60"
                   : "bg-white text-brand-dark hover:bg-brand-bg/70"
               }`}
             >
               {user ? (
-                <span className="relative flex h-8 w-8 items-center justify-center text-sm font-black text-brand-primary">
+                <span className="relative flex h-8 w-8 items-center justify-center rounded-full bg-brand-primary text-sm font-black text-white">
                   {accountAvatarUrl ? (
                     <img
                       src={accountAvatarUrl}
