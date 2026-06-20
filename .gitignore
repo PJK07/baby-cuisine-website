@@ -3,3 +3,4 @@ dist/
 .env
 nul
 .vercel
+scratch/
