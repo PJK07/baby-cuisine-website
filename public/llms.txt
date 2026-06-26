@@ -1,0 +1,35 @@
+# Baby Cuisine
+
+> Baby Cuisine is a Lebanon-based maker of fresh, handmade baby food. Every meal is crafted with 100% natural ingredients — no sugar, no preservatives, no artificial colors — handmade daily by a hospital-graded chef and delivered across Lebanon. Orders are placed over WhatsApp.
+
+## Key facts
+
+- **What it is:** Fresh, handmade baby food (purees and nutrient-dense meals for infants and toddlers).
+- **Where:** Based in Horch Tabet, St. Maroun Street, Lebanon. Delivers across Lebanon.
+- **Ingredients:** 100% natural. No added sugar, no preservatives, no artificial colors.
+- **Made by:** A hospital-graded chef, handmade fresh daily.
+- **Founded:** 2023.
+- **How to order:** WhatsApp at +961 70 465 465 (https://wa.me/96170465465).
+- **Price range:** $$ (mid-range).
+
+## Products
+
+Baby Cuisine offers a menu of baby meals organized by category, available in different sizes and textures suited to a baby's stage. Each dish lists its ingredients. Browse the full menu and order on the website or via WhatsApp.
+
+## Tools
+
+- **Baby Growth Tracker** — plots a baby's growth against WHO growth standards.
+- **BMI Calculator** — with a WhatsApp consultation option.
+
+## Contact
+
+- **WhatsApp / phone:** +961 70 465 465 — https://wa.me/96170465465
+- **Email:** thebabycuisine.1@gmail.com
+- **Instagram:** https://www.instagram.com/thebabycuisine.1/
+- **Location:** Horch Tabet, St. Maroun Street, Lebanon
+
+## Links
+
+- Website: https://thebabycuisine.com/
+- Order on WhatsApp: https://wa.me/96170465465
+- Instagram: https://www.instagram.com/thebabycuisine.1/

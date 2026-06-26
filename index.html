@@ -31,10 +31,10 @@
         property="og:description"
         content="Pure, soft, and made for tiny tummies. Handmade daily with 100% natural ingredients — no sugar, no preservatives."
       />
-      <meta property="og:image" content="https://thebabycuisine.com/images/hero-banner.webp" />
-      <meta property="og:image:width" content="800" />
-      <meta property="og:image:height" content="1000" />
-      <meta property="og:image:alt" content="Assortment of Baby Cuisine fresh handmade baby food" />
+      <meta property="og:image" content="https://thebabycuisine.com/images/og-image.png" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content="Baby Cuisine — fresh handmade baby food, made with love for their first bites" />
       <meta property="og:locale" content="en_US" />
 
       <!-- Twitter Card -->
@@ -44,8 +44,8 @@
         name="twitter:description"
         content="Pure, soft, and made for tiny tummies. Handmade daily with 100% natural ingredients."
       />
-      <meta name="twitter:image" content="https://thebabycuisine.com/images/hero-banner.webp" />
-      <meta name="twitter:image:alt" content="Assortment of Baby Cuisine fresh handmade baby food" />
+      <meta name="twitter:image" content="https://thebabycuisine.com/images/og-image.png" />
+      <meta name="twitter:image:alt" content="Baby Cuisine — fresh handmade baby food, made with love for their first bites" />
 
       <!-- Structured Data: LocalBusiness + FoodEstablishment -->
       <script type="application/ld+json">
@@ -55,34 +55,61 @@
           "name": "Baby Cuisine",
           "description": "Fresh handmade baby food crafted with 100% natural ingredients — no sugar, no preservatives, no artificial colors.",
           "url": "https://thebabycuisine.com",
+          "logo": "https://thebabycuisine.com/images/logo-560w.webp",
+          "image": "https://thebabycuisine.com/images/og-image.png",
           "telephone": "+96170465465",
           "email": "thebabycuisine.1@gmail.com",
+          "foundingDate": "2023",
           "address": {
             "@type": "PostalAddress",
             "streetAddress": "St. Maroun Street",
             "addressLocality": "Horch Tabet",
             "addressCountry": "LB"
           },
-          "sameAs": ["https://www.instagram.com/thebabycuisine.1/"],
+          "areaServed": {
+            "@type": "Country",
+            "name": "Lebanon"
+          },
+          "sameAs": [
+            "https://www.instagram.com/thebabycuisine.1/",
+            "https://google.com/maps/place/The+Baby+Cuisine/data=!4m2!3m1!1s0x0:0x1c082d8fb7eabbf0"
+          ],
           "servesCuisine": "Baby Food",
-          "priceRange": "$$",
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.9",
-            "bestRating": "5",
-            "ratingCount": "100"
-          }
+          "priceRange": "$$"
         }
       </script>
     </head>
 
     <body>
       <div id="root">
-        <!-- Shown while JS bundle downloads; React replaces this on mount -->
-        <div id="app-loader" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fbebba;gap:1.5rem;font-family:system-ui,sans-serif;">
-          <img src="/images/logo-560w.webp" alt="Baby Cuisine" style="width:140px;height:auto;" onerror="this.style.display='none'" />
-          <div style="width:48px;height:48px;border:5px solid #f3d9a0;border-top-color:#a85c0a;border-radius:50%;animation:spin 0.9s linear infinite;"></div>
-          <p style="color:#293313;font-weight:600;font-size:1.1rem;margin:0;">Loading…</p>
+        <!--
+          Static first paint: real, crawlable content for search engines and AI bots
+          that don't execute JavaScript. React replaces #root entirely on mount, so
+          human visitors see the full interactive app instead of this.
+        -->
+        <div id="app-loader" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fbebba;gap:1.25rem;padding:2rem;text-align:center;font-family:system-ui,sans-serif;">
+          <img src="/images/logo-560w.webp" alt="Baby Cuisine logo" style="width:150px;height:auto;" onerror="this.style.display='none'" />
+          <h1 style="color:#293313;font-size:2rem;font-weight:800;margin:0;line-height:1.15;max-width:36rem;">
+            Made with Love, <span style="color:#a85c0a;">for Their First Bites</span>
+          </h1>
+          <p style="color:#4d4431;font-size:1.1rem;font-weight:500;margin:0;max-width:34rem;line-height:1.5;">
+            Baby Cuisine makes fresh, handmade baby food in Lebanon — pure, soft, nutrient-dense
+            meals crafted with 100% natural ingredients, with no sugar, no preservatives, and no
+            artificial colors. Handmade daily by a hospital-graded chef and delivered across Lebanon.
+          </p>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:0.5rem 1.25rem;justify-content:center;color:#293313;font-weight:600;font-size:0.95rem;">
+            <li>100% natural ingredients</li>
+            <li>No sugar or preservatives</li>
+            <li>Handmade fresh daily</li>
+            <li>Delivered across Lebanon</li>
+          </ul>
+          <p style="margin:0.5rem 0 0;">
+            <a href="https://wa.me/96170465465" style="color:#a85c0a;font-weight:700;text-decoration:none;">Order on WhatsApp</a>
+            <span style="color:#71654b;"> &nbsp;&#183;&nbsp; </span>
+            <a href="https://www.instagram.com/thebabycuisine.1/" style="color:#a85c0a;font-weight:700;text-decoration:none;">Instagram</a>
+          </p>
+          <div style="width:42px;height:42px;border:5px solid #f3d9a0;border-top-color:#a85c0a;border-radius:50%;animation:spin 0.9s linear infinite;margin-top:0.5rem;" aria-hidden="true"></div>
+          <p style="color:#71654b;font-weight:500;font-size:0.95rem;margin:0;">Loading the full menu…</p>
           <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
         </div>
       </div>
