@@ -8,6 +8,7 @@ import { Testimonials } from "./components/Testimonials";
 import { BrandStory } from "./components/BrandStory";
 import { CallToAction } from "./components/CallToAction";
 import { Footer } from "./components/Footer";
+import { PrivacyPolicyModal } from "./components/PrivacyPolicyModal";
 import { FloatingIngredients } from "./components/FloatingIngredients";
 import { WhatsAppFAB } from "./components/WhatsAppFAB";
 import { CartProvider } from "./context/CartContext";
@@ -24,6 +25,26 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { crashed: boolea
 }
 
 export default function App() {
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      if (window.location.hash === "#privacy-policy") {
+        setIsPrivacyOpen(true);
+      }
+    };
+    handleHashChange();
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
+  const handlePrivacyOpenChange = (open: boolean) => {
+    setIsPrivacyOpen(open);
+    if (!open && window.location.hash === "#privacy-policy") {
+      window.history.pushState(null, "", window.location.pathname + window.location.search);
+    }
+  };
+
   return (
     <CartProvider>
       <Toaster
@@ -73,9 +94,10 @@ export default function App() {
             </ErrorBoundary>
           </main>
           <ErrorBoundary>
-            <Footer />
+            <Footer onOpenPrivacy={() => setIsPrivacyOpen(true)} />
           </ErrorBoundary>
           <WhatsAppFAB />
+          <PrivacyPolicyModal isOpen={isPrivacyOpen} onOpenChange={handlePrivacyOpenChange} />
         </div>
       </div>
       <Analytics />

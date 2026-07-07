@@ -2,7 +2,7 @@ import { Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { FALLBACK_IMAGE } from "../constants";
 const logoImage = "/images/baby-john.webp";
 
-export function Footer() {
+export function Footer({ onOpenPrivacy }: { onOpenPrivacy: () => void }) {
   return (
     <footer id="contact" className="bg-brand-dark text-white py-16 px-6">
       <div className="container mx-auto max-w-7xl">
@@ -110,6 +110,12 @@ export function Footer() {
         {/* Bottom */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-white/60 text-sm">
           <p>© 2026 Baby Cuisine. All rights reserved.</p>
+          <button
+            onClick={onOpenPrivacy}
+            className="hover:text-brand-primary transition-colors cursor-pointer focus:outline-none focus:underline text-white/70"
+          >
+            Privacy Policy
+          </button>
         </div>
       </div>
     </footer>
