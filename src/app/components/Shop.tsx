@@ -272,6 +272,8 @@ export function Shop() {
                         <img
                           src={itemImageUrl}
                           alt={item}
+                          loading="lazy"
+                          decoding="async"
                           onError={(e) => {
                             const t = e.currentTarget;
                             if (!t.dataset.fallback) {
@@ -357,6 +359,8 @@ export function Shop() {
                       <img
                         src={url}
                         alt={selectedItem!}
+                        loading="lazy"
+                        decoding="async"
                         onError={(e) => {
                           const t = e.currentTarget;
                           if (!t.dataset.fallback) {
