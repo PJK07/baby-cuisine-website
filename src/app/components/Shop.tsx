@@ -272,6 +272,7 @@ export function Shop() {
                         <img
                           src={itemImageUrl}
                           alt={item}
+                          loading="lazy"
                           onError={(e) => {
                             const t = e.currentTarget;
                             if (!t.dataset.fallback) {
@@ -357,6 +358,7 @@ export function Shop() {
                       <img
                         src={url}
                         alt={selectedItem!}
+                        loading="lazy"
                         onError={(e) => {
                           const t = e.currentTarget;
                           if (!t.dataset.fallback) {
@@ -521,6 +523,7 @@ export function Shop() {
           <img
             src={lightboxImage}
             alt={selectedItem ? `${selectedItem} — full view` : "Product full view"}
+            loading="lazy"
             className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
             onClick={(e) => e.stopPropagation()}
             onError={(e) => {

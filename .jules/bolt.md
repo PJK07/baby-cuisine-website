@@ -6,3 +6,6 @@
 ## 2024-05-25 - Avoid Undefined Variables in useMemo Optimizations
 **Learning:** When extracting expensive operations out of loops into a dictionary/hash map lookup using `useMemo` (e.g. `categoryProductsByItem`), ensure that the new memoized variable is initialized and defined _before_ any other `useMemo` block tries to reference it, otherwise a critical `ReferenceError` will crash the application.
 **Action:** Always check that the declaration of the dictionary variable exists and appears prior to its usage in other hooks.
+## 2024-05-26 - Add lazy loading to images below the fold
+**Learning:** Adding `loading="lazy"` to dynamic image grids (like Shop items) defers loading of off-screen images until the user scrolls near them, improving initial load performance and saving bandwidth.
+**Action:** Consistently add `loading="lazy"` to dynamically rendered `<img>` tags below the fold.
