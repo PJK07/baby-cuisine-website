@@ -128,9 +128,17 @@ export function Shop() {
     new Set(itemVariants.map((v) => v.Texture))
   ).filter(Boolean), [itemVariants]);
 
-  const selectedVariant = useMemo(() => itemVariants.find(
-    (v) => v.Size === selectedSize
-  ), [itemVariants, selectedSize]);
+  // ⚡ Bolt: Memoize variant lookups by size to prevent O(N) Array.find on every render inside map loops
+  const variantBySize = useMemo(() => {
+    return itemVariants.reduce((acc, v) => {
+      if (v.Size && !acc[v.Size]) acc[v.Size] = v;
+      return acc;
+    }, {} as Record<string, ProductData>);
+  }, [itemVariants]);
+
+  const selectedVariant = useMemo(() =>
+    selectedSize ? variantBySize[selectedSize] : undefined
+  , [variantBySize, selectedSize]);
 
   const { detailMinPrice, detailHasMultiplePrices } = useMemo(() => {
     const prices = Array.from(new Set(
@@ -422,7 +430,7 @@ export function Shop() {
                     {availableSizes.map((size) => {
                       // Size field now contains the ml label directly ("120 ml" / "200 ml" / "250 ml").
                       // Fall back to Size_ml / "Size (ml)" for any legacy API rows still using Big/Small/Medium.
-                      const variant = itemVariants.find(v => v.Size === size);
+                      const variant = variantBySize[size];
                       const mlRaw = variant?.Size_ml || variant?.["Size (ml)"];
                       const sizeLabel = size.toLowerCase().includes('ml')
                         ? size
