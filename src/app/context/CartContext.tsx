@@ -16,8 +16,8 @@ interface CartContextType {
   removeItem: (itemCode: string, size: string, texture?: string) => void;
   updateQuantity: (itemCode: string, size: string, texture: string | undefined, quantity: number) => void;
   clearCart: () => void;
-  getTotalItems: () => number;
-  getTotalPrice: () => number;
+  totalItems: number;
+  totalPrice: number;
 }
 
 const STORAGE_KEY = "baby-cuisine-cart";
@@ -95,10 +95,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = useCallback(() => setItems([]), []);
 
-  const getTotalItems = useCallback(() =>
+  // ⚡ Bolt Optimization: Memoize derived state (O(N) operations) directly into context
+  // instead of exposing functions. This prevents O(N) re-calculation on every render
+  // of any component that consumes the context, ensuring O(1) property access.
+  const totalItems = useMemo(() =>
     items.reduce((total, item) => total + item.quantity, 0), [items]);
 
-  const getTotalPrice = useCallback(() =>
+  const totalPrice = useMemo(() =>
     items.reduce((total, item) => total + item.price * item.quantity, 0), [items]);
 
   const value = useMemo(() => ({
@@ -107,9 +110,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
     removeItem,
     updateQuantity,
     clearCart,
-    getTotalItems,
-    getTotalPrice,
-  }), [items, addItem, removeItem, updateQuantity, clearCart, getTotalItems, getTotalPrice]);
+    totalItems,
+    totalPrice,
+  }), [items, addItem, removeItem, updateQuantity, clearCart, totalItems, totalPrice]);
 
   return (
     <CartContext.Provider value={value}>
