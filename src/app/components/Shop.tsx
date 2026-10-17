@@ -269,9 +269,12 @@ export function Shop() {
                   >
                     {itemImageUrl ? (
                       <>
+                        {/* ⚡ Bolt: Add lazy loading to images below the fold to save bandwidth and improve initial load time */}
                         <img
                           src={itemImageUrl}
                           alt={item}
+                          loading="lazy"
+                          decoding="async"
                           onError={(e) => {
                             const t = e.currentTarget;
                             if (!t.dataset.fallback) {
@@ -354,22 +357,27 @@ export function Shop() {
                   {(() => {
                     const url = getProductImage(selectedItem!);
                     return (
-                      <img
-                        src={url}
-                        alt={selectedItem!}
-                        onError={(e) => {
-                          const t = e.currentTarget;
-                          if (!t.dataset.fallback) {
-                            t.src = FALLBACK_IMAGE;
-                            t.dataset.fallback = "true";
-                          }
-                        }}
-                        className={`w-full h-full transition-transform group-hover:scale-105 ${
-                          (selectedCategory?.toLowerCase().includes("biscuit") || selectedCategory?.toLowerCase().includes("finger food"))
-                            ? "object-contain p-6"
-                            : "object-cover"
-                        }`}
-                      />
+                      <>
+                        {/* ⚡ Bolt: Add lazy loading to images below the fold to save bandwidth and improve initial load time */}
+                        <img
+                          src={url}
+                          alt={selectedItem!}
+                          loading="lazy"
+                          decoding="async"
+                          onError={(e) => {
+                            const t = e.currentTarget;
+                            if (!t.dataset.fallback) {
+                              t.src = FALLBACK_IMAGE;
+                              t.dataset.fallback = "true";
+                            }
+                          }}
+                          className={`w-full h-full transition-transform group-hover:scale-105 ${
+                            (selectedCategory?.toLowerCase().includes("biscuit") || selectedCategory?.toLowerCase().includes("finger food"))
+                              ? "object-contain p-6"
+                              : "object-cover"
+                          }`}
+                        />
+                      </>
                     );
                   })()}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
