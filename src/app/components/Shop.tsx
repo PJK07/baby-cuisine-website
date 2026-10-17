@@ -269,9 +269,13 @@ export function Shop() {
                   >
                     {itemImageUrl ? (
                       <>
+                        {/* ⚡ Bolt: Add lazy loading to offscreen images, saving bandwidth and improving initial load time */}
+                        {/* ⚡ Bolt: Use async decoding to prevent image processing from blocking the main thread */}
                         <img
                           src={itemImageUrl}
                           alt={item}
+                          loading="lazy"
+                          decoding="async"
                           onError={(e) => {
                             const t = e.currentTarget;
                             if (!t.dataset.fallback) {
@@ -354,9 +358,11 @@ export function Shop() {
                   {(() => {
                     const url = getProductImage(selectedItem!);
                     return (
+                      // ⚡ Bolt: Use async decoding to prevent main thread blocking while displaying large detail images
                       <img
                         src={url}
                         alt={selectedItem!}
+                        decoding="async"
                         onError={(e) => {
                           const t = e.currentTarget;
                           if (!t.dataset.fallback) {
@@ -518,9 +524,11 @@ export function Shop() {
           >
             <X className="w-8 h-8" aria-hidden="true" />
           </button>
+          {/* ⚡ Bolt: Async decoding for large lightbox images prevents UI lag when opening */}
           <img
             src={lightboxImage}
             alt={selectedItem ? `${selectedItem} — full view` : "Product full view"}
+            decoding="async"
             className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
             onClick={(e) => e.stopPropagation()}
             onError={(e) => {
