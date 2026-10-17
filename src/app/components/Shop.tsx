@@ -269,6 +269,7 @@ export function Shop() {
                   >
                     {itemImageUrl ? (
                       <>
+                        {/* ⚡ Bolt: Added lazy loading and async decoding to product images to improve initial load time */}
                         <img
                           src={itemImageUrl}
                           alt={item}
@@ -279,6 +280,8 @@ export function Shop() {
                               t.dataset.fallback = "true";
                             }
                           }}
+                          loading="lazy"
+                          decoding="async"
                           className={`w-full h-full transition-transform group-hover:scale-105 ${
                             (selectedCategory?.toLowerCase().includes("biscuit") || selectedCategory?.toLowerCase().includes("finger food"))
                               ? "object-contain p-4"
@@ -354,22 +357,27 @@ export function Shop() {
                   {(() => {
                     const url = getProductImage(selectedItem!);
                     return (
-                      <img
-                        src={url}
+                      <>
+                        {/* ⚡ Bolt: Added lazy loading and async decoding to product detail image to avoid blocking main thread */}
+                        <img
+                          src={url}
                         alt={selectedItem!}
                         onError={(e) => {
                           const t = e.currentTarget;
                           if (!t.dataset.fallback) {
                             t.src = FALLBACK_IMAGE;
                             t.dataset.fallback = "true";
-                          }
-                        }}
-                        className={`w-full h-full transition-transform group-hover:scale-105 ${
-                          (selectedCategory?.toLowerCase().includes("biscuit") || selectedCategory?.toLowerCase().includes("finger food"))
-                            ? "object-contain p-6"
-                            : "object-cover"
-                        }`}
-                      />
+                            }
+                          }}
+                          loading="lazy"
+                          decoding="async"
+                          className={`w-full h-full transition-transform group-hover:scale-105 ${
+                            (selectedCategory?.toLowerCase().includes("biscuit") || selectedCategory?.toLowerCase().includes("finger food"))
+                              ? "object-contain p-6"
+                              : "object-cover"
+                          }`}
+                        />
+                      </>
                     );
                   })()}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
@@ -518,11 +526,13 @@ export function Shop() {
           >
             <X className="w-8 h-8" aria-hidden="true" />
           </button>
+          {/* ⚡ Bolt: Added async decoding to lightbox image */}
           <img
             src={lightboxImage}
             alt={selectedItem ? `${selectedItem} — full view` : "Product full view"}
             className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
             onClick={(e) => e.stopPropagation()}
+            decoding="async"
             onError={(e) => {
               const t = e.currentTarget;
               if (!t.dataset.fallback) {
