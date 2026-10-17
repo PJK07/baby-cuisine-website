@@ -6,3 +6,7 @@
 ## 2024-05-25 - Avoid Undefined Variables in useMemo Optimizations
 **Learning:** When extracting expensive operations out of loops into a dictionary/hash map lookup using `useMemo` (e.g. `categoryProductsByItem`), ensure that the new memoized variable is initialized and defined _before_ any other `useMemo` block tries to reference it, otherwise a critical `ReferenceError` will crash the application.
 **Action:** Always check that the declaration of the dictionary variable exists and appears prior to its usage in other hooks.
+
+## 2024-06-16 - Avoid derived state functions in React Context
+**Learning:** Exposing functions in React Context that calculate derived state (e.g., `getTotalItems` or `getTotalPrice` running an array `.reduce()`) causes O(N) recalculations on every render of every consumer component that calls them. In a large cart, this creates unnecessary overhead.
+**Action:** Extract derived state calculations in Context providers into memoized properties using `useMemo` and expose the calculated values instead. Consumers should use these static properties rather than invoking functions, reducing complexity from O(N) to O(1) for their render cycle.
